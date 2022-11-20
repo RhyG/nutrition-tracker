@@ -1,98 +1,90 @@
-import React from 'react';
-import { TextProps as RNTextProps } from 'react-native';
-import styled from 'styled-components/native';
+import React from "react";
+import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle, useColorScheme } from "react-native";
+import { colours, typography } from "../config/theme";
 
-import { StyledComponentsTheme } from '@app/config/themes';
+type Sizes = keyof typeof $sizeStyles;
+type Weights = keyof typeof typography.weights;
+type Presets = keyof typeof $presets;
 
-export type TextProps = {
-  fontSize?: keyof typeof StyledComponentsTheme.font.size;
-  bold?: boolean;
-  extraBold?: boolean;
-  secondary?: boolean;
-  error?: boolean;
-  color?: string;
-  align?: 'auto' | 'left' | 'right' | 'center' | 'justify';
-  marginVertical?: number;
-  marginHorizontal?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-  opacity?: number;
-  wrap?: boolean;
-  flex?: number | string;
-  width?: number | string;
-  letterSpacing?: number;
-  uppercase?: boolean;
-  capitalize?: boolean;
-  textDecoration?:
-    | 'none'
-    | 'underline'
-    | 'line-through'
-    | 'underline line-through';
-  italic?: boolean;
-} & RNTextProps;
+export interface TextProps extends RNTextProps {
+  /**
+   * The text to display if not using `tx` or nested components.
+   */
+  text?: string;
+  /**
+   * An optional style override useful for padding & margin.
+   */
+  style?: StyleProp<TextStyle>;
+  /**
+   * One of the different types of text presets.
+   */
+  preset?: Presets;
+  /**
+   * Text weight modifier.
+   */
+  weight?: Weights;
+  /**
+   * Text size modifier.
+   */
+  size?: Sizes;
+  /**
+   * Children components.
+   */
+  children?: React.ReactNode;
+}
 
 /**
- * A flexible, theme compliant text component
+ * For your text displaying needs.
+ * This component is a HOC over the built-in React Native one.
+ *
+ * - [Documentation and Examples](https://github.com/infinitered/ignite/blob/master/docs/Components-Text.md)
  */
-export const Text = (props: TextProps): JSX.Element => (
-  //@ts-ignore can't figure this out
-  <TextContainer allowFontScaling={false} {...props} />
-);
+export function Text(props: TextProps) {
+  const { weight, size, text, children, style: $styleOverride, ...rest } = props;
 
-const TextContainer = styled.Text<TextProps>`
-  font-size: ${props =>
-    props.fontSize
-      ? props.theme.font.size[props.fontSize]
-      : props.theme.font.size.sm};
-  font-weight: ${props => {
-    if (props.extraBold) {
-      return props.theme.font.weight.extraBold;
-    }
+  const content = text || children;
 
-    if (props.bold) {
-      return props.theme.font.weight.bold;
-    }
+  const preset: Presets = props.preset ? $presets[props.preset] : "default";
+  const $styles = [
+    $presets[preset],
+    $fontWeightStyles[weight ?? "semiLight"],
+    $sizeStyles[size ?? "sm"],
+    $styleOverride,
+  ];
 
-    return props.theme.font.weight.regular;
-  }};
-  text-align: ${props => props.align ?? 'auto'};
-  margin-top: ${props =>
-    props.theme.spacing(props.marginVertical || props.marginTop || 0)};
-  margin-bottom: ${props =>
-    props.theme.spacing(props.marginVertical || props.marginBottom || 0)};
-  margin-left: ${props =>
-    props.theme.spacing(props.marginHorizontal || props.marginLeft || 0)};
-  margin-right: ${props =>
-    props.theme.spacing(props.marginHorizontal || props.marginRight || 0)};
-  flex-wrap: ${props => (props.wrap ? 'wrap' : 'nowrap')};
-  flex: ${props => props.flex || 'none'};
-  width: ${props =>
-    props.width ? props.theme.utils.numbersToPixels(props.width) : 'auto'};
-  opacity: ${props => props.opacity || 1};
-  color: ${props => {
-    if (props.color) {
-      return props.color;
-    }
+  return (
+    <RNText {...rest} style={$styles}>
+      {content}
+    </RNText>
+  );
+}
 
-    return props.theme.colours.darkGrey;
-  }};
-  letter-spacing: ${props => props.letterSpacing ?? 0}px;
-  text-transform: ${({ uppercase, capitalize }) => {
-    if (uppercase) {
-      return 'uppercase';
-    }
-    if (capitalize) {
-      return 'capitalize';
-    }
-    return 'none';
-  }};
-  font-style: ${({ italic }) => {
-    if (italic) {
-      return 'italic';
-    }
-    return 'normal';
-  }};
-  text-decoration: ${props => props.textDecoration || 'none'};
-`;
+const $sizeStyles = {
+  xxl: { fontSize: 36, lineHeight: 44 } as TextStyle,
+  xl: { fontSize: 24, lineHeight: 34 } as TextStyle,
+  lg: { fontSize: 20, lineHeight: 32 } as TextStyle,
+  md: { fontSize: 18, lineHeight: 26 } as TextStyle,
+  sm: { fontSize: 16, lineHeight: 24 } as TextStyle,
+  xs: { fontSize: 14, lineHeight: 21 } as TextStyle,
+  xxs: { fontSize: 12, lineHeight: 18 } as TextStyle,
+};
+
+const $fontWeightStyles = Object.entries(typography.weights).reduce((acc, [typeWeight, weight]) => {
+  return { ...acc, [typeWeight]: { weight } };
+}, {}) as Record<Weights, TextStyle>;
+
+const $baseStyle: StyleProp<TextStyle> = [$sizeStyles.sm, $fontWeightStyles.medium, { color: colours.text }];
+
+const $presets = {
+  default: $baseStyle,
+
+  bold: [$baseStyle, $fontWeightStyles.bold] as StyleProp<TextStyle>,
+
+  heading: [$baseStyle, $sizeStyles.xxl, $fontWeightStyles.bold] as StyleProp<TextStyle>,
+
+  subheading: [$baseStyle, $sizeStyles.lg, $fontWeightStyles.medium] as StyleProp<TextStyle>,
+
+  formLabel: [$baseStyle, $fontWeightStyles.medium] as StyleProp<TextStyle>,
+
+  formHelper: [$baseStyle, $sizeStyles.sm, $fontWeightStyles.medium] as StyleProp<TextStyle>,
+};
