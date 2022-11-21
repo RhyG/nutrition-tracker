@@ -39,7 +39,7 @@ const palette = {
   overlay50: "rgba(25, 16, 21, 0.5)",
 
   green: "#3ECF8E",
-};
+} as const;
 
 export const colours = {
   /**

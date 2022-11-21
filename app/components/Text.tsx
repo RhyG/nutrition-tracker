@@ -2,13 +2,13 @@ import React from "react";
 import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle, useColorScheme } from "react-native";
 import { colours, typography } from "../config/theme";
 
-type Sizes = keyof typeof $sizeStyles;
+type Sizes = keyof typeof sizeStyles;
 type Weights = keyof typeof typography.weights;
-type Presets = keyof typeof $presets;
+type Presets = keyof typeof presets;
 
 export interface TextProps extends RNTextProps {
   /**
-   * The text to display if not using `tx` or nested components.
+   * Text to render.
    */
   text?: string;
   /**
@@ -28,38 +28,28 @@ export interface TextProps extends RNTextProps {
    */
   size?: Sizes;
   /**
-   * Children components.
+   * Child components - this allows either a string or nested components.
    */
   children?: React.ReactNode;
 }
 
-/**
- * For your text displaying needs.
- * This component is a HOC over the built-in React Native one.
- *
- * - [Documentation and Examples](https://github.com/infinitered/ignite/blob/master/docs/Components-Text.md)
- */
 export function Text(props: TextProps) {
-  const { weight, size, text, children, style: $styleOverride, ...rest } = props;
+  const { weight, size, text, children, style: styleOverride, ...rest } = props;
 
+  // Prioritise the `text` prop.
   const content = text || children;
 
-  const preset: Presets = props.preset ? $presets[props.preset] : "default";
-  const $styles = [
-    $presets[preset],
-    $fontWeightStyles[weight ?? "semiLight"],
-    $sizeStyles[size ?? "sm"],
-    $styleOverride,
-  ];
+  const preset: Presets = props.preset ?? "default";
+  const styles = [presets[preset], fontWeightStyles[weight ?? "semiLight"], sizeStyles[size ?? "sm"], styleOverride];
 
   return (
-    <RNText {...rest} style={$styles}>
+    <RNText {...rest} style={styles}>
       {content}
     </RNText>
   );
 }
 
-const $sizeStyles = {
+const sizeStyles = {
   xxl: { fontSize: 36, lineHeight: 44 } as TextStyle,
   xl: { fontSize: 24, lineHeight: 34 } as TextStyle,
   lg: { fontSize: 20, lineHeight: 32 } as TextStyle,
@@ -69,22 +59,17 @@ const $sizeStyles = {
   xxs: { fontSize: 12, lineHeight: 18 } as TextStyle,
 };
 
-const $fontWeightStyles = Object.entries(typography.weights).reduce((acc, [typeWeight, weight]) => {
+const fontWeightStyles = Object.entries(typography.weights).reduce((acc, [typeWeight, weight]) => {
   return { ...acc, [typeWeight]: { weight } };
 }, {}) as Record<Weights, TextStyle>;
 
-const $baseStyle: StyleProp<TextStyle> = [$sizeStyles.sm, $fontWeightStyles.medium, { color: colours.text }];
+const baseStyle: StyleProp<TextStyle> = [sizeStyles.sm, fontWeightStyles.medium, { color: colours.text }];
 
-const $presets = {
-  default: $baseStyle,
-
-  bold: [$baseStyle, $fontWeightStyles.bold] as StyleProp<TextStyle>,
-
-  heading: [$baseStyle, $sizeStyles.xxl, $fontWeightStyles.bold] as StyleProp<TextStyle>,
-
-  subheading: [$baseStyle, $sizeStyles.lg, $fontWeightStyles.medium] as StyleProp<TextStyle>,
-
-  formLabel: [$baseStyle, $fontWeightStyles.medium] as StyleProp<TextStyle>,
-
-  formHelper: [$baseStyle, $sizeStyles.sm, $fontWeightStyles.medium] as StyleProp<TextStyle>,
+const presets = {
+  default: baseStyle,
+  bold: [baseStyle, fontWeightStyles.bold] as StyleProp<TextStyle>,
+  heading: [baseStyle, sizeStyles.xxl, fontWeightStyles.bold] as StyleProp<TextStyle>,
+  subheading: [baseStyle, sizeStyles.lg, fontWeightStyles.medium] as StyleProp<TextStyle>,
+  formLabel: [baseStyle, fontWeightStyles.medium] as StyleProp<TextStyle>,
+  formHelper: [baseStyle, sizeStyles.sm, fontWeightStyles.medium] as StyleProp<TextStyle>,
 };
