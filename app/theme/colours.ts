@@ -55,7 +55,7 @@ export const colours = {
   /**
    * The default text color - adapts to colour scheme (light/dark).
    */
-  text: Appearance.getColorScheme() === "dark" ? palette.neutral800 : palette.neutral800,
+  text: Appearance.getColorScheme() === "dark" ? palette.neutral200 : palette.neutral800,
   /**
    * Secondary text information.
    */

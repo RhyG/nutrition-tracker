@@ -1,9 +1,8 @@
 import { Platform } from 'react-native';
-import { DefaultTheme as SCDefaultTheme } from 'styled-components';
 
 const SPACING_SIZE = 5;
 
-export const colours = {
+export const Colours = {
   grey: '#a9a9a9',
   darkGrey: '#2d2d2d',
   green: '#3ECF8E',
@@ -22,7 +21,7 @@ export const HeaderStyle = {
   shadowOffset: { height: 0, width: 0 },
 };
 
-export const StyledComponentsFonts = {
+export const Fonts = {
   size: {
     xs: '12px',
     sm: '14px',
@@ -45,16 +44,14 @@ export const StyledComponentsFonts = {
   },
 };
 
-export const StyledComponentsTheme: SCDefaultTheme = {
-  spacing: (...units: number[]) =>
-    `${units.map(u => u * SPACING_SIZE).join('px ')}px`,
+export const theme = {
+  spacing: (...units: number[]) => `${units.map((u) => u * SPACING_SIZE).join('px ')}px`,
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
-  font: StyledComponentsFonts,
-  colours,
+  font: Fonts,
+  colours: Colours,
   utils: {
-    numbersToPixels: (...units: any[]) =>
-      units
-        .map(unit => (typeof unit === 'number' ? `${unit}px` : unit))
-        .join(' '),
+    numbersToPixels: (...units: any[]) => units.map((unit) => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
   },
 };
+
+export type Theme = typeof theme;
