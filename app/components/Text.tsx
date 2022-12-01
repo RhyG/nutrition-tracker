@@ -1,6 +1,7 @@
-import React from "react";
-import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle, useColorScheme } from "react-native";
-import { colours, typography } from "../config/theme";
+import React from 'react';
+import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle, useColorScheme } from 'react-native';
+
+import { colours, typography } from '../theme';
 
 type Sizes = keyof typeof sizeStyles;
 type Weights = keyof typeof typography.weights;
@@ -39,8 +40,8 @@ export function Text(props: TextProps) {
   // Prioritise the `text` prop.
   const content = text || children;
 
-  const preset: Presets = props.preset ?? "default";
-  const styles = [presets[preset], fontWeightStyles[weight ?? "semiLight"], sizeStyles[size ?? "sm"], styleOverride];
+  const preset: Presets = props.preset ?? 'default';
+  const styles = [presets[preset], fontWeightStyles[weight ?? 'semiLight'], sizeStyles[size ?? 'sm'], styleOverride];
 
   return (
     <RNText {...rest} style={styles}>
