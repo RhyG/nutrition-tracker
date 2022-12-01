@@ -22,10 +22,8 @@ export const ACTIVITY_LEVELS: ActivityLevel[] = [
     multiplier: 1.725,
   },
   {
-    label:
-      'Extremely active (very heavy exercise, hard labor job, training 2x / day)',
-    value:
-      'Extremely active (very heavy exercise, hard labor job, training 2x / day)',
+    label: 'Extremely active (very heavy exercise, hard labor job, training 2x / day)',
+    value: 'Extremely active (very heavy exercise, hard labor job, training 2x / day)',
     multiplier: 1.9,
   },
 ];
@@ -38,17 +36,9 @@ export enum Genders {
   MALE = 'male',
 }
 
-export const DAYS: Day[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+export const DAYS: Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-export const REPO_URL = 'https://github.com/RhyG/nutrition-tracker-app';
+export const REPO_URL = 'https://github.com/RhyG/nutrition-tracker';
 
 export const DEFAULT_CALORIES = 2000;
 export const DEFAULT_PROTEIN = 100;

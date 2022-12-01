@@ -10,8 +10,9 @@ import { AboutScreen } from '../screens/About/AboutScreen';
 // import { WeeklyOverviewScreen } from '@features/weekly-overview';
 
 // import { BurgerMenu } from '@app/components/BurgerMenu';
-// import { CustomDrawer } from '@app/components/CustomDrawer/CustomDrawer';
 // import { HeaderStyle as headerStyle, colours } from '@app/theme';
+import { CustomDrawer } from '../components/CustomDrawer/CustomDrawer';
+import { colours, HeaderStyle as headerStyle } from '../theme';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,10 +26,10 @@ const AppNavigator = (): JSX.Element => {
   return (
     <Drawer.Navigator
       initialRouteName="Food Journal"
-      // drawerContent={CustomDrawer}
+      drawerContent={CustomDrawer}
       useLegacyImplementation={true}
       screenOptions={{
-        // headerStyle,
+        headerStyle,
         // headerLeft: BurgerMenu,
         headerTitleAlign: 'center',
         drawerItemStyle: { width: '100%', marginLeft: 0 },
@@ -39,9 +40,9 @@ const AppNavigator = (): JSX.Element => {
           width: '100%',
           paddingLeft: 20,
         },
-        // drawerContentStyle: {
-        //   backgroundColor: colours.palette.darkBlue,
-        // },
+        drawerContentStyle: {
+          backgroundColor: colours.palette.darkBlue,
+        },
         overlayColor: 'transparent',
       }}>
       {/* <Drawer.Screen name="Food Journal" component={FoodJournalScreen} />
