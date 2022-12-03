@@ -2,16 +2,16 @@ import { Platform } from 'react-native';
 
 const SPACING_SIZE = 5;
 
-export const Colours = {
-  grey: '#a9a9a9',
-  darkGrey: '#2d2d2d',
-  green: '#3ECF8E',
-  offWhite: '#f5f5f5',
-  lightGrey: '#dcdcdc',
-  darkBlue: '#2D3E4E',
-  red: '#dc3545',
-  fontLightGrey: '#7c7c7c',
-};
+// export const colours = {
+//   grey: '#a9a9a9',
+//   darkGrey: '#2d2d2d',
+//   green: '#3ECF8E',
+//   offWhite: '#f5f5f5',
+//   lightGrey: '#dcdcdc',
+//   darkBlue: '#2D3E4E',
+//   red: '#dc3545',
+//   fontLightGrey: '#7c7c7c',
+// };
 
 export const HeaderStyle = {
   shadowColor: 'transparent',
@@ -48,7 +48,7 @@ export const theme = {
   spacing: (...units: number[]) => `${units.map((u) => u * SPACING_SIZE).join('px ')}px`,
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   font: Fonts,
-  colours: Colours,
+  // colours,
   utils: {
     numbersToPixels: (...units: any[]) => units.map((unit) => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
   },

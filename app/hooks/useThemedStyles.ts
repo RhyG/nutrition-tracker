@@ -1,7 +1,15 @@
-import { useMemo } from 'react';
+import * as React from 'react';
 
-import { theme, Theme } from '@app/config/theme';
+import { theme, Theme } from '../theme';
 
-export const useThemedStyles = (stylesFn: (theme: Theme) => void) => {
-  return useMemo(() => stylesFn(theme), [stylesFn, theme]);
+export type StyleFunction<Styles> = (theme: Theme) => Styles;
+
+export const useThemedStyles = <Styles>(stylesFn: StyleFunction<Styles>): { theme: Theme; styles: Styles } => {
+  return React.useMemo(
+    () => ({
+      theme,
+      styles: stylesFn(theme),
+    }),
+    [stylesFn, theme],
+  );
 };
