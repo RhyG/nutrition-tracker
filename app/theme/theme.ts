@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import { colours } from './colours';
+
 const SPACING_SIZE = 5;
 
 // export const colours = {
@@ -48,7 +50,7 @@ export const theme = {
   spacing: (...units: number[]) => `${units.map((u) => u * SPACING_SIZE).join('px ')}px`,
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   font: Fonts,
-  // colours,
+  colours,
   utils: {
     numbersToPixels: (...units: any[]) => units.map((unit) => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
   },
