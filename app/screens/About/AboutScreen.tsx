@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View as ScrollView } from 'react-native';
 
 import { Text } from '../../components/Text';
-import { RootStackScreen } from '@app/navigation/types';
+import { RootStackScreen } from '../../navigation/types';
 
 export const AboutScreen: RootStackScreen<'About'> = () => {
   return (
@@ -27,12 +27,6 @@ export const AboutScreen: RootStackScreen<'About'> = () => {
     </ScrollView>
   );
 };
-
-// const Container = styled.View`
-//   flex: 1;
-//   background-color: #fff;
-//   padding: 20px;
-// `;
 
 const styles = StyleSheet.create({
   container: {
