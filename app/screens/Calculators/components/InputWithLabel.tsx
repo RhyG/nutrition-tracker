@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
 import { Theme } from '../../../theme';
@@ -25,7 +25,7 @@ type Props = {
   label: string;
 };
 
-export const InputWithLabel = ({ onInputChange, placeholder, value, label = '' }: Props) => {
+export const InputWithLabel = memo(({ onInputChange, placeholder, value, label = '' }: Props) => {
   const { styles, theme } = useThemedStyles(stylesFn);
 
   return (
@@ -43,7 +43,7 @@ export const InputWithLabel = ({ onInputChange, placeholder, value, label = '' }
       />
     </>
   );
-};
+});
 
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
