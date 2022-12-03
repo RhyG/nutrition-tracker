@@ -1,8 +1,9 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
-import styled from 'styled-components/native';
+import { StyleSheet, TextInput } from 'react-native';
 
-import { Text } from '@app/components/Text';
+import { Theme } from '../../../theme';
+import { Text } from '../../../components/Text';
+import { useThemedStyles } from '../../../hooks/useThemedStyles';
 
 type Props = {
   /**
@@ -24,39 +25,35 @@ type Props = {
   label: string;
 };
 
-export const InputWithLabel = ({
-  onInputChange,
-  placeholder,
-  value,
-  label = '',
-}: Props) => {
-  const { colours } = useTheme();
+export const InputWithLabel = ({ onInputChange, placeholder, value, label = '' }: Props) => {
+  const { styles, theme } = useThemedStyles(stylesFn);
 
   return (
     <>
-      <Text
-        color={colours.darkGrey}
-        fontSize="lg"
-        bold
-        marginBottom={1}
-        testID={`input-with-label-${label}-label`}>
+      <Text preset="heading" style={styles.text} testID={`input-with-label-${label}-label`}>
         {label}
       </Text>
-      <Input
+      <TextInput
         placeholder={placeholder ?? label}
         onChangeText={onInputChange}
         value={String(value)}
         keyboardType="number-pad"
-        placeholderTextColor={colours.grey}
+        placeholderTextColor={theme.colours.palette.neutral500}
         testID={`input-with-label-${label}-input`}
       />
     </>
   );
 };
 
-const Input = styled.TextInput`
-  background-color: ${({ theme }) => theme.colours.offWhite};
-  padding: 10px;
-  border-radius: 6px;
-  font-size: ${({ theme }) => theme.font.size.lg};
-`;
+const stylesFn = (theme: Theme) =>
+  StyleSheet.create({
+    text: {
+      marginBottom: 1,
+    },
+    textInput: {
+      backgroundColor: theme.colours.palette.neutral200,
+      padding: 10,
+      borderRadius: 6,
+      fontSize: theme.font.size.lg,
+    },
+  });
