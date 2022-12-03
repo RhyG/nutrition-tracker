@@ -3,8 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/Entypo';
 
-import { Theme } from '@app/theme';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { colours } from '../theme';
 
 export const BurgerMenu = () => {
   const { dispatch } = useNavigation();
@@ -16,14 +15,13 @@ export const BurgerMenu = () => {
 
   return (
     <TouchableOpacity onPress={openDawer} style={styles.button}>
-      <Icon name="menu" size={30} color={theme.colours.darkGrey} />
+      <Icon name="menu" size={30} color={colours.palette.neutral800} />
     </TouchableOpacity>
   );
 };
 
-const stylesFn = () =>
-  StyleSheet.create({
-    button: {
-      paddingLeft: 10,
-    },
-  });
+const styles = StyleSheet.create({
+  button: {
+    paddingLeft: 10,
+  },
+});

@@ -9,8 +9,8 @@ import { AboutScreen } from '../screens/About/AboutScreen';
 // import { GoalsScreen } from '@features/goals';
 // import { WeeklyOverviewScreen } from '@features/weekly-overview';
 
-// import { BurgerMenu } from '@app/components/BurgerMenu';
 // import { HeaderStyle as headerStyle, colours } from '@app/theme';
+import { BurgerMenu } from '../components/BurgerMenu';
 import { CustomDrawer } from '../components/CustomDrawer/CustomDrawer';
 import { colours, HeaderStyle as headerStyle } from '../theme';
 
@@ -30,7 +30,7 @@ const AppNavigator = (): JSX.Element => {
       useLegacyImplementation={true}
       screenOptions={{
         headerStyle,
-        // headerLeft: BurgerMenu,
+        headerLeft: BurgerMenu,
         headerTitleAlign: 'center',
         drawerItemStyle: { width: '100%', marginLeft: 0 },
         drawerActiveBackgroundColor: '#2C3949',
