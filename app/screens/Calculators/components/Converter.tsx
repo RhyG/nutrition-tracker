@@ -1,14 +1,12 @@
 import React, { memo, useState } from 'react';
-import styled, { useTheme } from 'styled-components/native';
+import { StyleSheet, View } from 'react-native';
 
-import { Text } from '@app/components/Text';
-import { calToKj, isInputNumber, kjToCal } from '@app/utils/calculators';
-
+import { Text } from '../../../components/Text';
+import { isInputNumber } from '../../../lib/validation';
+import { caloriesToKj, kjToCalories } from '../../../lib/energy';
 import { InputWithLabel } from './InputWithLabel';
 
 export const Converter = memo(() => {
-  const { colours } = useTheme();
-
   const [kj, setKj] = useState('');
   const [calories, setCalories] = useState('');
 
@@ -17,7 +15,7 @@ export const Converter = memo(() => {
       return;
     }
 
-    const convertedKj = calToKj(Number(value));
+    const convertedKj = caloriesToKj(Number(value));
 
     setKj(String(convertedKj));
     setCalories(value);
@@ -28,7 +26,7 @@ export const Converter = memo(() => {
       return;
     }
 
-    const convertedCalories = kjToCal(Number(value));
+    const convertedCalories = kjToCalories(Number(value));
 
     setCalories(String(convertedCalories));
     setKj(value);
@@ -36,37 +34,31 @@ export const Converter = memo(() => {
 
   return (
     <>
-      <Text color={colours.darkGrey} fontSize="xxl" bold marginBottom={2}>
+      <Text preset="heading" style={styles.heading}>
         Convert Kilojoules to Calories
       </Text>
-      <FieldsContainer>
-        <FieldContainer>
-          <InputWithLabel
-            label="Calories"
-            onInputChange={handleCalorieChange}
-            value={calories}
-          />
-        </FieldContainer>
-        <FieldContainer>
-          <InputWithLabel
-            label="Kilojoules"
-            onInputChange={handleKilojouleChange}
-            value={kj}
-          />
-        </FieldContainer>
-      </FieldsContainer>
-      <Text fontSize="md" marginTop={2}>
-        Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number
-      </Text>
+      <View style={styles.fieldsWrapper}>
+        <View style={styles.fieldContainer}>
+          <InputWithLabel label="Calories" onInputChange={handleCalorieChange} value={calories} />
+        </View>
+        <View style={styles.fieldContainer}>
+          <InputWithLabel label="Kilojoules" onInputChange={handleKilojouleChange} value={kj} />
+        </View>
+      </View>
+      <Text preset="subheading">Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number</Text>
     </>
   );
 });
 
-const FieldsContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const FieldContainer = styled.View`
-  width: 48%;
-`;
+const styles = StyleSheet.create({
+  fieldsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  fieldContainer: {
+    width: '48%',
+  },
+  heading: {
+    marginBottom: 4,
+  },
+});
