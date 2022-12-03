@@ -3,16 +3,16 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 
 // import { AboutScreen } from '@app/screens/About/AboutScreen';
-import { AboutScreen } from '../screens/About/AboutScreen';
-import { CalculatorsScreen } from '../screens/Calculators/CalculatorsScreen';
+import { AboutScreen } from '@app/screens/About/AboutScreen';
+import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
 // import { FoodJournalScreen } from '@features/food-journal';
 // import { GoalsScreen } from '@features/goals';
-// import { WeeklyOverviewScreen } from '@features/weekly-overview';
+// import { WeeklyOverviewScreen } from '../screens/weekly-overview';
 
 // import { HeaderStyle as headerStyle, colours } from '@app/theme';
-import { BurgerMenu } from '../components/BurgerMenu';
-import { CustomDrawer } from '../components/CustomDrawer/CustomDrawer';
-import { colours, HeaderStyle as headerStyle } from '../theme';
+import { BurgerMenu } from '@components/BurgerMenu';
+import { CustomDrawer } from '@components/CustomDrawer/CustomDrawer';
+import { colours, HeaderStyle as headerStyle } from '@theme';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,8 +46,8 @@ const AppNavigator = (): JSX.Element => {
         overlayColor: 'transparent',
       }}>
       {/* <Drawer.Screen name="Food Journal" component={FoodJournalScreen} />
-      <Drawer.Screen name="Weekly Overview" component={WeeklyOverviewScreen} />
       <Drawer.Screen name="Goals" component={GoalsScreen} />*/}
+      {/* <Drawer.Screen name="Weekly Overview" component={WeeklyOverviewScreen} /> */}
       <Drawer.Screen name="Calculators" component={CalculatorsScreen} />
       <Drawer.Screen name="About" component={AboutScreen} />
     </Drawer.Navigator>

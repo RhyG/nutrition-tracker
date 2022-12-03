@@ -3,9 +3,10 @@ import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import Icon from '@expo/vector-icons/AntDesign';
 
-import { REPO_URL } from '../../config/constants';
+import { REPO_URL } from '@config/constants';
+import { colours } from '@theme';
+
 import { DrawerHeaderImage } from './DrawerHeaderImage';
-import { colours } from '../../theme';
 
 export const CustomDrawer = (props: DrawerContentComponentProps) => {
   const openGithubRepo = () => {

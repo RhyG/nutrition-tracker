@@ -1,9 +1,10 @@
-import React, { memo, useState, useReducer } from 'react';
+import React, { memo, useReducer } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from '../../../components/Text';
-import { isInputNumber } from '../../../lib/validation';
-import { caloriesToKj, kjToCalories } from '../../../lib/energy';
+import { Text } from '@components/Text';
+import { isInputNumber } from '@app/lib/validation';
+import { caloriesToKj, kjToCalories } from '@app/lib/energy';
+
 import { InputWithLabel } from './InputWithLabel';
 
 type ReducerState = {

@@ -10,11 +10,12 @@ module.exports = function (api) {
           root: ['./'],
           alias: {
             test: './test',
-            '@theme': './app/theme',
             '@app': './app',
             '@components': './app/components',
             '@hooks': './app/hooks',
             '@config': './app/config',
+            '@types': './app/types',
+            '@theme': './app/theme',
           },
         },
       ],

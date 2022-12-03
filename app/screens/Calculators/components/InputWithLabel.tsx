@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-import { Theme } from '../../../theme';
-import { Text } from '../../../components/Text';
-import { useThemedStyles } from '../../../hooks/useThemedStyles';
+import { Theme } from '@theme';
+import { Text } from '@components/Text';
+import { useThemedStyles } from '@hooks/useThemedStyles';
 
 type Props = {
   /**
@@ -45,15 +45,15 @@ export const InputWithLabel = memo(({ onInputChange, placeholder, value, label =
   );
 });
 
-const stylesFn = (theme: Theme) =>
+const stylesFn = ({ colours, typography }: Theme) =>
   StyleSheet.create({
     text: {
       marginBottom: 1,
     },
     textInput: {
-      backgroundColor: theme.colours.palette.neutral200,
+      backgroundColor: colours.palette.neutral200,
       padding: 10,
       borderRadius: 6,
-      fontSize: theme.font.size.lg,
+      fontSize: typography.sizes.lg,
     },
   });
