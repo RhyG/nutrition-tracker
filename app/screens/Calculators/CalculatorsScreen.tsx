@@ -5,20 +5,18 @@ import DropDownPicker from 'react-native-dropdown-picker';
 //@ts-ignore no types available
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { RadioButton } from '../../components/RadioButton';
-import { Space } from '../../components/Space';
-import { Text } from '../../components/Text';
-import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '../../config/constants';
-import { useThemedStyles } from '../../hooks/useThemedStyles';
-import { isInputNumber } from '../../lib/validation';
-import { calculateBMR } from '../../lib/calculators';
-import { Theme } from '../../theme';
-
+import { RadioButton } from '@components/RadioButton';
+import { Space } from '@components/Space';
+import { Text } from '@components/Text';
+import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '@config/constants';
+import { useThemedStyles } from '@hooks/useThemedStyles';
+import { isInputNumber } from '@app/lib/validation';
+import { calculateBMR } from '@app/lib/calculators';
+import { Theme } from '@theme';
 import { RootStackScreen } from '@app/navigation/types';
 import { ActivityLevel } from '@app/types';
 
-import { Converter } from './components/Converter';
-import { InputWithLabel } from './components/InputWithLabel';
+import { Converter, InputWithLabel } from './components';
 
 type TDEEFormData = {
   age: string;
