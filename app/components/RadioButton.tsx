@@ -3,8 +3,8 @@ import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle, View } from
 import Icon from '@expo/vector-icons//Feather';
 
 import { Text } from './Text';
-import { useThemedStyles } from '#app/hooks/useThemedStyles';
-import { Theme } from '#app/theme';
+import { useThemedStyles } from '../hooks/useThemedStyles';
+import { Theme } from '../theme';
 
 type RadioButtonProps = {
   /**

@@ -4,7 +4,7 @@ import { StatusBar } from 'react-native';
 
 // import { AboutScreen } from '@app/screens/About/AboutScreen';
 import { AboutScreen } from '../screens/About/AboutScreen';
-// import { CalculatorsScreen } from '@features/calculators';
+import { CalculatorsScreen } from '../screens/Calculators/CalculatorsScreen';
 // import { FoodJournalScreen } from '@features/food-journal';
 // import { GoalsScreen } from '@features/goals';
 // import { WeeklyOverviewScreen } from '@features/weekly-overview';
@@ -47,8 +47,8 @@ const AppNavigator = (): JSX.Element => {
       }}>
       {/* <Drawer.Screen name="Food Journal" component={FoodJournalScreen} />
       <Drawer.Screen name="Weekly Overview" component={WeeklyOverviewScreen} />
-      <Drawer.Screen name="Goals" component={GoalsScreen} />
-      <Drawer.Screen name="Calculators" component={CalculatorsScreen} /> */}
+      <Drawer.Screen name="Goals" component={GoalsScreen} />*/}
+      <Drawer.Screen name="Calculators" component={CalculatorsScreen} />
       <Drawer.Screen name="About" component={AboutScreen} />
     </Drawer.Navigator>
   );

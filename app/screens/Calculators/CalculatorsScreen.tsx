@@ -1,28 +1,24 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Alert, Platform, StyleSheet } from 'react-native';
+import { Alert, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 //@ts-ignore no types available
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import styled from 'styled-components/native';
-import { useTheme } from 'styled-components/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { RadioButton } from '@app/components/RadioButton';
-import { Space } from '@app/components/Space';
-import { Text } from '@app/components/Text';
-import {
-  ACTIVITY_LEVELS,
-  FEMALE_TDEE_VARIABLE,
-  Genders,
-  MALE_TDEE_VARIABLE,
-} from '@app/config/constants';
-import { colours as themeColours } from '@app/config/themes';
+import { RadioButton } from '../../components/RadioButton';
+import { Space } from '../../components/Space';
+import { Text } from '../../components/Text';
+import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '../../config/constants';
+import { useThemedStyles } from '../../hooks/useThemedStyles';
+import { isInputNumber } from '../../lib/validation';
+import { calculateBMR } from '../../lib/calculators';
+import { Theme } from '../../theme';
+
 import { RootStackScreen } from '@app/navigation/types';
 import { ActivityLevel } from '@app/types';
-import { calculateBMR, isInputNumber } from '@app/utils/calculators';
 
-import { Converter } from '../components/Converter';
-import { InputWithLabel } from '../components/InputWithLabel';
+import { Converter } from './components/Converter';
+import { InputWithLabel } from './components/InputWithLabel';
 
 type TDEEFormData = {
   age: string;
@@ -45,11 +41,12 @@ const DEFAULT_FORM_DATA: TDEEFormData = {
  * @remarks this screen could be better optimised + better broken into composite parts.
  */
 export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
-  const { colours } = useTheme();
+  const {
+    theme: { colours },
+    styles,
+  } = useThemedStyles(stylesFn);
 
-  const [activityLevel, setActivityLevel] = useState<ActivityLevel>(
-    ACTIVITY_LEVELS[0],
-  );
+  const [activityLevel, setActivityLevel] = useState<ActivityLevel>(ACTIVITY_LEVELS[0]);
   const [formData, setFormData] = useState<TDEEFormData>(DEFAULT_FORM_DATA);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -73,16 +70,14 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       }
     }
 
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [property]: value,
     }));
   };
 
   /* Boolean indicating if any inputs are incomplete */
-  const TDEEFormIncomplete = Object.values(formData).some(
-    property => !property,
-  );
+  const TDEEFormIncomplete = Object.values(formData).some((property) => !property);
 
   const calculateTDEE = () => {
     if (TDEEFormIncomplete) {
@@ -91,15 +86,9 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
 
     const { age, weight, height, gender, activityMultiplier } = formData;
 
-    const genderVariable =
-      gender === Genders.MALE ? MALE_TDEE_VARIABLE : FEMALE_TDEE_VARIABLE;
+    const genderVariable = gender === Genders.MALE ? MALE_TDEE_VARIABLE : FEMALE_TDEE_VARIABLE;
 
-    const BMR = calculateBMR(
-      Number(weight),
-      Number(height),
-      Number(age),
-      genderVariable,
-    );
+    const BMR = calculateBMR(Number(weight), Number(height), Number(age), genderVariable);
 
     const finalTDEE = Math.round(BMR * Number(activityMultiplier));
 
@@ -107,70 +96,44 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   };
 
   return (
-    <Container
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
-      keyboardVerticalOffset={80}>
-      <ContentContainer>
-        <Text color={colours.darkGrey} fontSize="xxl" bold marginVertical={2}>
+    <KeyboardAwareScrollView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={80}>
+      <View style={styles.contentContainer}>
+        <Text preset="subheading" style={styles.cacluateTDEEText}>
           Calculate TDEE
         </Text>
-        <TDEEFields>
-          <FieldContainer>
-            <InputWithLabel
-              label="Age"
-              placeholder="26"
-              onInputChange={(text: string) =>
-                handleCalculatorChange('age', text)
-              }
-              value={formData.age}
-            />
-          </FieldContainer>
-          <FieldContainer>
+        <View style={styles.TDEEFields}>
+          <View style={styles.fieldContainer}>
+            <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} value={formData.age} />
+          </View>
+          <View style={styles.fieldContainer}>
             <InputWithLabel
               label="Weight (kg)"
               placeholder="74"
-              onInputChange={(text: string) =>
-                handleCalculatorChange('weight', text)
-              }
+              onInputChange={(text: string) => handleCalculatorChange('weight', text)}
               value={formData.weight}
             />
-          </FieldContainer>
-          <FieldContainer>
+          </View>
+          <View style={styles.fieldContainer}>
             <Space units={3} />
             <InputWithLabel
               label="Height (cm)"
               placeholder="178"
-              onInputChange={(text: string) =>
-                handleCalculatorChange('height', text)
-              }
+              onInputChange={(text: string) => handleCalculatorChange('height', text)}
               value={formData.height}
             />
-          </FieldContainer>
-          <FieldContainer>
+          </View>
+          <View style={styles.fieldContainer}>
             <Space units={3} />
-            <Text color={colours.darkGrey} fontSize="lg" bold>
+            <Text size="lg" weight="bold">
               Gender
             </Text>
-            <RadiosContainer>
-              <RadioButton
-                label="Male"
-                selected={formData.gender === Genders.MALE}
-                onPress={() => handleCalculatorChange('gender', Genders.MALE)}
-              />
-              <RadioButton
-                label="Female"
-                selected={formData.gender === Genders.FEMALE}
-                onPress={() => handleCalculatorChange('gender', Genders.FEMALE)}
-              />
-            </RadiosContainer>
-          </FieldContainer>
-        </TDEEFields>
-        <Text
-          color={colours.darkGrey}
-          fontSize="lg"
-          bold
-          marginTop={5}
-          marginBottom={2}>
+            <View style={styles.radiosContainer}>
+              <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
+              <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
+            </View>
+          </View>
+        </View>
+        <Text size="lg" weight="bold" style={styles.activityLevelText}>
           Activity level
         </Text>
         <DropDownPicker
@@ -180,64 +143,67 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           setValue={setActivityLevel}
           //@ts-ignore typing on this library is a bit odd
           value={activityLevel}
-          onSelectItem={item => {
+          onSelectItem={(item) => {
             //@ts-ignore typing on this library is a bit odd
             handleCalculatorChange('activityMultiplier', item.multiplier);
           }}
           labelStyle={styles.pickerLabel}
         />
-        <CalculateButton disabled={TDEEFormIncomplete} onPress={calculateTDEE}>
-          <Text color="#fff" bold fontSize="lg">
+        <TouchableOpacity
+          disabled={TDEEFormIncomplete}
+          onPress={calculateTDEE}
+          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral500 : colours.palette.green }]}>
+          <Text weight="bold" size="lg" style={styles.buttonText}>
             Calculate TDEE
           </Text>
-        </CalculateButton>
+        </TouchableOpacity>
         <Space units={5} />
         <Converter />
-      </ContentContainer>
-    </Container>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
-const CalculateButton = styled.TouchableOpacity<{ disabled: boolean }>`
-  padding: 15px;
-  margin-top: 15px;
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colours.grey : theme.colours.green};
-  align-items: center;
-  border-radius: 6px;
-`;
-
-const Container = styled(KeyboardAwareScrollView)`
-  background-color: #fff;
-  flex: 1;
-`;
-
-const ContentContainer = styled.View`
-  padding-left: 20px;
-  padding-right: 20px;
-  flex: 1;
-`;
-
-const TDEEFields = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
-const FieldContainer = styled.View`
-  width: 48%;
-`;
-
-const RadiosContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-`;
-
-const styles = StyleSheet.create({
-  pickerLabel: {
-    color: themeColours.darkGrey,
-    fontSize: 16,
-  },
-});
+const stylesFn = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: '#fff',
+      flex: 1,
+    },
+    pickerLabel: {
+      color: theme.colours.palette.neutral800,
+      fontSize: 16,
+    },
+    contentContainer: {
+      paddingHorizontal: 20,
+      flex: 1,
+    },
+    activityLevelText: {
+      marginTop: 5,
+      marginBottom: 2,
+    },
+    cacluateTDEEText: {
+      marginVertical: 2,
+    },
+    TDEEFields: {
+      ...theme.layout.spaceBetweenRow,
+      flexWrap: 'wrap',
+    },
+    fieldContainer: {
+      width: '48%',
+    },
+    radiosContainer: {
+      ...theme.layout.spaceBetweenRow,
+      alignItems: 'center',
+      flex: 1,
+    },
+    calculateButton: {
+      padding: 15,
+      marginTop: 15,
+      alignItems: 'center',
+      borderRadius: 6,
+    },
+    buttonText: {
+      color: '#fff',
+    },
+  });
