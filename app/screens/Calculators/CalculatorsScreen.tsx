@@ -6,6 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { RadioButton } from '@components/RadioButton';
+import { InputWithLabel } from '@components/InputWithLabel';
 import { Space } from '@components/Space';
 import { Text } from '@components/Text';
 import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '@config/constants';
@@ -16,7 +17,7 @@ import { Theme } from '@theme';
 import { RootStackScreen } from '@app/navigation/types';
 import { ActivityLevel } from '@app/types';
 
-import { Converter, InputWithLabel } from './components';
+import { Converter } from './components';
 
 type TDEEFormData = {
   age: string;
