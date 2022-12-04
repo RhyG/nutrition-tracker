@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { MenuProvider } from 'react-native-popup-menu';
 
 import { Space } from '@components/Space';
 import { Text } from '@components/Text';
@@ -26,71 +25,69 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
   const journalData = useJournal((state) => state.journalData);
 
   return (
-    <MenuProvider>
-      <View style={styles.container}>
-        <View>
-          <View style={styles.statsNumbers}>
-            <Text size="xxl" weight="bold" style={styles.macroHeading}>
-              Calories
+    <View style={styles.container}>
+      <View>
+        <View style={styles.statsNumbers}>
+          <Text size="xxl" weight="bold" style={styles.macroHeading}>
+            Calories
+          </Text>
+          <View style={styles.titleAndNumberContainer}>
+            <Text style={styles.heading} size="md">
+              Average
             </Text>
-            <View style={styles.titleAndNumberContainer}>
-              <Text style={styles.heading} size="md">
-                Average
-              </Text>
-              <Text size="xl" weight="bold">
-                {averageCalories}
-              </Text>
-            </View>
-            <View style={styles.titleAndNumberContainer}>
-              <Text style={styles.heading} size="md">
-                Goal
-              </Text>
-              <Text size="xl" weight="bold">
-                {calorieGoal}
-              </Text>
-            </View>
+            <Text size="xl" weight="bold">
+              {averageCalories}
+            </Text>
           </View>
-          <View style={styles.barsContainer}>
-            <View style={styles.bars}>
-              {DAYS.map((day) => {
-                return <Bar amount={getCurrentCalories(journalData[day])} goal={calorieGoal} day={day} key={day} type="calories" />;
-              })}
-            </View>
+          <View style={styles.titleAndNumberContainer}>
+            <Text style={styles.heading} size="md">
+              Goal
+            </Text>
+            <Text size="xl" weight="bold">
+              {calorieGoal}
+            </Text>
           </View>
         </View>
-        <>
-          <Space units={4} />
-          <View style={styles.statsNumbers}>
-            <Text size="xxl" weight="bold" style={styles.macroHeading}>
-              Protein
-            </Text>
-            <View style={styles.titleAndNumberContainer}>
-              <Text style={styles.heading} size="lg">
-                Average
-              </Text>
-              <Text size="xl" weight="bold">
-                {averageProtein}
-              </Text>
-            </View>
-            <View style={styles.titleAndNumberContainer}>
-              <Text style={styles.heading} size="lg">
-                Goal
-              </Text>
-              <Text size="xl" weight="bold">
-                {proteinGoal}
-              </Text>
-            </View>
+        <View style={styles.barsContainer}>
+          <View style={styles.bars}>
+            {DAYS.map((day) => {
+              return <Bar amount={getCurrentCalories(journalData[day])} goal={calorieGoal} day={day} key={day} type="calories" />;
+            })}
           </View>
-          <View style={styles.barsContainer}>
-            <View style={styles.bars}>
-              {DAYS.map((day) => (
-                <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
-              ))}
-            </View>
-          </View>
-        </>
+        </View>
       </View>
-    </MenuProvider>
+      <>
+        <Space units={4} />
+        <View style={styles.statsNumbers}>
+          <Text size="xxl" weight="bold" style={styles.macroHeading}>
+            Protein
+          </Text>
+          <View style={styles.titleAndNumberContainer}>
+            <Text style={styles.heading} size="lg">
+              Average
+            </Text>
+            <Text size="xl" weight="bold">
+              {averageProtein}
+            </Text>
+          </View>
+          <View style={styles.titleAndNumberContainer}>
+            <Text style={styles.heading} size="lg">
+              Goal
+            </Text>
+            <Text size="xl" weight="bold">
+              {proteinGoal}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.barsContainer}>
+          <View style={styles.bars}>
+            {DAYS.map((day) => (
+              <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
+            ))}
+          </View>
+        </View>
+      </>
+    </View>
   );
 };
 
