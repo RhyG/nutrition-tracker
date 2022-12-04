@@ -1,7 +1,7 @@
 import create from 'zustand';
 
 import { DAYS } from '@app/config/constants';
-// import AsyncStorage from '@app/modules/AsyncStorage';
+import AsyncStorage from '@app/modules/AsyncStorage';
 import { Day, JournalEntry } from '@app/types';
 
 export type JournalData = Record<Day, JournalEntry[]>;
@@ -75,13 +75,13 @@ export const DefaultJournalData: JournalData = {
 export const useJournal = create<IJournalState>((set) => ({
   journalData: DefaultJournalData,
   updateJournal: async (data: JournalData) => {
-    // await AsyncStorage.setItem('journalData', data);
+    await AsyncStorage.setItem('journalData', data);
     set(({ journalData }) => ({
       journalData: { ...journalData, ...data },
     }));
   },
   clearJournal: async () => {
-    // await AsyncStorage.setItem('journalData', DefaultJournalData);
+    await AsyncStorage.setItem('journalData', DefaultJournalData);
     set(() => ({ journalData: DefaultJournalData }));
   },
   clearDay: (day: Day) => {
@@ -116,7 +116,7 @@ export const useJournal = create<IJournalState>((set) => ({
       };
 
       // Update the journal in storage
-      // AsyncStorage.setItem('journalData', updatedWeek);
+      AsyncStorage.setItem('journalData', updatedWeek);
 
       return {
         journalData: { ...journalData, ...updatedWeek },
@@ -134,7 +134,7 @@ export const useJournal = create<IJournalState>((set) => ({
       };
 
       // Update the journal in storage
-      // AsyncStorage.setItem('journalData', newJournalData);
+      AsyncStorage.setItem('journalData', newJournalData);
 
       return {
         journalData: newJournalData,
@@ -158,7 +158,7 @@ export const useJournal = create<IJournalState>((set) => ({
       };
 
       // Update the journal in storage
-      // AsyncStorage.setItem('journalData', newJournalData);
+      AsyncStorage.setItem('journalData', newJournalData);
 
       return {
         journalData: newJournalData,
