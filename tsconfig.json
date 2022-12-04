@@ -12,7 +12,8 @@
       "@theme": ["./app/theme"],
       "@hooks/*": ["./app/hooks/*"],
       "@config/*": ["./app/config/*"],
-      "@types": ["./app/types"]
+      "@types": ["./app/types"],
+      "@store/*": ["./app/store/*"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     "jsx": "react-native",
     "forceConsistentCasingInFileNames": true

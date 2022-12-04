@@ -1,7 +1,7 @@
 import create from 'zustand';
 
 import { DAYS } from '@app/config/constants';
-import AsyncStorage from '@app/modules/AsyncStorage';
+// import AsyncStorage from '@app/modules/AsyncStorage';
 import { Day, JournalEntry } from '@app/types';
 
 export type JournalData = Record<Day, JournalEntry[]>;
@@ -72,16 +72,16 @@ export const DefaultJournalData: JournalData = {
  * The store for the journal entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournal = create<IJournalState>(set => ({
+export const useJournal = create<IJournalState>((set) => ({
   journalData: DefaultJournalData,
   updateJournal: async (data: JournalData) => {
-    await AsyncStorage.setItem('journalData', data);
+    // await AsyncStorage.setItem('journalData', data);
     set(({ journalData }) => ({
       journalData: { ...journalData, ...data },
     }));
   },
   clearJournal: async () => {
-    await AsyncStorage.setItem('journalData', DefaultJournalData);
+    // await AsyncStorage.setItem('journalData', DefaultJournalData);
     set(() => ({ journalData: DefaultJournalData }));
   },
   clearDay: (day: Day) => {
@@ -92,10 +92,7 @@ export const useJournal = create<IJournalState>(set => ({
   copyPreviousDay: (currentDay: Day) => {
     set(({ journalData }) => {
       // If the current day is Monday then the entries from Sunday should be copied.
-      const indexOfDay =
-        currentDay === 'Monday'
-          ? DAYS.indexOf('Sunday')
-          : DAYS.indexOf(currentDay) - 1;
+      const indexOfDay = currentDay === 'Monday' ? DAYS.indexOf('Sunday') : DAYS.indexOf(currentDay) - 1;
 
       // Get the entries and copy them
       const dayToCopy = DAYS[indexOfDay];
@@ -119,7 +116,7 @@ export const useJournal = create<IJournalState>(set => ({
       };
 
       // Update the journal in storage
-      AsyncStorage.setItem('journalData', updatedWeek);
+      // AsyncStorage.setItem('journalData', updatedWeek);
 
       return {
         journalData: { ...journalData, ...updatedWeek },
@@ -129,7 +126,7 @@ export const useJournal = create<IJournalState>(set => ({
   removeItem: (id: string, day: Day) => {
     set(({ journalData }) => {
       // Filter current entries for all but the one matching the received ID
-      const todayFood = journalData[day].filter(item => item.id !== id);
+      const todayFood = journalData[day].filter((item) => item.id !== id);
 
       const newJournalData = {
         ...journalData,
@@ -137,7 +134,7 @@ export const useJournal = create<IJournalState>(set => ({
       };
 
       // Update the journal in storage
-      AsyncStorage.setItem('journalData', newJournalData);
+      // AsyncStorage.setItem('journalData', newJournalData);
 
       return {
         journalData: newJournalData,
@@ -147,14 +144,10 @@ export const useJournal = create<IJournalState>(set => ({
   updateItem: (updatedItem: JournalEntry, day: Day) => {
     set(({ journalData }) => {
       // Get the index of the item to be updated.
-      const itemIndex = journalData[day].findIndex(
-        item => item.id === updatedItem.id,
-      );
+      const itemIndex = journalData[day].findIndex((item) => item.id === updatedItem.id);
 
       // Filter out the item.
-      const updatedEntries = journalData[day].filter(
-        item => item.id !== updatedItem.id,
-      );
+      const updatedEntries = journalData[day].filter((item) => item.id !== updatedItem.id);
 
       //  Insert the updated item at the index of the item being updated.
       updatedEntries.splice(itemIndex, 0, updatedItem);
@@ -165,7 +158,7 @@ export const useJournal = create<IJournalState>(set => ({
       };
 
       // Update the journal in storage
-      AsyncStorage.setItem('journalData', newJournalData);
+      // AsyncStorage.setItem('journalData', newJournalData);
 
       return {
         journalData: newJournalData,
