@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 
 import { colours } from './colours';
 import { layout } from './layout';
+import { typography } from './typography';
 
 const SPACING_SIZE = 5;
 
@@ -24,33 +25,14 @@ export const HeaderStyle = {
   shadowOffset: { height: 0, width: 0 },
 };
 
-export const Fonts = {
-  size: {
-    xs: '12px',
-    sm: '14px',
-    md: '15px',
-    lg: '17px',
-    xl: '19px',
-    xxl: '22px',
-    xxxl: '30px',
-  },
-  weight: {
-    regular: 400,
-    bold: Platform.select({
-      default: 600,
-      android: 700,
-    }),
-    extraBold: Platform.select({
-      default: 700,
-      android: 700,
-    }),
-  },
-};
-
 export const theme = {
-  spacing: (...units: number[]) => `${units.map((u) => u * SPACING_SIZE).join('px ')}px`,
+  spacing: (unit: number) => {
+    const x = unit * SPACING_SIZE;
+    console.log(x);
+    return x;
+  },
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
-  font: Fonts,
+  typography,
   colours,
   utils: {
     numbersToPixels: (...units: any[]) => units.map((unit) => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),

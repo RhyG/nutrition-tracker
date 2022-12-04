@@ -13,4 +13,4 @@ export const layout: Record<string, ViewStyle> = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-};
+} as const;
