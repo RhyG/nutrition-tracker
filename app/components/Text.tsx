@@ -41,7 +41,8 @@ export function Text(props: TextProps) {
   const content = text || children;
 
   const preset: Presets = props.preset ?? 'default';
-  const styles = [presets[preset], fontWeightStyles[weight ?? 'semiLight'], sizeStyles[size ?? 'sm'], styleOverride];
+  // @ts-ignore - I want to use `undefined` as an index so that it returns undefined
+  const styles = [presets[preset], fontWeightStyles[weight], sizeStyles[size], styleOverride];
 
   return (
     <RNText {...rest} style={styles}>

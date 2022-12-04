@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { colours } from './colours';
 import { layout } from './layout';
 import { typography } from './typography';
+import { spacing, elements } from './spacing';
 
 const SPACING_SIZE = 5;
 
@@ -26,12 +27,16 @@ export const HeaderStyle = {
 };
 
 export const theme = {
-  spacing: (unit: number) => unit * SPACING_SIZE,
-  pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
+  spacing: {
+    ...spacing,
+    ...elements,
+  },
   typography,
   colours,
   utils: {
     numbersToPixels: (...units: any[]) => units.map((unit) => (typeof unit === 'number' ? `${unit}px` : unit)).join(' '),
+    spacing: (unit: number) => unit * SPACING_SIZE,
+    pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   },
   layout,
 };

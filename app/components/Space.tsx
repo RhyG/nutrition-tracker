@@ -13,8 +13,8 @@ type Props = {
  */
 export const Space = (props: Props) => {
   const customStyles = {
-    height: props.horizontal ? 0 : theme.spacing(props.units || 1),
-    width: props.horizontal ? theme.spacing(props.units || 1) : 0,
+    height: props.horizontal ? 0 : theme.utils.spacing(props.units || 1),
+    width: props.horizontal ? theme.utils.spacing(props.units || 1) : 0,
   };
 
   return <View style={[styles.space, customStyles]} />;

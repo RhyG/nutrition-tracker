@@ -55,6 +55,6 @@ const stylesFn = (theme: Theme) =>
       borderColor: theme.colours.palette.green,
     },
     text: {
-      marginLeft: 1,
+      marginLeft: 4,
     },
   });
