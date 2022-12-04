@@ -7,7 +7,8 @@ const weights = {
 } as const;
 
 const sizes = {
-  xxl: 36,
+  xxxl: 36,
+  xxl: 30,
   xl: 24,
   lg: 20,
   md: 18,

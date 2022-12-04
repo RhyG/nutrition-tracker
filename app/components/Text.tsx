@@ -51,13 +51,14 @@ export function Text(props: TextProps) {
 }
 
 const sizeStyles = {
-  xxl: { fontSize: 36, lineHeight: 44 } as TextStyle,
-  xl: { fontSize: 24, lineHeight: 34 } as TextStyle,
-  lg: { fontSize: 20, lineHeight: 32 } as TextStyle,
-  md: { fontSize: 18, lineHeight: 26 } as TextStyle,
-  sm: { fontSize: 16, lineHeight: 24 } as TextStyle,
-  xs: { fontSize: 14, lineHeight: 21 } as TextStyle,
-  xxs: { fontSize: 12, lineHeight: 18 } as TextStyle,
+  xxxl: { fontSize: typography.sizes.xxxl, lineHeight: 48 } as TextStyle,
+  xxl: { fontSize: typography.sizes.xxl, lineHeight: 44 } as TextStyle,
+  xl: { fontSize: typography.sizes.xl, lineHeight: 34 } as TextStyle,
+  lg: { fontSize: typography.sizes.lg, lineHeight: 32 } as TextStyle,
+  md: { fontSize: typography.sizes.md, lineHeight: 26 } as TextStyle,
+  sm: { fontSize: typography.sizes.sm, lineHeight: 24 } as TextStyle,
+  xs: { fontSize: typography.sizes.xs, lineHeight: 21 } as TextStyle,
+  xxs: { fontSize: typography.sizes.xxs, lineHeight: 18 } as TextStyle,
 };
 
 const fontWeightStyles = Object.entries(typography.weights).reduce((acc, [typeWeight, weight]) => {
