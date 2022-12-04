@@ -6,6 +6,7 @@ import { isInputNumber } from '@app/lib/validation';
 import { caloriesToKj, kjToCalories } from '@app/lib/energy';
 
 import { InputWithLabel } from '../../../components/InputWithLabel';
+import { Space } from '@app/components/Space';
 
 type ReducerState = {
   calories: number;
@@ -77,7 +78,8 @@ export const Converter = memo(() => {
           <InputWithLabel label="Kilojoules" onInputChange={handleKilojouleChange} value={String(kj)} />
         </View>
       </View>
-      <Text preset="subheading">Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number</Text>
+      <Space units={4} />
+      <Text preset="subheading">Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number.</Text>
     </>
   );
 });

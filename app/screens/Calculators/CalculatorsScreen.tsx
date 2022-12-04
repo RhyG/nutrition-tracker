@@ -130,7 +130,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
             </Text>
             <View style={styles.radiosContainer}>
               <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
-              <Space horizontal units={4} />
+              <Space horizontal units={3} />
               <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
             </View>
           </View>
@@ -155,7 +155,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
         <TouchableOpacity
           disabled={TDEEFormIncomplete}
           onPress={calculateTDEE}
-          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral500 : colours.palette.green }]}>
+          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral400 : colours.palette.green }]}>
           <Text weight="bold" size="lg" style={styles.buttonText}>
             Calculate TDEE
           </Text>
@@ -202,7 +202,7 @@ const stylesFn = (theme: Theme) =>
       flex: 1,
     },
     calculateButton: {
-      padding: 15,
+      padding: 10,
       marginTop: 15,
       alignItems: 'center',
       borderRadius: 6,

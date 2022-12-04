@@ -32,8 +32,8 @@ export const RadioButton = ({ selected, label, onPress, containerStyle }: RadioB
   return (
     <TouchableWithoutFeedback testID="radio-button-touchable" onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
-        <View style={styles.radioOuter}>{selected && <Icon testID="radio-button-check-icon" name="check" color={colours.palette.green} size={15} />}</View>
-        <Text testID="radio-button-label" style={styles.text}>
+        <View style={styles.radioOuter}>{selected && <Icon testID="radio-button-check-icon" name="check" color={colours.palette.green} size={20} />}</View>
+        <Text testID="radio-button-label" size="lg" style={styles.text}>
           {label}
         </Text>
       </View>
@@ -49,8 +49,8 @@ const stylesFn = (theme: Theme) =>
     radioOuter: {
       ...theme.layout.fullyCentred,
       borderRadius: 4,
-      height: 20,
-      width: 20,
+      height: 25,
+      width: 25,
       borderWidth: 2,
       borderColor: theme.colours.palette.green,
     },
