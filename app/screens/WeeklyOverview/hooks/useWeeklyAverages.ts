@@ -23,23 +23,16 @@ const getAverages = (data: JournalData) => {
     return dailyTotal;
   });
 
-  const calories = Math.round(
-    dailyTotals.reduce((a, c) => a + c.calories, 0) / 7,
-  );
-  const protein = Math.round(
-    dailyTotals.reduce((a, c) => a + c.protein, 0) / 7,
-  );
+  const calories = Math.round(dailyTotals.reduce((a, c) => a + c.calories, 0) / 7);
+  const protein = Math.round(dailyTotals.reduce((a, c) => a + c.protein, 0) / 7);
 
   return { calories, protein };
 };
 
 export const useWeeklyAverages = () => {
-  const [averages, setAverages] = useState(DEFAULT_AVERAGES);
-  const journalData = useJournal(state => state.journalData);
+  const journalData = useJournal((state) => state.journalData);
 
-  useEffect(() => {
-    setAverages(getAverages(journalData));
-  }, [journalData]);
+  const averages = getAverages(journalData);
 
   return {
     averageCalories: averages.calories,
