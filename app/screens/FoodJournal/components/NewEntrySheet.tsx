@@ -1,4 +1,4 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -35,7 +35,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
 
     /* The bottom sheet is slightly higher on phones with a bottom bar */
     const snapPoints = useMemo(() => {
-      const snapPoint = bottomInset > 0 ? '50%' : '53%';
+      const snapPoint = bottomInset > 0 ? '43%' : '45%';
 
       return [snapPoint];
     }, [bottomInset]);
@@ -44,13 +44,11 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
     const caloriesInputRef = useRef<TextInput>(null);
     const proteinInputRef = useRef<TextInput>(null);
 
-    const flatListRef = useRef<FlatList>(null);
-
     const { name, calories, protein, id } = entryDetails;
     const entryBeingUpdated = !!id;
 
     /* Renders the darkened backdrop behind the sheet */
-    const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
+    const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
 
     const handleSheetChanges = useCallback(
       (index: number) => {
@@ -90,20 +88,18 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
       }
     };
 
-    const scrollToIndex = (screen: 'new-entry' | 'saved-entry') => {
-      const index = screen === 'new-entry' ? 0 : 1;
-
-      flatListRef?.current?.scrollToIndex({
-        index,
-        animated: true,
-      });
-    };
-
-    const renderItems = useCallback(({ item, index }) => {
-      if (item === 'new-entry') {
-        return (
+    return (
+      <BottomSheet
+        index={-1}
+        snapPoints={snapPoints}
+        ref={ref}
+        enablePanDownToClose={true}
+        onChange={handleSheetChanges}
+        style={bottomSheetStyle}
+        backdropComponent={renderBackdrop}>
+        <View style={styles.sheetContainer}>
           <View style={styles.box}>
-            <Text preset="heading" marginBottom={3} marginTop={3}>
+            <Text preset="subheading" style={styles.sheetHeading}>
               {entryBeingUpdated ? 'Update' : 'Add New'} Entry
             </Text>
             <BottomSheetTextInput
@@ -137,12 +133,12 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             />
             <View style={styles.buttonsContainer}>
               <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
-                <Text color="#fff" preset="heading">
+                <Text style={styles.addEntryButtonText} preset="subheading">
                   Add Entry
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.cancelButton} onPress={onClosePress}>
-                <Text preset="heading">Cancel</Text>
+                <Text preset="subheading">Cancel</Text>
               </TouchableOpacity>
               {!entryBeingUpdated ? (
                 <RadioButton
@@ -154,44 +150,11 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
               ) : null}
             </View>
           </View>
-        );
-      } else
-        return (
-          <View style={styles.box}>
-            <Text>SECOND</Text>
-          </View>
-        );
-    }, []);
-
-    return (
-      <BottomSheet
-        index={-1}
-        snapPoints={snapPoints}
-        ref={ref}
-        enablePanDownToClose={true}
-        onChange={handleSheetChanges}
-        style={bottomSheetStyle}
-        backdropComponent={renderBackdrop}>
-        <View style={styles.sheetContainer}>
-          <NewEntryTabs currentIndex={1} scrollToThing={scrollToIndex} />
-          <FlatList
-            data={LIST_DATA}
-            renderItem={renderItems}
-            horizontal={true}
-            contentContainerStyle={{ width: '100%' }}
-            ref={flatListRef}
-            pagingEnabled
-            initialScrollIndex={0}
-            showsHorizontalScrollIndicator={false}
-            onScrollToIndexFailed={(e) => console.log(e)}
-          />
         </View>
       </BottomSheet>
     );
   },
 );
-
-const LIST_DATA = ['new-entry', 'saved-entries'];
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({
@@ -203,10 +166,16 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       paddingHorizontal: spacing.base,
       paddingTop: spacing.small,
     },
+    sheetHeading: {
+      marginVertical: 3,
+    },
     saveButton: {
       backgroundColor: colours.palette.green,
       padding: spacing.small,
       borderRadius: 5,
+    },
+    addEntryButtonText: {
+      color: '#fff',
     },
     cancelButton: {
       backgroundColor: '#fff',
