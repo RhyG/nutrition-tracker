@@ -26,11 +26,7 @@ export const HeaderStyle = {
 };
 
 export const theme = {
-  spacing: (unit: number) => {
-    const x = unit * SPACING_SIZE;
-    console.log(x);
-    return x;
-  },
+  spacing: (unit: number) => unit * SPACING_SIZE,
   pixelsToSpacing: (pixels: number) => pixels / SPACING_SIZE,
   typography,
   colours,
