@@ -30,7 +30,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
       <View style={styles.container}>
         <View>
           <View style={styles.statsNumbers}>
-            <Text size="xl" weight="bold" style={styles.macroHeading}>
+            <Text size="xxl" weight="bold" style={styles.macroHeading}>
               Calories
             </Text>
             <View style={styles.titleAndNumberContainer}>
@@ -61,7 +61,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
         <>
           <Space units={4} />
           <View style={styles.statsNumbers}>
-            <Text size="xl" weight="bold" style={styles.macroHeading}>
+            <Text size="xxl" weight="bold" style={styles.macroHeading}>
               Protein
             </Text>
             <View style={styles.titleAndNumberContainer}>
