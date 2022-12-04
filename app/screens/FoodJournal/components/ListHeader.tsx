@@ -10,15 +10,17 @@ export const ListHeader = ({ onHeadingsPress }: { onHeadingsPress: () => void })
 
   return (
     <TouchableHighlight style={styles.tableHeadingsContainer} onPress={onHeadingsPress} underlayColor="#fff">
-      <View style={styles.nameHeadingContainer}>
-        <Text preset="subheading">Food</Text>
-      </View>
-      <View style={styles.macroHeadingContainer}>
-        <Text preset="subheading">Calories</Text>
-      </View>
-      <View style={styles.macroHeadingContainer}>
-        <Text preset="subheading">Protein</Text>
-      </View>
+      <>
+        <View style={styles.nameHeadingContainer}>
+          <Text preset="subheading">Food</Text>
+        </View>
+        <View style={styles.macroHeadingContainer}>
+          <Text preset="subheading">Calories</Text>
+        </View>
+        <View style={styles.macroHeadingContainer}>
+          <Text preset="subheading">Protein</Text>
+        </View>
+      </>
     </TouchableHighlight>
   );
 };

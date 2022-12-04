@@ -155,7 +155,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
         <TouchableOpacity
           disabled={TDEEFormIncomplete}
           onPress={calculateTDEE}
-          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral400 : colours.palette.green }]}>
+          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
           <Text weight="bold" size="lg" style={styles.buttonText}>
             Calculate TDEE
           </Text>
