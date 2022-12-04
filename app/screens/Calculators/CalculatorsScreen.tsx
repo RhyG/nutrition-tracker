@@ -96,7 +96,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   return (
     <KeyboardAwareScrollView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={80}>
       <View style={styles.contentContainer}>
-        <Text preset="subheading" style={styles.cacluateTDEEText}>
+        <Text preset="heading" style={styles.cacluateTDEEText}>
           Calculate TDEE
         </Text>
         <View style={styles.TDEEFields}>
@@ -109,6 +109,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
               placeholder="74"
               onInputChange={(text: string) => handleCalculatorChange('weight', text)}
               value={formData.weight}
+              keyboardType="number-pad"
             />
           </View>
           <View style={styles.fieldContainer}>
@@ -118,6 +119,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
               placeholder="178"
               onInputChange={(text: string) => handleCalculatorChange('height', text)}
               value={formData.height}
+              keyboardType="number-pad"
             />
           </View>
           <View style={styles.fieldContainer}>
@@ -127,11 +129,13 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
             </Text>
             <View style={styles.radiosContainer}>
               <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
+              <Space horizontal units={4} />
               <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
             </View>
           </View>
         </View>
-        <Text size="lg" weight="bold" style={styles.activityLevelText}>
+        <Space units={4} />
+        <Text preset="heading" style={styles.activityLevelText}>
           Activity level
         </Text>
         <DropDownPicker
@@ -191,7 +195,8 @@ const stylesFn = (theme: Theme) =>
       width: '48%',
     },
     radiosContainer: {
-      ...theme.layout.spaceBetweenRow,
+      // ...theme.layout.spaceBetweenRow,
+      flexDirection: 'row',
       alignItems: 'center',
       flex: 1,
     },

@@ -15,17 +15,14 @@ const defaultProps: React.ComponentProps<typeof InputWithLabel> = {
 describe('<InputWithLabel />', () => {
   let component: RenderAPI;
 
-  const renderComponent = (props = defaultProps) =>
-    renderWithProviders(<InputWithLabel {...props} />);
+  const renderComponent = (props = defaultProps) => renderWithProviders(<InputWithLabel {...props} />);
 
   beforeEach(() => {
     component = renderComponent();
   });
 
   it('Should render the label received as props', () => {
-    expect(
-      component.getByTestId('input-with-label-Test Input-label'),
-    ).toBeDefined();
+    expect(component.getByTestId('input-with-label-Test Input-label')).toBeDefined();
   });
 
   it('Should render the value received as props', () => {
@@ -33,11 +30,7 @@ describe('<InputWithLabel />', () => {
   });
 
   it('Should render call the `onInputChanged` prop when text is entered', () => {
-    fireEvent(
-      component.getByTestId('input-with-label-Test Input-input'),
-      'onChangeText',
-      'changing input',
-    );
+    fireEvent(component.getByTestId('input-with-label-Test Input-input'), 'onChangeText', 'changing input');
 
     expect(mockOnInputChanged).toHaveBeenCalledWith('changing input');
   });

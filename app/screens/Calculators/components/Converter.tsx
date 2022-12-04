@@ -5,7 +5,7 @@ import { Text } from '@components/Text';
 import { isInputNumber } from '@app/lib/validation';
 import { caloriesToKj, kjToCalories } from '@app/lib/energy';
 
-import { InputWithLabel } from './InputWithLabel';
+import { InputWithLabel } from '../../../components/InputWithLabel';
 
 type ReducerState = {
   calories: number;
