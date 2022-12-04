@@ -83,9 +83,9 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
           </View>
           <View style={styles.barsContainer}>
             <View style={styles.bars}>
-              {DAYS.map((day) => {
-                return <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />;
-              })}
+              {DAYS.map((day) => (
+                <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
+              ))}
             </View>
           </View>
         </>

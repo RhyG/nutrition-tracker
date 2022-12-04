@@ -38,7 +38,7 @@ export const _Bar = ({ amount, day, goal }: Props): JSX.Element => {
             style={[
               styles.barInner,
               {
-                height: calculateSizeAsPercentage(amount, goal),
+                height: `${calculateSizeAsPercentage(goal, amount)}%`,
                 backgroundColor: exceededMax ? colours.palette.angry500 : colours.palette.green,
               },
             ]}
