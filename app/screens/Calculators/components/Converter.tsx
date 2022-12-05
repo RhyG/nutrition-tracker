@@ -7,28 +7,23 @@ import { caloriesToKj, kjToCalories } from '@app/lib/energy';
 
 import { InputWithLabel } from '../../../components/InputWithLabel';
 import { Space } from '@app/components/Space';
+import { useCallback } from 'react';
 
 type ReducerState = {
   calories: number;
   kj: number;
 };
 
-type ReducerAction = { type: 'CALORIES' | 'KJ'; value: number };
+type ReducerAction = { type: 'INPUT_CHANGED'; value: { calories: number; kj: number } };
 
 const reducer = (state: ReducerState, action: ReducerAction) => {
   switch (action.type) {
-    case 'CALORIES':
+    case 'INPUT_CHANGED':
       return {
         ...state,
-        calories: action.value,
-        kj: caloriesToKj(action.value),
+        ...action.value,
       };
-    case 'KJ':
-      return {
-        ...state,
-        calories: kjToCalories(action.value),
-        kj: action.value,
-      };
+
     default:
       return state;
   }
@@ -40,30 +35,21 @@ export const Converter = memo(() => {
     calories: 0,
   });
 
-  const handleCalorieChange = (value: string) => {
+  const handleCalorieChange = useCallback((value: string) => {
     if (!isInputNumber(value)) {
       return;
     }
 
-    const convertedKj = caloriesToKj(Number(value));
+    dispatch({ type: 'INPUT_CHANGED', value: { kj: caloriesToKj(Number(value)), calories: Number(value) } });
+  }, []);
 
-    // setKj(String(convertedKj));
-    // setCalories(value);
-
-    dispatch({ type: 'CALORIES', value: convertedKj });
-  };
-
-  const handleKilojouleChange = (value: string) => {
+  const handleKilojouleChange = useCallback((value: string) => {
     if (!isInputNumber(value)) {
       return;
     }
 
-    const convertedCalories = kjToCalories(Number(value));
-
-    // setCalories(String(convertedCalories));
-    // setKj(value);
-    dispatch({ type: 'KJ', value: convertedCalories });
-  };
+    dispatch({ type: 'INPUT_CHANGED', value: { kj: Number(value), calories: kjToCalories(Number(value)) } });
+  }, []);
 
   return (
     <>
