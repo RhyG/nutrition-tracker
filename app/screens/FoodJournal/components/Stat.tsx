@@ -53,7 +53,7 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
   return (
     <>
       <View style={styles.reminaingMacroContainer}>
-        <Text weight="bold" size="lg">
+        <Text weight="medium" size="lg">
           {name}
         </Text>
         <Text size="md" style={styles.remainingText}>
@@ -62,7 +62,7 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
       </View>
       <View style={styles.outerProgressBar}>
         <View style={styles.progressBarTextContainer}>
-          <Text weight="bold">
+          <Text weight="medium" colour="#fff">
             {currentAmount} / {max}
           </Text>
         </View>
@@ -80,10 +80,6 @@ const stylesFn = (theme: Theme) =>
     },
     outerProgressBar: {
       backgroundColor: theme.colours.palette.neutral300,
-      // borderTopLeftRadius: 8,
-      // borderTopRightRadius: 8,
-      // borderBottomLeftRadius: 8,
-      // borderBottomRightRadius: 8,
       borderRadius: 8,
       position: 'relative',
       height: 30,

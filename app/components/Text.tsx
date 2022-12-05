@@ -9,7 +9,7 @@ type Presets = keyof typeof presets;
 
 export interface TextProps extends RNTextProps {
   /**
-   * Text to render.
+   * Text to be rendered.
    */
   text?: string;
   /**
@@ -17,15 +17,19 @@ export interface TextProps extends RNTextProps {
    */
   style?: StyleProp<TextStyle>;
   /**
-   * One of the different types of text presets.
+   * One of the defined text presets.
    */
   preset?: Presets;
   /**
-   * Text weight modifier.
+   * An optional override for the text colour.
+   */
+  colour?: string;
+  /**
+   * Optional override for the text weight.
    */
   weight?: Weights;
   /**
-   * Text size modifier.
+   * Optional override for the text size.
    */
   size?: Sizes;
   /**
@@ -35,14 +39,15 @@ export interface TextProps extends RNTextProps {
 }
 
 export function Text(props: TextProps) {
-  const { weight, size, text, children, style: styleOverride, ...rest } = props;
+  const { weight, size, text, colour, children, style: styleOverride, ...rest } = props;
 
   // Prioritise the `text` prop.
   const content = text || children;
 
   const preset: Presets = props.preset ?? 'default';
+  const color = { color: colour };
   // @ts-ignore - I want to use `undefined` as an index so that it returns undefined
-  const styles = [presets[preset], fontWeightStyles[weight], sizeStyles[size], styleOverride];
+  const styles = [presets[preset], fontWeightStyles[weight], sizeStyles[size], styleOverride, color];
 
   return (
     <RNText {...rest} style={styles}>
@@ -63,7 +68,7 @@ const sizeStyles = {
 };
 
 const fontWeightStyles = Object.entries(typography.weights).reduce((acc, [typeWeight, weight]) => {
-  return { ...acc, [typeWeight]: { weight } };
+  return { ...acc, [typeWeight]: { fontWeight: String(weight) } };
 }, {}) as Record<Weights, TextStyle>;
 
 const baseStyle: StyleProp<TextStyle> = [sizeStyles.sm, fontWeightStyles.medium, { color: colours.text }];
