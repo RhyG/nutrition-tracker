@@ -65,7 +65,7 @@ export const Converter = memo(() => {
         </View>
       </View>
       <Space units={4} />
-      <Text preset="subheading">Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number.</Text>
+      <Text>Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number.</Text>
     </>
   );
 });

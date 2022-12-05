@@ -53,7 +53,7 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
   return (
     <>
       <View style={styles.reminaingMacroContainer}>
-        <Text weight="medium" size="lg">
+        <Text weight="medium" size="md">
           {name}
         </Text>
         <Text size="md" style={styles.remainingText}>

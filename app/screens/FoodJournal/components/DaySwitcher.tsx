@@ -33,7 +33,7 @@ export const DaySwitcher = ({ changeDay, currentDay }: Props) => {
       <TouchableOpacity onPress={() => changeDay(Directions.LEFT)}>
         <Icon name="left" size={24} color={leftArrowColour} />
       </TouchableOpacity>
-      <Text weight="medium" size="xl">
+      <Text weight="medium" size="lg">
         {currentDay}
       </Text>
       <TouchableOpacity onPress={() => changeDay(Directions.RIGHT)}>

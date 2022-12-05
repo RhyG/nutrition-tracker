@@ -44,7 +44,7 @@ export const _Bar = ({ amount, day, goal }: Props): JSX.Element => {
             ]}
           />
         </View>
-        <Text style={styles.text} size="sm">
+        <Text style={styles.text} size="sm" numberOfLines={1}>
           {day.substring(0, 3)}
         </Text>
       </MenuTrigger>

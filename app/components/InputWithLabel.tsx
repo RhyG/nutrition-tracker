@@ -31,7 +31,7 @@ export const InputWithLabel = memo(({ onInputChange, placeholder, value, label =
 
   return (
     <>
-      <Text preset="subheading" style={styles.text} testID={`input-with-label-${label}-label`}>
+      <Text preset="formHelper" style={styles.text} testID={`input-with-label-${label}-label`}>
         {label}
       </Text>
       <TextInput

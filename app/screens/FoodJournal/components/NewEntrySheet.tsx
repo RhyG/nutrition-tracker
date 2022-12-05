@@ -35,7 +35,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
 
     /* The bottom sheet is slightly higher on phones with a bottom bar */
     const snapPoints = useMemo(() => {
-      const snapPoint = bottomInset > 0 ? '43%' : '45%';
+      const snapPoint = bottomInset > 0 ? '45%' : '48%';
 
       return [snapPoint];
     }, [bottomInset]);
@@ -98,57 +98,53 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
         style={bottomSheetStyle}
         backdropComponent={renderBackdrop}>
         <View style={styles.sheetContainer}>
-          <View style={styles.box}>
-            <Text preset="subheading" style={styles.sheetHeading}>
-              {entryBeingUpdated ? 'Update' : 'Add New'} Entry
-            </Text>
-            <BottomSheetTextInput
-              style={styles.input}
-              placeholder="Name"
-              onChangeText={(text) => onChangeEntryDetails('name', text)}
-              value={name}
-              // @ts-ignore this type is gross, not sure how to fix
-              ref={entryNameInputRef}
-              placeholderTextColor={colours.palette.neutral300}
-            />
-            <BottomSheetTextInput
-              style={[styles.input, styles.marginTop]}
-              placeholder="Calories"
-              onChangeText={(text) => onChangeEntryDetails('calories', text)}
-              value={String(calories)}
-              // @ts-ignore this type is gross, not sure how to fix
-              ref={caloriesInputRef}
-              placeholderTextColor={colours.palette.neutral300}
-              keyboardType="numeric"
-            />
-            <BottomSheetTextInput
-              style={[styles.input, styles.marginTop]}
-              placeholder="Protein"
-              onChangeText={(text) => onChangeEntryDetails('protein', text)}
-              value={String(protein)}
-              // @ts-ignore this type is gross, not sure how to fix
-              ref={proteinInputRef}
-              placeholderTextColor={colours.palette.neutral300}
-              keyboardType="numeric"
-            />
-            <View style={styles.buttonsContainer}>
-              <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
-                <Text colour="#fff" preset="subheading">
-                  Add Entry
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.cancelButton} onPress={onClosePress}>
-                <Text preset="subheading">Cancel</Text>
-              </TouchableOpacity>
-              {!entryBeingUpdated ? (
-                <RadioButton
-                  label="Add another"
-                  onPress={toggleAddAnotherEntry}
-                  selected={addAnotherEntrySelected}
-                  containerStyle={styles.radioButtonContainer}
-                />
-              ) : null}
-            </View>
+          <Text preset="subheading" style={styles.sheetHeading}>
+            {entryBeingUpdated ? 'Update' : 'Add New'} Entry
+          </Text>
+          <BottomSheetTextInput
+            style={styles.input}
+            placeholder="Name"
+            onChangeText={(text) => onChangeEntryDetails('name', text)}
+            value={name}
+            // @ts-ignore this type is gross, not sure how to fix
+            ref={entryNameInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+          />
+          <BottomSheetTextInput
+            style={[styles.input, styles.marginTop]}
+            placeholder="Calories"
+            onChangeText={(text) => onChangeEntryDetails('calories', text)}
+            value={String(calories)}
+            // @ts-ignore this type is gross, not sure how to fix
+            ref={caloriesInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+            keyboardType="numeric"
+          />
+          <BottomSheetTextInput
+            style={[styles.input, styles.marginTop]}
+            placeholder="Protein"
+            onChangeText={(text) => onChangeEntryDetails('protein', text)}
+            value={String(protein)}
+            // @ts-ignore this type is gross, not sure how to fix
+            ref={proteinInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+            keyboardType="numeric"
+          />
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
+              <Text colour="#fff">Add Entry</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClosePress}>
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+            {!entryBeingUpdated ? (
+              <RadioButton
+                label="Add another"
+                onPress={toggleAddAnotherEntry}
+                selected={addAnotherEntrySelected}
+                containerStyle={styles.radioButtonContainer}
+              />
+            ) : null}
           </View>
         </View>
       </BottomSheet>
@@ -167,7 +163,7 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       paddingTop: spacing.small,
     },
     sheetHeading: {
-      marginTop: 3,
+      // marginTop: 3,
       marginBottom: 8,
     },
     saveButton: {

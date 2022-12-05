@@ -33,7 +33,7 @@ export const RadioButton = ({ selected, label, onPress, containerStyle }: RadioB
     <TouchableWithoutFeedback testID="radio-button-touchable" onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
         <View style={styles.radioOuter}>{selected && <Icon testID="radio-button-check-icon" name="check" color={colours.palette.green} size={20} />}</View>
-        <Text testID="radio-button-label" size="md" style={styles.text}>
+        <Text testID="radio-button-label" preset="formHelper" style={styles.text}>
           {label}
         </Text>
       </View>
