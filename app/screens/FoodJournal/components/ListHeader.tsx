@@ -12,13 +12,19 @@ export const ListHeader = ({ onHeadingsPress }: { onHeadingsPress: () => void })
     <TouchableHighlight style={styles.tableHeadingsContainer} onPress={onHeadingsPress} underlayColor="#fff">
       <>
         <View style={styles.nameHeadingContainer}>
-          <Text preset="subheading">Food</Text>
+          <Text weight="semiBold" size="lg">
+            Food
+          </Text>
         </View>
         <View style={styles.macroHeadingContainer}>
-          <Text preset="subheading">Calories</Text>
+          <Text weight="semiBold" size="lg">
+            Calories
+          </Text>
         </View>
         <View style={styles.macroHeadingContainer}>
-          <Text preset="subheading">Protein</Text>
+          <Text weight="semiBold" size="lg">
+            Protein
+          </Text>
         </View>
       </>
     </TouchableHighlight>
@@ -33,6 +39,11 @@ const stylesFn = ({ layout, spacing }: Theme) =>
       paddingBottom: spacing.small,
       backgroundColor: '#fff',
     },
-    nameHeadingContainer: {},
-    macroHeadingContainer: {},
+    nameHeadingContainer: {
+      flex: 2,
+    },
+    macroHeadingContainer: {
+      flex: 1,
+      alignItems: 'flex-end',
+    },
   });

@@ -38,7 +38,7 @@ const _FoodEntryRow = ({ entry, onEntryPress, onDeletePress }: Props) => {
   };
 
   /* Renders the delete button when swiping right */
-  const renderRightActions = (progress: Animated.AnimatedInterpolation) => {
+  const renderRightActions = (progress: Animated.AnimatedInterpolation<0>) => {
     const translateX = progress.interpolate({
       inputRange: [0, 1],
       outputRange: [80, 0],
