@@ -133,7 +133,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             />
             <View style={styles.buttonsContainer}>
               <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
-                <Text style={styles.addEntryButtonText} preset="subheading">
+                <Text colour="#fff" preset="subheading">
                   Add Entry
                 </Text>
               </TouchableOpacity>
@@ -167,7 +167,8 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       paddingTop: spacing.small,
     },
     sheetHeading: {
-      marginVertical: 3,
+      marginTop: 3,
+      marginBottom: 8,
     },
     saveButton: {
       backgroundColor: colours.palette.green,

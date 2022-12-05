@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   text: {
-    marginTop: 5,
+    marginTop: 10,
   },
 });

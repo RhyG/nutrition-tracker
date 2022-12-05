@@ -125,9 +125,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           </View>
           <View style={styles.fieldContainer}>
             <Space units={3} />
-            <Text size="lg" weight="bold">
-              Gender
-            </Text>
+            <Text size="lg">Gender</Text>
             <View style={styles.radiosContainer}>
               <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
               <Space horizontal units={3} />
@@ -156,11 +154,12 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           disabled={TDEEFormIncomplete}
           onPress={calculateTDEE}
           style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
-          <Text weight="bold" size="lg" style={styles.buttonText}>
+          <Text size="lg" colour="#fff">
             Calculate TDEE
           </Text>
         </TouchableOpacity>
         <Space units={5} />
+
         <Converter />
       </View>
     </KeyboardAwareScrollView>
@@ -183,10 +182,10 @@ const stylesFn = (theme: Theme) =>
     },
     activityLevelText: {
       marginTop: 5,
-      marginBottom: 2,
+      marginBottom: 10,
     },
     cacluateTDEEText: {
-      marginVertical: 2,
+      marginVertical: 10,
     },
     TDEEFields: {
       ...theme.layout.spaceBetweenRow,

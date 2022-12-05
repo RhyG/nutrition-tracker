@@ -15,7 +15,10 @@ import { useWeeklyAverages } from './hooks/useWeeklyAverages';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
 export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
-  const { styles } = useThemedStyles(stylesFn);
+  const {
+    styles,
+    theme: { colours },
+  } = useThemedStyles(stylesFn);
 
   const { averageProtein, averageCalories } = useWeeklyAverages();
 
@@ -28,22 +31,22 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
     <View style={styles.container}>
       <View>
         <View style={styles.statsNumbers}>
-          <Text size="xxl" weight="bold" style={styles.macroHeading}>
+          <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
             Calories
           </Text>
           <View style={styles.titleAndNumberContainer}>
-            <Text style={styles.heading} size="md">
+            <Text colour={colours.palette.neutral400} size="md">
               Average
             </Text>
-            <Text size="xl" weight="bold">
+            <Text size="xl" weight="semiBold">
               {averageCalories}
             </Text>
           </View>
           <View style={styles.titleAndNumberContainer}>
-            <Text style={styles.heading} size="md">
+            <Text colour={colours.palette.neutral400} size="md">
               Goal
             </Text>
-            <Text size="xl" weight="bold">
+            <Text size="xl" weight="semiBold">
               {calorieGoal}
             </Text>
           </View>
@@ -59,22 +62,22 @@ export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
       <>
         <Space units={4} />
         <View style={styles.statsNumbers}>
-          <Text size="xxl" weight="bold" style={styles.macroHeading}>
+          <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
             Protein
           </Text>
           <View style={styles.titleAndNumberContainer}>
-            <Text style={styles.heading} size="lg">
+            <Text colour={colours.palette.neutral400} size="md">
               Average
             </Text>
-            <Text size="xl" weight="bold">
+            <Text size="xl" weight="semiBold">
               {averageProtein}
             </Text>
           </View>
           <View style={styles.titleAndNumberContainer}>
-            <Text style={styles.heading} size="lg">
+            <Text colour={colours.palette.neutral400} size="md">
               Goal
             </Text>
-            <Text size="xl" weight="bold">
+            <Text size="xl" weight="semiBold">
               {proteinGoal}
             </Text>
           </View>
@@ -114,9 +117,6 @@ const stylesFn = (theme: Theme) =>
     },
     macroHeading: {
       width: '45%',
-    },
-    heading: {
-      color: theme.colours.palette.neutral400,
     },
     titleAndNumberContainer: {
       alignItems: 'flex-end',
