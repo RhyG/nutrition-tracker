@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View as ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 
-import { Text } from '@components/Text';
-import { RootStackScreen } from '@types';
+import { Text } from '../../components/Text';
+import { RootStackScreen } from '../../navigation/types';
 
 export const AboutScreen: RootStackScreen<'About'> = () => {
   return (
@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
+    paddingHorizontal: 20,
   },
   text: {
-    marginTop: 10,
+    marginTop: 5,
   },
 });
