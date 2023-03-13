@@ -1,0 +1,22 @@
+# goal-setting.yaml
+
+appId: host.exp.Exponent
+---
+- tapOn:
+    point: '88%,93%'
+- tapOn:
+    id: 'name-input'
+- inputText: 'Burger'
+- tapOn:
+    id: 'calories-input'
+- inputText: '1200'
+- tapOn:
+    id: 'protein-input'
+- inputText: '25'
+- tapOn:
+    text: 'Add Entry'
+- assertNotVisible:
+    text: 'Add New Entry'
+- assertVisible:
+    # Due to the way iOS flattens nested text this has to be asserted as a single item
+    text: 'Burger 1200 25'
