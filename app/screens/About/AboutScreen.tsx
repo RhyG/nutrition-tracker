@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 
 import { Text } from '../../components/Text';
 import { RootStackScreen } from '../../navigation/types';

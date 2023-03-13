@@ -10,10 +10,12 @@ import { Day } from '@app/types';
  * Pros: Better devex, less chance of erros because of typos, only update in one place.
  * Conds: Enums add to bundle size.
  */
-export enum Directions {
-  LEFT,
-  RIGHT,
-}
+export const Directions = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+} as const;
+
+export type Directions = keyof typeof Directions;
 
 const TODAY = format(new Date(), 'EEEE') as Day;
 

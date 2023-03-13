@@ -109,6 +109,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             // @ts-ignore this type is gross, not sure how to fix
             ref={entryNameInputRef}
             placeholderTextColor={colours.palette.neutral300}
+            testID="name-input"
           />
           <BottomSheetTextInput
             style={[styles.input, styles.marginTop]}
@@ -119,6 +120,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             ref={caloriesInputRef}
             placeholderTextColor={colours.palette.neutral300}
             keyboardType="numeric"
+            testID="calories-input"
           />
           <BottomSheetTextInput
             style={[styles.input, styles.marginTop]}
@@ -129,6 +131,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             ref={proteinInputRef}
             placeholderTextColor={colours.palette.neutral300}
             keyboardType="numeric"
+            testID="protein-input"
           />
           <View style={styles.buttonsContainer}>
             <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>

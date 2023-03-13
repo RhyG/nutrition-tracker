@@ -7,17 +7,6 @@ import { spacing, elements } from './spacing';
 
 const SPACING_SIZE = 5;
 
-// export const colours = {
-//   grey: '#a9a9a9',
-//   darkGrey: '#2d2d2d',
-//   green: '#3ECF8E',
-//   offWhite: '#f5f5f5',
-//   lightGrey: '#dcdcdc',
-//   darkBlue: '#2D3E4E',
-//   red: '#dc3545',
-//   fontLightGrey: '#7c7c7c',
-// };
-
 export const HeaderStyle = {
   shadowColor: 'transparent',
   elevation: 0,

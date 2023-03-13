@@ -21,6 +21,9 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
 
   const [inputs, setInputs] = useState<Goals>(currentGoals || DEFAULT_GOALS);
 
+  const [calories, setCalories] = useState(String(currentGoals.calories || DEFAULT_GOALS.calories));
+  const [protein, setProtein] = useState(String(currentGoals.protein || DEFAULT_GOALS.protein));
+
   const handleChange = (name: keyof Goals, value: string) => {
     /* Prevent entering non-numbers */
     if (!isInputNumber(value)) {
@@ -34,7 +37,13 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
   };
 
   const handleSaveUpdatedGoals = () => {
-    updateGoals(inputs);
+    const newGoals = {
+      calories: Number(calories),
+      protein: Number(protein),
+    };
+
+    // updateGoals(inputs);
+    updateGoals(newGoals);
   };
 
   return (
@@ -44,8 +53,10 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
           <InputWithLabel
             label="Calories"
             // placeholder="74"
-            onInputChange={(text: string) => handleChange('calories', text)}
-            value={String(inputs.calories)}
+            onInputChange={setCalories}
+            // onInputChange={(text: string) => handleChange('calories', text)}
+            value={calories}
+            // value={String(inputs.calories)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-calories-input"
@@ -55,8 +66,10 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
           <InputWithLabel
             label="Protein"
             // placeholder="74"
-            onInputChange={(text: string) => handleChange('protein', text)}
-            value={String(inputs.protein)}
+            onInputChange={setProtein}
+            // onInputChange={(text: string) => handleChange('protein', text)}
+            value={protein}
+            // value={String(inputs.protein)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-protein-input"

@@ -14,7 +14,7 @@ export const BurgerMenu = () => {
   };
 
   return (
-    <TouchableOpacity onPress={openDawer} style={styles.button}>
+    <TouchableOpacity onPress={openDawer} style={styles.button} testID="burger-menu">
       <Icon name="menu" size={30} color={colours.palette.neutral800} />
     </TouchableOpacity>
   );
