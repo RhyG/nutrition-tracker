@@ -1,0 +1,29 @@
+# goal-setting.yaml
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    id: 'burger-menu'
+- tapOn: 'Goals'
+- tapOn:
+    below: 'Calories'
+- eraseText
+- inputText: 2500
+- hideKeyboard
+- tapOn:
+    below: 'Protein'
+- eraseText
+- inputText: 150
+- hideKeyboard
+- tapOn:
+    id: 'burger-menu'
+- tapOn: 'Weekly Overview'
+- assertVisible:
+    text: '2500'
+    below: 'Goal'
+    rightOf: Calories
+- assertVisible:
+    text: '150'
+    below: 'Goal'
+    rightOf: Protein
