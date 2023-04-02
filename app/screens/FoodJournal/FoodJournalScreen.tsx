@@ -1,7 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import React, { useCallback, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
-import { nanoid } from 'nanoid';
 import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
@@ -12,22 +11,14 @@ import { RootStackScreen } from '@app/navigation/types';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
-import { isInputNumber } from '@app/lib/validation';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 
-import { AddEntryFAB, DaySwitcher, DropdownMenu, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, DropdownMenu, FoodEntryRow, ListHeader, NewEntrySheetV2, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
 
 const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
 const STICKY_HEADER_INDICES = [0];
-
-const DEFAULT_ENTRY_DETAILS = {
-  name: '',
-  calories: '',
-  protein: '',
-  id: '',
-} as unknown as JournalEntry;
 
 export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }) => {
   const {
@@ -38,11 +29,10 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
 
   const { calories: caloriesGoal, protein: proteinGoal } = useGoals(({ calories, protein }) => ({ calories, protein }));
 
-  const { journalData, saveItem, removeItem, updateItem, fillDay } = useJournal((state) => ({ ...state }), shallow);
+  const { journalData, removeItem, fillDay } = useJournal((state) => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
-  const [entryDetails, setEntryDetails] = useState(DEFAULT_ENTRY_DETAILS);
-  const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
+  const [entryBeingUpdated, setEntryBeingUpdated] = useState<JournalEntry | undefined>();
 
   const newEntrySheetRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
@@ -60,44 +50,8 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
     });
   }, [colours.palette.neutral200, navigation, currentDay, fillDay, currentDayEntries]);
 
-  const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
-    // Only allow numbers and a maxmimum of 9999 when updating calories or protein
-    if (key === 'calories' || key === 'protein') {
-      if (!isInputNumber(value) || value.length > 4) {
-        return;
-      }
-    }
-
-    setEntryDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
-  };
-
-  const clearEntryDetails = () => setEntryDetails(DEFAULT_ENTRY_DETAILS);
-
-  const onCloseSheetPress = () => {
-    newEntrySheetRef?.current?.close();
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-
-    if (addAnotherEntrySelected) {
-      toggleAddAnotherEntry();
-    }
-  };
-
   const onAddEntryPress = () => {
     newEntrySheetRef?.current?.expand();
-  };
-
-  /* Saves a new item to the journal */
-  const onSaveItemPress = (item: Omit<JournalEntry, 'id'>) => {
-    const newItem = { id: nanoid(), ...item };
-    saveItem(newItem, currentDay);
-
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-    toggleAddAnotherEntry();
-
-    // Close the sheet if user isn't adding another entry
-    if (!addAnotherEntrySelected) {
-      newEntrySheetRef?.current?.close?.();
-    }
   };
 
   /* Deletes an item from the list by filtering out the item with the matching ID */
@@ -108,16 +62,8 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
     [currentDay, removeItem],
   );
 
-  const updateEntry = (updatedItem: JournalEntry) => {
-    updateItem(updatedItem, currentDay);
-
-    // Close the sheet and set default state
-    newEntrySheetRef?.current?.close?.();
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-  };
-
   const onEntryPress = useCallback((entry: JournalEntry) => {
-    setEntryDetails(entry);
+    setEntryBeingUpdated(entry);
     newEntrySheetRef?.current?.expand();
   }, []);
 
@@ -188,17 +134,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
         <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onAddEntryPress} />
       </View>
 
-      <NewEntrySheet
-        onSaveItem={onSaveItemPress}
-        onClosePress={onCloseSheetPress}
-        ref={newEntrySheetRef}
-        updateEntry={updateEntry}
-        entryDetails={entryDetails}
-        onChangeEntryDetails={onChangeEntryDetails}
-        clearEntryDetails={clearEntryDetails}
-        toggleAddAnotherEntry={toggleAddAnotherEntry}
-        addAnotherEntrySelected={addAnotherEntrySelected}
-      />
+      <NewEntrySheetV2 ref={newEntrySheetRef} currentDay={currentDay} entryBeingUpdated={entryBeingUpdated} setEntryBeingUpdated={setEntryBeingUpdated} />
     </>
   );
 };
