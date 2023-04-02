@@ -29,8 +29,6 @@ const DEFAULT_ENTRY_DETAILS = {
   id: '',
 } as unknown as JournalEntry;
 
-const addAnotherEntryToggleFn = (prev: boolean) => !prev;
-
 export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }) => {
   const {
     styles,
@@ -38,14 +36,13 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
   } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
-  const caloriesGoal = useGoals((state) => state.calories);
-  const proteinGoal = useGoals((state) => state.protein);
+  const { calories: caloriesGoal, protein: proteinGoal } = useGoals(({ calories, protein }) => ({ calories, protein }));
 
   const { journalData, saveItem, removeItem, updateItem, fillDay } = useJournal((state) => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
   const [entryDetails, setEntryDetails] = useState(DEFAULT_ENTRY_DETAILS);
-  const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer(addAnotherEntryToggleFn, false);
+  const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
 
   const newEntrySheetRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
