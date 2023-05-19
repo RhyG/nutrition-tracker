@@ -60,21 +60,18 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
   const caloriesInputRef = useRef<TextInput>(null);
   const proteinInputRef = useRef<TextInput>(null);
 
-  const [entryDetails, setEntryDetails] = useState(entryBeingUpdated ?? DEFAULT_ENTRY_DETAILS); // new
+  const [entryDetails, setEntryDetails] = useState(entryBeingUpdated ?? DEFAULT_ENTRY_DETAILS);
   const { name, calories, protein } = entryDetails;
 
   /* Renders the darkened backdrop behind the sheet */
   const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
 
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      /* Clear and blur all inputs when sheet is closed */
-      if (index === -1) {
-        resetSheetState();
-      }
-    },
-    [setEntryBeingUpdated],
-  );
+  const handleSheetChanges = useCallback((index: number) => {
+    /* Clear and blur all inputs when sheet is closed */
+    if (index === -1) {
+      resetSheetState();
+    }
+  }, []);
 
   /* Saves a new item to the journal */
   const onSaveItemPress = () => {
@@ -88,7 +85,8 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
       protein: Number(protein ?? 0),
     };
 
-    !!entryBeingUpdated
+    // If there is an entry being update, call the `updateItem` function
+    Boolean(entryBeingUpdated)
       ? updateItem(
           {
             ...entryDetails,
@@ -125,7 +123,7 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
   }
 
   function closeSheet() {
-    // @ts-ignore refs are hard
+    // @ts-expect-error refs are hard
     ref?.current?.close?.();
     resetSheetState();
   }
@@ -153,7 +151,8 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
           style={styles.input}
           placeholder="Name"
           onChangeText={(text) => onChangeEntryDetails('name', text)}
-          // @ts-ignore this type is gross, not sure how to fix
+          value={entryDetails.name}
+          // @ts-expect-error this type is gross, not sure how to fix
           ref={entryNameInputRef}
           placeholderTextColor={colours.palette.neutral300}
           testID="name-input"
@@ -163,7 +162,7 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
           style={[styles.input, styles.marginTop]}
           placeholder="Calories"
           onChangeText={(text) => onChangeEntryDetails('calories', text)}
-          // @ts-ignore this type is gross, not sure how to fix
+          // @ts-expect-error this type is gross, not sure how to fix
           ref={caloriesInputRef}
           placeholderTextColor={colours.palette.neutral300}
           keyboardType="numeric"
@@ -174,7 +173,7 @@ export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDa
           style={[styles.input, styles.marginTop]}
           placeholder="Protein"
           onChangeText={(text) => onChangeEntryDetails('protein', text)}
-          // @ts-ignore this type is gross, not sure how to fix
+          // @ts-expect-error this type is gross, not sure how to fix
           ref={proteinInputRef}
           placeholderTextColor={colours.palette.neutral300}
           keyboardType="numeric"

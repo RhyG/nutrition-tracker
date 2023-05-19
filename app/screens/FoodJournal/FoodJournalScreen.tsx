@@ -13,23 +13,21 @@ import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 
-import { AddEntryFAB, DaySwitcher, DropdownMenu, FoodEntryRow, ListHeader, NewEntrySheetV2, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheetV2, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
+import { useDropdownHeader } from './hooks/useDropdownHeader';
 
 const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
 const STICKY_HEADER_INDICES = [0];
 
 export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }) => {
-  const {
-    styles,
-    theme: { colours },
-  } = useThemedStyles(stylesFn);
+  const { styles } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
   const { calories: caloriesGoal, protein: proteinGoal } = useGoals(({ calories, protein }) => ({ calories, protein }));
 
-  const { journalData, removeItem, fillDay } = useJournal((state) => ({ ...state }), shallow);
+  const { journalData, removeItem } = useJournal((state) => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
   const [entryBeingUpdated, setEntryBeingUpdated] = useState<JournalEntry | undefined>();
@@ -39,18 +37,10 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
 
   const currentDayEntries: JournalEntry[] = useMemo(() => journalData[currentDay] ?? EMPTY_ARRAY, [currentDay, journalData]);
 
-  /* Sets the dropdown menu in the right side of the header */
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerStyle: {
-        ...HeaderStyle,
-        backgroundColor: colours.palette.neutral200,
-      },
-      headerRight: () => <DropdownMenu currentDay={currentDay} />,
-    });
-  }, [colours.palette.neutral200, navigation, currentDay, fillDay, currentDayEntries]);
+  useDropdownHeader(currentDay);
 
-  const onAddEntryPress = () => {
+  const expandSheet = (callback?: () => void) => {
+    if (callback) callback();
     newEntrySheetRef?.current?.expand();
   };
 
@@ -63,8 +53,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
   );
 
   const onEntryPress = useCallback((entry: JournalEntry) => {
-    setEntryBeingUpdated(entry);
-    newEntrySheetRef?.current?.expand();
+    expandSheet(() => setEntryBeingUpdated(entry));
   }, []);
 
   /**
@@ -131,7 +120,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
           stickyHeaderIndices={STICKY_HEADER_INDICES}
           initialNumToRender={15}
         />
-        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onAddEntryPress} />
+        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={expandSheet} />
       </View>
 
       <NewEntrySheetV2 ref={newEntrySheetRef} currentDay={currentDay} entryBeingUpdated={entryBeingUpdated} setEntryBeingUpdated={setEntryBeingUpdated} />
