@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
-import { HeaderStyle, Theme } from '@theme';
+import { Theme } from '@theme';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { RootStackScreen } from '@app/navigation/types';
 import { useGoals } from '@app/store/goals';
@@ -13,7 +13,7 @@ import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 
-import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheetV2, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheetV2 as NewEntrySheet, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
 import { useDropdownHeader } from './hooks/useDropdownHeader';
 
@@ -21,7 +21,14 @@ const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
 const STICKY_HEADER_INDICES = [0];
 
-export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }) => {
+const DEFAULT_ENTRY_DETAILS = {
+  name: '',
+  calories: '',
+  protein: '',
+  id: '',
+} as unknown as JournalEntry;
+
+export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
   const { styles } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
@@ -30,7 +37,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
   const { journalData, removeItem } = useJournal((state) => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
-  const [entryBeingUpdated, setEntryBeingUpdated] = useState<JournalEntry | undefined>();
+  const [entryBeingUpdated, setEntryBeingUpdated] = useState(false);
 
   const newEntrySheetRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
@@ -39,8 +46,14 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
 
   useDropdownHeader(currentDay);
 
-  const expandSheet = (callback?: () => void) => {
-    if (callback) callback();
+  const [entryDetails, setEntryDetails] = useState<JournalEntry>(DEFAULT_ENTRY_DETAILS);
+
+  const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
+    setEntryDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
+  };
+
+  const onNewEntryPress = () => {
+    setEntryDetails(DEFAULT_ENTRY_DETAILS);
     newEntrySheetRef?.current?.expand();
   };
 
@@ -53,7 +66,9 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
   );
 
   const onEntryPress = useCallback((entry: JournalEntry) => {
-    expandSheet(() => setEntryBeingUpdated(entry));
+    setEntryBeingUpdated(true);
+    setEntryDetails(entry);
+    newEntrySheetRef?.current?.expand();
   }, []);
 
   /**
@@ -120,10 +135,17 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
           stickyHeaderIndices={STICKY_HEADER_INDICES}
           initialNumToRender={15}
         />
-        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={expandSheet} />
+        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onNewEntryPress} />
       </View>
 
-      <NewEntrySheetV2 ref={newEntrySheetRef} currentDay={currentDay} entryBeingUpdated={entryBeingUpdated} setEntryBeingUpdated={setEntryBeingUpdated} />
+      <NewEntrySheet
+        ref={newEntrySheetRef}
+        currentDay={currentDay}
+        entryBeingUpdated={entryBeingUpdated}
+        setEntryBeingUpdated={setEntryBeingUpdated}
+        onChangeEntryDetails={onChangeEntryDetails}
+        entryDetails={entryDetails}
+      />
     </>
   );
 };

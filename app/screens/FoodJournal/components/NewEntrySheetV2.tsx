@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useReducer, useRef } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,6 +8,7 @@ import { RadioButton } from '@app/components/RadioButton';
 import { Text } from '@app/components/Text';
 import { JournalEntry, Day } from '@app/types';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 import { Theme } from '@theme';
 import { useJournal } from '@app/store/journal';
 import { isInputNumber } from '@app/lib/validation';
@@ -16,18 +17,13 @@ import { nanoid } from 'nanoid';
 
 type Props = {
   currentDay: Day;
-  entryBeingUpdated?: JournalEntry;
-  setEntryBeingUpdated: React.Dispatch<React.SetStateAction<JournalEntry | undefined>>;
+  entryBeingUpdated: boolean;
+  setEntryBeingUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+  onChangeEntryDetails: (key: keyof JournalEntry, value: string) => void;
+  entryDetails: JournalEntry;
 };
 
 const bottomSheetStyle = { zIndex: 2 };
-
-const DEFAULT_ENTRY_DETAILS = {
-  name: '',
-  calories: '',
-  protein: '',
-  id: '',
-} as unknown as JournalEntry;
 
 const inputsValid = (name: string, calories: number, protein: number) => {
   const nameIsValid = name.length > 0;
@@ -37,164 +33,151 @@ const inputsValid = (name: string, calories: number, protein: number) => {
   return nameIsValid && caloriesIsValid && proteinIsValid;
 };
 
-export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(({ currentDay, entryBeingUpdated, setEntryBeingUpdated }, ref) => {
-  const {
-    styles,
-    theme: { colours },
-  } = useThemedStyles(stylesFn);
-  const { bottom: bottomInset } = useSafeAreaInsets();
+export const NewEntrySheetV2 = React.forwardRef<BottomSheet, Props>(
+  ({ currentDay, entryBeingUpdated, setEntryBeingUpdated, onChangeEntryDetails, entryDetails }, ref) => {
+    const {
+      styles,
+      theme: { colours },
+    } = useThemedStyles(stylesFn);
+    const { bottom: bottomInset } = useSafeAreaInsets();
 
-  const saveItem = useJournal((state) => state.saveItem);
-  const updateItem = useJournal((state) => state.updateItem);
+    const saveItem = useJournal((state) => state.saveItem);
+    const updateItem = useJournal((state) => state.updateItem);
 
-  const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
+    const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
 
-  /* The bottom sheet is slightly higher on phones with a bottom bar */
-  const snapPoints = useMemo(() => {
-    const snapPoint = bottomInset > 0 ? '45%' : '48%';
+    const snapPoints = useSafeAreaSnapPoints();
 
-    return [snapPoint];
-  }, [bottomInset]);
+    const entryNameInputRef = useRef<TextInput>(null);
+    const caloriesInputRef = useRef<TextInput>(null);
+    const proteinInputRef = useRef<TextInput>(null);
 
-  const entryNameInputRef = useRef<TextInput>(null);
-  const caloriesInputRef = useRef<TextInput>(null);
-  const proteinInputRef = useRef<TextInput>(null);
+    const { name, calories, protein } = entryDetails;
 
-  const [entryDetails, setEntryDetails] = useState(entryBeingUpdated ?? DEFAULT_ENTRY_DETAILS);
-  const { name, calories, protein } = entryDetails;
+    /* Renders the darkened backdrop behind the sheet */
+    const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
 
-  /* Renders the darkened backdrop behind the sheet */
-  const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
+    const handleSheetChanges = useCallback((index: number) => {
+      /* Clear and blur all inputs when sheet is closed */
+      if (index === -1) {
+        resetSheetState();
+      }
+    }, []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    /* Clear and blur all inputs when sheet is closed */
-    if (index === -1) {
-      resetSheetState();
-    }
-  }, []);
+    /* Saves a new item to the journal */
+    const onSaveItemPress = () => {
+      if (!inputsValid(name, calories, protein)) {
+        return;
+      }
 
-  /* Saves a new item to the journal */
-  const onSaveItemPress = () => {
-    if (!inputsValid(name, calories, protein)) {
-      return;
-    }
+      const newEntryDetails = {
+        name,
+        calories: Number(calories ?? 0),
+        protein: Number(protein ?? 0),
+      };
 
-    const newEntryDetails = {
-      name,
-      calories: Number(calories ?? 0),
-      protein: Number(protein ?? 0),
+      // If there is an entry being update, call the `updateItem` function
+      entryBeingUpdated
+        ? updateItem(
+            {
+              ...entryDetails,
+              ...newEntryDetails,
+            },
+            currentDay,
+          )
+        : saveItem({ id: nanoid(), ...newEntryDetails }, currentDay);
+
+      toggleAddAnotherEntry();
+
+      // Close the sheet if user isn't adding another entry
+      if (!addAnotherEntrySelected) {
+        closeSheet();
+      }
     };
 
-    // If there is an entry being update, call the `updateItem` function
-    Boolean(entryBeingUpdated)
-      ? updateItem(
-          {
-            ...entryDetails,
-            ...newEntryDetails,
-          },
-          currentDay,
-        )
-      : saveItem({ id: nanoid(), ...newEntryDetails }, currentDay);
-
-    toggleAddAnotherEntry();
-
-    // Close the sheet if user isn't adding another entry
-    if (!addAnotherEntrySelected) {
-      closeSheet();
+    function blurInputs() {
+      entryNameInputRef?.current?.blur();
+      caloriesInputRef?.current?.blur();
+      proteinInputRef?.current?.blur();
     }
 
-    clearInputs();
-  };
+    function closeSheet() {
+      // @ts-expect-error refs are hard
+      ref?.current?.close?.();
+      resetSheetState();
+    }
 
-  const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
-    setEntryDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
-  };
+    function resetSheetState() {
+      blurInputs();
+      setEntryBeingUpdated(false);
+    }
 
-  function clearInputs() {
-    entryNameInputRef?.current?.clear();
-    caloriesInputRef?.current?.clear();
-    proteinInputRef?.current?.clear();
-  }
-
-  function blurInputs() {
-    entryNameInputRef?.current?.blur();
-    caloriesInputRef?.current?.blur();
-    proteinInputRef?.current?.blur();
-  }
-
-  function closeSheet() {
-    // @ts-expect-error refs are hard
-    ref?.current?.close?.();
-    resetSheetState();
-  }
-
-  function resetSheetState() {
-    clearInputs();
-    blurInputs();
-    setEntryBeingUpdated(undefined);
-  }
-
-  return (
-    <BottomSheet
-      index={-1}
-      snapPoints={snapPoints}
-      ref={ref}
-      enablePanDownToClose={true}
-      onChange={handleSheetChanges}
-      style={bottomSheetStyle}
-      backdropComponent={renderBackdrop}>
-      <View style={styles.sheetContainer}>
-        <Text preset="subheading" style={styles.sheetHeading}>
-          {entryBeingUpdated ? 'Update' : 'Add New'} Entry
-        </Text>
-        <BottomSheetTextInput
-          style={styles.input}
-          placeholder="Name"
-          onChangeText={(text) => onChangeEntryDetails('name', text)}
-          value={entryDetails.name}
-          // @ts-expect-error this type is gross, not sure how to fix
-          ref={entryNameInputRef}
-          placeholderTextColor={colours.palette.neutral300}
-          testID="name-input"
-          defaultValue={!!entryBeingUpdated ? entryBeingUpdated.name : name}
-        />
-        <BottomSheetTextInput
-          style={[styles.input, styles.marginTop]}
-          placeholder="Calories"
-          onChangeText={(text) => onChangeEntryDetails('calories', text)}
-          // @ts-expect-error this type is gross, not sure how to fix
-          ref={caloriesInputRef}
-          placeholderTextColor={colours.palette.neutral300}
-          keyboardType="numeric"
-          testID="calories-input"
-          defaultValue={String(!!entryBeingUpdated ? entryBeingUpdated.calories : calories)}
-        />
-        <BottomSheetTextInput
-          style={[styles.input, styles.marginTop]}
-          placeholder="Protein"
-          onChangeText={(text) => onChangeEntryDetails('protein', text)}
-          // @ts-expect-error this type is gross, not sure how to fix
-          ref={proteinInputRef}
-          placeholderTextColor={colours.palette.neutral300}
-          keyboardType="numeric"
-          testID="protein-input"
-          defaultValue={String(!!entryBeingUpdated ? entryBeingUpdated.protein : protein)}
-        />
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={onSaveItemPress}>
-            <Text colour="#fff">{entryBeingUpdated ? 'Update Entry' : 'Add Entry'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={closeSheet}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-          {!entryBeingUpdated ? (
-            <RadioButton label="Add another" onPress={toggleAddAnotherEntry} selected={addAnotherEntrySelected} containerStyle={styles.radioButtonContainer} />
-          ) : null}
+    return (
+      <BottomSheet
+        index={-1}
+        snapPoints={snapPoints}
+        ref={ref}
+        enablePanDownToClose={true}
+        onChange={handleSheetChanges}
+        style={bottomSheetStyle}
+        backdropComponent={renderBackdrop}>
+        <View style={styles.sheetContainer}>
+          <Text preset="subheading" style={styles.sheetHeading}>
+            {entryBeingUpdated ? 'Update' : 'Add New'} Entry
+          </Text>
+          <BottomSheetTextInput
+            style={styles.input}
+            placeholder="Name"
+            onChangeText={(text) => onChangeEntryDetails('name', text)}
+            value={name}
+            // @ts-expect-error this type is gross, not sure how to fix
+            ref={entryNameInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+            testID="name-input"
+          />
+          <BottomSheetTextInput
+            style={[styles.input, styles.marginTop]}
+            placeholder="Calories"
+            value={String(calories)}
+            onChangeText={(text) => onChangeEntryDetails('calories', text)}
+            // @ts-expect-error this type is gross, not sure how to fix
+            ref={caloriesInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+            keyboardType="numeric"
+            testID="calories-input"
+          />
+          <BottomSheetTextInput
+            style={[styles.input, styles.marginTop]}
+            placeholder="Protein"
+            onChangeText={(text) => onChangeEntryDetails('protein', text)}
+            // @ts-expect-error this type is gross, not sure how to fix
+            ref={proteinInputRef}
+            placeholderTextColor={colours.palette.neutral300}
+            value={String(protein)}
+            keyboardType="numeric"
+            testID="protein-input"
+          />
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={onSaveItemPress}>
+              <Text colour="#fff">{entryBeingUpdated ? 'Update Entry' : 'Add Entry'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={closeSheet}>
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+            {!entryBeingUpdated ? (
+              <RadioButton
+                label="Add another"
+                onPress={toggleAddAnotherEntry}
+                selected={addAnotherEntrySelected}
+                containerStyle={styles.radioButtonContainer}
+              />
+            ) : null}
+          </View>
         </View>
-      </View>
-    </BottomSheet>
-  );
-});
+      </BottomSheet>
+    );
+  },
+);
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({

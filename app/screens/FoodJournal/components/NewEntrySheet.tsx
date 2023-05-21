@@ -1,16 +1,14 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { FlatList, StyleSheet, TextInput, View } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RadioButton } from '@app/components/RadioButton';
 import { Text } from '@app/components/Text';
 import { JournalEntry } from '@app/types';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@theme';
-
-import { NewEntryTabs } from './NewEntryTabs';
+import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 
 type Props = {
   onClosePress: () => void;
@@ -31,14 +29,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
       styles,
       theme: { colours },
     } = useThemedStyles(stylesFn);
-    const { bottom: bottomInset } = useSafeAreaInsets();
-
-    /* The bottom sheet is slightly higher on phones with a bottom bar */
-    const snapPoints = useMemo(() => {
-      const snapPoint = bottomInset > 0 ? '45%' : '48%';
-
-      return [snapPoint];
-    }, [bottomInset]);
+    const snapPoints = useSafeAreaSnapPoints();
 
     const entryNameInputRef = useRef<TextInput>(null);
     const caloriesInputRef = useRef<TextInput>(null);
