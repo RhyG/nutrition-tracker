@@ -1,22 +1,21 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import React, { useCallback, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
-import { nanoid } from 'nanoid';
 import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
-import { HeaderStyle, Theme } from '@theme';
+import { Theme } from '@theme';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { RootStackScreen } from '@app/navigation/types';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
-import { isInputNumber } from '@app/lib/validation';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 
-import { AddEntryFAB, DaySwitcher, DropdownMenu, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheetV2 as NewEntrySheet, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
+import { useDropdownHeader } from './hooks/useDropdownHeader';
 
 const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
@@ -29,78 +28,33 @@ const DEFAULT_ENTRY_DETAILS = {
   id: '',
 } as unknown as JournalEntry;
 
-const addAnotherEntryToggleFn = (prev: boolean) => !prev;
-
-export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }) => {
-  const {
-    styles,
-    theme: { colours },
-  } = useThemedStyles(stylesFn);
+export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
+  const { styles } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
-  const caloriesGoal = useGoals((state) => state.calories);
-  const proteinGoal = useGoals((state) => state.protein);
+  const { calories: caloriesGoal, protein: proteinGoal } = useGoals(({ calories, protein }) => ({ calories, protein }));
 
-  const { journalData, saveItem, removeItem, updateItem, fillDay } = useJournal((state) => ({ ...state }), shallow);
+  const { journalData, removeItem } = useJournal((state) => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
-  const [entryDetails, setEntryDetails] = useState(DEFAULT_ENTRY_DETAILS);
-  const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer(addAnotherEntryToggleFn, false);
+  const [entryBeingUpdated, setEntryBeingUpdated] = useState(false);
 
   const newEntrySheetRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
 
   const currentDayEntries: JournalEntry[] = useMemo(() => journalData[currentDay] ?? EMPTY_ARRAY, [currentDay, journalData]);
 
-  /* Sets the dropdown menu in the right side of the header */
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerStyle: {
-        ...HeaderStyle,
-        backgroundColor: colours.palette.neutral200,
-      },
-      headerRight: () => <DropdownMenu currentDay={currentDay} />,
-    });
-  }, [colours.palette.neutral200, navigation, currentDay, fillDay, currentDayEntries]);
+  useDropdownHeader(currentDay);
+
+  const [entryDetails, setEntryDetails] = useState<JournalEntry>(DEFAULT_ENTRY_DETAILS);
 
   const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
-    // Only allow numbers and a maxmimum of 9999 when updating calories or protein
-    if (key === 'calories' || key === 'protein') {
-      if (!isInputNumber(value) || value.length > 4) {
-        return;
-      }
-    }
-
     setEntryDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
   };
 
-  const clearEntryDetails = () => setEntryDetails(DEFAULT_ENTRY_DETAILS);
-
-  const onCloseSheetPress = () => {
-    newEntrySheetRef?.current?.close();
+  const onNewEntryPress = () => {
     setEntryDetails(DEFAULT_ENTRY_DETAILS);
-
-    if (addAnotherEntrySelected) {
-      toggleAddAnotherEntry();
-    }
-  };
-
-  const onAddEntryPress = () => {
     newEntrySheetRef?.current?.expand();
-  };
-
-  /* Saves a new item to the journal */
-  const onSaveItemPress = (item: Omit<JournalEntry, 'id'>) => {
-    const newItem = { id: nanoid(), ...item };
-    saveItem(newItem, currentDay);
-
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-    toggleAddAnotherEntry();
-
-    // Close the sheet if user isn't adding another entry
-    if (!addAnotherEntrySelected) {
-      newEntrySheetRef?.current?.close?.();
-    }
   };
 
   /* Deletes an item from the list by filtering out the item with the matching ID */
@@ -111,15 +65,8 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
     [currentDay, removeItem],
   );
 
-  const updateEntry = (updatedItem: JournalEntry) => {
-    updateItem(updatedItem, currentDay);
-
-    // Close the sheet and set default state
-    newEntrySheetRef?.current?.close?.();
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-  };
-
   const onEntryPress = useCallback((entry: JournalEntry) => {
+    setEntryBeingUpdated(true);
     setEntryDetails(entry);
     newEntrySheetRef?.current?.expand();
   }, []);
@@ -188,19 +135,16 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = ({ navigation }
           stickyHeaderIndices={STICKY_HEADER_INDICES}
           initialNumToRender={15}
         />
-        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onAddEntryPress} />
+        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onNewEntryPress} />
       </View>
 
       <NewEntrySheet
-        onSaveItem={onSaveItemPress}
-        onClosePress={onCloseSheetPress}
         ref={newEntrySheetRef}
-        updateEntry={updateEntry}
-        entryDetails={entryDetails}
+        currentDay={currentDay}
+        entryBeingUpdated={entryBeingUpdated}
+        setEntryBeingUpdated={setEntryBeingUpdated}
         onChangeEntryDetails={onChangeEntryDetails}
-        clearEntryDetails={clearEntryDetails}
-        toggleAddAnotherEntry={toggleAddAnotherEntry}
-        addAnotherEntrySelected={addAnotherEntrySelected}
+        entryDetails={entryDetails}
       />
     </>
   );
