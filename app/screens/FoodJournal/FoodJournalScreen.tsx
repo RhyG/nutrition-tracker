@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
 import shallow from 'zustand/shallow';
 
@@ -12,6 +12,7 @@ import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
+import { useEvent } from '@app/hooks/useEvent';
 
 import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
@@ -58,38 +59,32 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
   };
 
   /* Deletes an item from the list by filtering out the item with the matching ID */
-  const removeItemFromList = useCallback(
-    (id: string) => {
-      removeItem(id, currentDay);
-    },
-    [currentDay, removeItem],
-  );
+  const removeItemFromList = useEvent((id: string) => {
+    removeItem(id, currentDay);
+  });
 
-  const onEntryPress = useCallback((entry: JournalEntry) => {
+  const onEntryPress = useEvent((entry: JournalEntry) => {
     setEntryBeingUpdated(true);
     setEntryDetails(entry);
     newEntrySheetRef?.current?.expand();
-  }, []);
+  });
 
   /**
    * Handles the hiding/showing of the FAB when scrolling.
    * This is to prevent it covering entries when scrolling.
    */
-  const listScrollHandler = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const scrollOffsetY = event.nativeEvent.contentOffset.y;
+  const listScrollHandler = useEvent((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollOffsetY = event.nativeEvent.contentOffset.y;
 
-      // If there is enough entries to reach the FAB and the user srolls
-      if (currentDayEntries.length > 6 && scrollOffsetY > 5) {
-        setShowAddEntryButton(false);
-      } else if (!showAddEntryButton && scrollOffsetY < 150) {
-        setShowAddEntryButton(true);
-      } else {
-        setShowAddEntryButton(true);
-      }
-    },
-    [showAddEntryButton, currentDayEntries],
-  );
+    // If there is enough entries to reach the FAB and the user srolls
+    if (currentDayEntries.length > 6 && scrollOffsetY > 5) {
+      setShowAddEntryButton(false);
+    } else if (!showAddEntryButton && scrollOffsetY < 150) {
+      setShowAddEntryButton(true);
+    } else {
+      setShowAddEntryButton(true);
+    }
+  });
 
   /* Scroll to the top of the list when pressing the header */
   const scrollListToTop = useCallback(() => {

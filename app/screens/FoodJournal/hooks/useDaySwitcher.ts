@@ -1,9 +1,10 @@
 import { format } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
 import { DAYS } from '@app/config/constants';
 import { Day } from '@app/types';
+import { useEvent } from '@app/hooks/useEvent';
 
 /**
  * Should this be a union type?
@@ -38,29 +39,26 @@ export const useDaySwitcher = (): {
     };
   }, []);
 
-  const handleDayChange = useCallback(
-    (direction: Directions) => {
-      const todayIndex = DAYS.indexOf(currentDay);
+  const handleDayChange = useEvent((direction: Directions) => {
+    const todayIndex = DAYS.indexOf(currentDay);
 
-      switch (direction) {
-        case Directions.LEFT:
-          if (todayIndex > 0) {
-            setCurrentDay(DAYS[todayIndex - 1]);
-            return;
-          } else {
-            return;
-          }
-        case Directions.RIGHT:
-          if (todayIndex < 6) {
-            setCurrentDay(DAYS[todayIndex + 1]);
-            return;
-          } else {
-            return;
-          }
-      }
-    },
-    [currentDay],
-  );
+    switch (direction) {
+      case Directions.LEFT:
+        if (todayIndex > 0) {
+          setCurrentDay(DAYS[todayIndex - 1]);
+          return;
+        } else {
+          return;
+        }
+      case Directions.RIGHT:
+        if (todayIndex < 6) {
+          setCurrentDay(DAYS[todayIndex + 1]);
+          return;
+        } else {
+          return;
+        }
+    }
+  });
 
   return { currentDay, handleDayChange };
 };

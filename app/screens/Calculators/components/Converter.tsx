@@ -8,6 +8,7 @@ import { caloriesToKj, kjToCalories } from '@app/lib/energy';
 import { InputWithLabel } from '../../../components/InputWithLabel';
 import { Space } from '@app/components/Space';
 import { useCallback } from 'react';
+import { useEvent } from '@app/hooks/useEvent';
 
 type ReducerState = {
   calories: number;
@@ -35,21 +36,21 @@ export const Converter = memo(() => {
     calories: 0,
   });
 
-  const handleCalorieChange = useCallback((value: string) => {
+  const handleCalorieChange = useEvent((value: string) => {
     if (!isInputNumber(value)) {
       return;
     }
 
     dispatch({ type: 'INPUT_CHANGED', value: { kj: caloriesToKj(Number(value)), calories: Number(value) } });
-  }, []);
+  });
 
-  const handleKilojouleChange = useCallback((value: string) => {
+  const handleKilojouleChange = useEvent((value: string) => {
     if (!isInputNumber(value)) {
       return;
     }
 
     dispatch({ type: 'INPUT_CHANGED', value: { kj: Number(value), calories: kjToCalories(Number(value)) } });
-  }, []);
+  });
 
   return (
     <>

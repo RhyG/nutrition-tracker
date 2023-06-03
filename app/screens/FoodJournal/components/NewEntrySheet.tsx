@@ -14,6 +14,7 @@ import { useJournal } from '@app/store/journal';
 import { isInputNumber } from '@app/lib/validation';
 
 import { nanoid } from 'nanoid';
+import { useEvent } from '@app/hooks/useEvent';
 
 type Props = {
   currentDay: Day;
@@ -57,12 +58,12 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
     /* Renders the darkened backdrop behind the sheet */
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
 
-    const handleSheetChanges = useCallback((index: number) => {
+    const handleSheetChanges = useEvent((index: number) => {
       /* Clear and blur all inputs when sheet is closed */
       if (index === -1) {
         resetSheetState();
       }
-    }, []);
+    });
 
     /* Saves a new item to the journal */
     const onSaveItemPress = () => {
