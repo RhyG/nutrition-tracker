@@ -1,83 +1,116 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useReducer, useRef } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RadioButton } from '@app/components/RadioButton';
 import { Text } from '@app/components/Text';
-import { JournalEntry } from '@app/types';
+import { JournalEntry, Day } from '@app/types';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { Theme } from '@theme';
 import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
+import { Theme } from '@theme';
+import { useJournal } from '@app/store/journal';
+import { isInputNumber } from '@app/lib/validation';
+
+import { nanoid } from 'nanoid';
 
 type Props = {
-  onClosePress: () => void;
-  onSaveItem: (item: Omit<JournalEntry, 'id'>) => void;
-  updateEntry: (item: JournalEntry) => void;
-  entryDetails: JournalEntry;
+  currentDay: Day;
+  entryBeingUpdated: boolean;
+  setEntryBeingUpdated: React.Dispatch<React.SetStateAction<boolean>>;
   onChangeEntryDetails: (key: keyof JournalEntry, value: string) => void;
-  clearEntryDetails: () => void;
-  toggleAddAnotherEntry: () => void;
-  addAnotherEntrySelected: boolean;
+  entryDetails: JournalEntry;
 };
 
 const bottomSheetStyle = { zIndex: 2 };
 
+const inputsValid = (name: string, calories: number, protein: number) => {
+  const nameIsValid = name.length > 0;
+  const caloriesIsValid = isInputNumber(String(calories));
+  const proteinIsValid = isInputNumber(String(protein));
+
+  return nameIsValid && caloriesIsValid && proteinIsValid;
+};
+
 export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
-  ({ onClosePress, onSaveItem, clearEntryDetails, updateEntry, entryDetails, onChangeEntryDetails, addAnotherEntrySelected, toggleAddAnotherEntry }, ref) => {
+  ({ currentDay, entryBeingUpdated, setEntryBeingUpdated, onChangeEntryDetails, entryDetails }, ref) => {
     const {
       styles,
       theme: { colours },
     } = useThemedStyles(stylesFn);
+    const { bottom: bottomInset } = useSafeAreaInsets();
+
+    const saveItem = useJournal((state) => state.saveItem);
+    const updateItem = useJournal((state) => state.updateItem);
+
+    const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
+
     const snapPoints = useSafeAreaSnapPoints();
 
     const entryNameInputRef = useRef<TextInput>(null);
     const caloriesInputRef = useRef<TextInput>(null);
     const proteinInputRef = useRef<TextInput>(null);
 
-    const { name, calories, protein, id } = entryDetails;
-    const entryBeingUpdated = !!id;
+    const { name, calories, protein } = entryDetails;
 
     /* Renders the darkened backdrop behind the sheet */
     const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />, []);
 
-    const handleSheetChanges = useCallback(
-      (index: number) => {
-        /* Clear and blur all inputs when sheet is closed */
-        if (index === -1) {
-          clearEntryDetails();
-          entryNameInputRef?.current?.blur();
-          caloriesInputRef?.current?.blur();
-          proteinInputRef?.current?.blur();
-        }
-      },
-      [clearEntryDetails],
-    );
+    const handleSheetChanges = useCallback((index: number) => {
+      /* Clear and blur all inputs when sheet is closed */
+      if (index === -1) {
+        resetSheetState();
+      }
+    }, []);
 
-    const onSaveButtonPress = () => {
+    /* Saves a new item to the journal */
+    const onSaveItemPress = () => {
+      if (!inputsValid(name, calories, protein)) {
+        return;
+      }
+
       const newEntryDetails = {
         name,
         calories: Number(calories ?? 0),
         protein: Number(protein ?? 0),
       };
 
-      if (!name) {
-        return;
-      }
-
+      // If there is an entry being update, call the `updateItem` function
       entryBeingUpdated
-        ? updateEntry({
-            ...entryDetails,
-            ...newEntryDetails,
-          })
-        : onSaveItem({
-            ...newEntryDetails,
-          });
+        ? updateItem(
+            {
+              ...entryDetails,
+              ...newEntryDetails,
+            },
+            currentDay,
+          )
+        : saveItem({ id: nanoid(), ...newEntryDetails }, currentDay);
 
-      if (addAnotherEntrySelected) {
-        entryNameInputRef?.current?.focus();
+      toggleAddAnotherEntry();
+
+      // Close the sheet if user isn't adding another entry
+      if (!addAnotherEntrySelected) {
+        closeSheet();
       }
     };
+
+    function blurInputs() {
+      entryNameInputRef?.current?.blur();
+      caloriesInputRef?.current?.blur();
+      proteinInputRef?.current?.blur();
+    }
+
+    function closeSheet() {
+      // @ts-expect-error refs are hard
+      ref?.current?.close?.();
+      resetSheetState();
+    }
+
+    function resetSheetState() {
+      blurInputs();
+      setEntryBeingUpdated(false);
+    }
 
     return (
       <BottomSheet
@@ -97,7 +130,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             placeholder="Name"
             onChangeText={(text) => onChangeEntryDetails('name', text)}
             value={name}
-            // @ts-ignore this type is gross, not sure how to fix
+            // @ts-expect-error this type is gross, not sure how to fix
             ref={entryNameInputRef}
             placeholderTextColor={colours.palette.neutral300}
             testID="name-input"
@@ -105,9 +138,9 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
           <BottomSheetTextInput
             style={[styles.input, styles.marginTop]}
             placeholder="Calories"
-            onChangeText={(text) => onChangeEntryDetails('calories', text)}
             value={String(calories)}
-            // @ts-ignore this type is gross, not sure how to fix
+            onChangeText={(text) => onChangeEntryDetails('calories', text)}
+            // @ts-expect-error this type is gross, not sure how to fix
             ref={caloriesInputRef}
             placeholderTextColor={colours.palette.neutral300}
             keyboardType="numeric"
@@ -117,18 +150,18 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             style={[styles.input, styles.marginTop]}
             placeholder="Protein"
             onChangeText={(text) => onChangeEntryDetails('protein', text)}
-            value={String(protein)}
-            // @ts-ignore this type is gross, not sure how to fix
+            // @ts-expect-error this type is gross, not sure how to fix
             ref={proteinInputRef}
             placeholderTextColor={colours.palette.neutral300}
+            value={String(protein)}
             keyboardType="numeric"
             testID="protein-input"
           />
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.saveButton} onPress={onSaveButtonPress}>
-              <Text colour="#fff">Add Entry</Text>
+            <TouchableOpacity style={styles.saveButton} onPress={onSaveItemPress}>
+              <Text colour="#fff">{entryBeingUpdated ? 'Update Entry' : 'Add Entry'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton} onPress={onClosePress}>
+            <TouchableOpacity style={styles.cancelButton} onPress={closeSheet}>
               <Text>Cancel</Text>
             </TouchableOpacity>
             {!entryBeingUpdated ? (
@@ -157,7 +190,6 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       paddingTop: spacing.small,
     },
     sheetHeading: {
-      // marginTop: 3,
       marginBottom: 8,
     },
     saveButton: {

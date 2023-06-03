@@ -13,7 +13,7 @@ import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 
-import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheetV2 as NewEntrySheet, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
 import { useDropdownHeader } from './hooks/useDropdownHeader';
 
