@@ -1,8 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useReducer, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { RadioButton } from '@app/components/RadioButton';
 import { Text } from '@app/components/Text';
@@ -22,6 +21,7 @@ type Props = {
   setEntryBeingUpdated: React.Dispatch<React.SetStateAction<boolean>>;
   onChangeEntryDetails: (key: keyof JournalEntry, value: string) => void;
   entryDetails: JournalEntry;
+  clearEntryDetails: () => void;
 };
 
 const bottomSheetStyle = { zIndex: 2 };
@@ -35,19 +35,17 @@ const inputsValid = (name: string, calories: number, protein: number) => {
 };
 
 export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
-  ({ currentDay, entryBeingUpdated, setEntryBeingUpdated, onChangeEntryDetails, entryDetails }, ref) => {
+  ({ currentDay, entryBeingUpdated, setEntryBeingUpdated, onChangeEntryDetails, entryDetails, clearEntryDetails }, ref) => {
     const {
       styles,
       theme: { colours },
     } = useThemedStyles(stylesFn);
-    const { bottom: bottomInset } = useSafeAreaInsets();
+    const snapPoints = useSafeAreaSnapPoints();
 
     const saveItem = useJournal((state) => state.saveItem);
     const updateItem = useJournal((state) => state.updateItem);
 
-    const [addAnotherEntrySelected, toggleAddAnotherEntry] = useReducer((prev) => !prev, false);
-
-    const snapPoints = useSafeAreaSnapPoints();
+    const [addAnotherEntrySelected, setAddAnotherEntry] = useState(false);
 
     const entryNameInputRef = useRef<TextInput>(null);
     const caloriesInputRef = useRef<TextInput>(null);
@@ -88,7 +86,8 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
           )
         : saveItem({ id: nanoid(), ...newEntryDetails }, currentDay);
 
-      toggleAddAnotherEntry();
+      setAddAnotherEntry(false);
+      clearEntryDetails();
 
       // Close the sheet if user isn't adding another entry
       if (!addAnotherEntrySelected) {
@@ -168,7 +167,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             {!entryBeingUpdated ? (
               <RadioButton
                 label="Add another"
-                onPress={toggleAddAnotherEntry}
+                onPress={() => setAddAnotherEntry((current) => !current)}
                 selected={addAnotherEntrySelected}
                 containerStyle={styles.radioButtonContainer}
               />

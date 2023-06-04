@@ -69,6 +69,10 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
     newEntrySheetRef?.current?.expand();
   });
 
+  const clearEntryDetails = () => {
+    setEntryDetails(DEFAULT_ENTRY_DETAILS);
+  };
+
   /**
    * Handles the hiding/showing of the FAB when scrolling.
    * This is to prevent it covering entries when scrolling.
@@ -140,6 +144,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
         setEntryBeingUpdated={setEntryBeingUpdated}
         onChangeEntryDetails={onChangeEntryDetails}
         entryDetails={entryDetails}
+        clearEntryDetails={clearEntryDetails}
       />
     </>
   );
