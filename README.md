@@ -22,10 +22,9 @@ A dead simple daily calorie and protein tracker. Built because all the other app
 
 ## Stack
 
-- React Native
+- React Native + Expo
 - Typescript
 - Zustand for state management
 - reanimated
 - react-navigation
-- styled-components
 - @gorhom/bottom-sheet for bottom sheets
