@@ -31,10 +31,10 @@ export const ACTIVITY_LEVELS: ActivityLevel[] = [
 export const FEMALE_TDEE_VARIABLE = -161;
 export const MALE_TDEE_VARIABLE = 5;
 
-export enum Genders {
-  FEMALE = 'female',
-  MALE = 'male',
-}
+export const Genders = {
+  FEMALE: 'FEMALE',
+  MALE: 'MALE',
+} as const;
 
 export const DAYS: Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 

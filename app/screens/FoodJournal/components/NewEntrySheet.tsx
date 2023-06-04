@@ -27,7 +27,10 @@ type Props = {
 const bottomSheetStyle = { zIndex: 2 };
 
 const inputsValid = (name: string, calories: number, protein: number) => {
+  // Check if value of name is not empty.
   const nameIsValid = name.length > 0;
+
+  // Check both calories and protein are valid numbers.
   const caloriesIsValid = isInputNumber(String(calories));
   const proteinIsValid = isInputNumber(String(protein));
 
@@ -110,6 +113,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
     function resetSheetState() {
       blurInputs();
       setEntryBeingUpdated(false);
+      setAddAnotherEntry(false);
     }
 
     return (

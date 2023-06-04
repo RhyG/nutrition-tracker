@@ -8,11 +8,11 @@ import { colours } from '@theme';
 
 import { DrawerHeaderImage } from './DrawerHeaderImage';
 
-export const CustomDrawer = (props: DrawerContentComponentProps) => {
-  const openGithubRepo = () => {
-    Linking.openURL(REPO_URL);
-  };
+const openGithubRepo = () => {
+  Linking.openURL(REPO_URL);
+};
 
+export const CustomDrawer = (props: DrawerContentComponentProps) => {
   return (
     <View style={styles.drawerContainer}>
       <View style={styles.headerContainer}>

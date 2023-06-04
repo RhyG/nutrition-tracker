@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface IStorageModule {
+type StorageModule = {
   /**
    * A quick access cache to help reduce read time of the storage.
    */
@@ -23,9 +23,9 @@ interface IStorageModule {
    * @param {string} key - key of the item to be removed.
    */
   removeItem: (key: string) => Promise<void>;
-}
+};
 
-const StorageModule: IStorageModule = {
+const StorageModule: StorageModule = {
   cache: {},
   getItem: async (key: string, defaultValue: string | number | Record<string, unknown>) => {
     let result;

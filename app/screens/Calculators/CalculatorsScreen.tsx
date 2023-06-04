@@ -23,7 +23,7 @@ type TDEEFormData = {
   age: string;
   weight: string;
   height: string;
-  gender: Genders;
+  gender: keyof typeof Genders;
   activityMultiplier: number;
 };
 

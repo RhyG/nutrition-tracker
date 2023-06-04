@@ -7,7 +7,7 @@ type Sizes = keyof typeof sizeStyles;
 type Weights = keyof typeof typography.weights;
 type Presets = keyof typeof presets;
 
-export interface TextProps extends RNTextProps {
+export type TextProps = {
   /**
    * Text to be rendered.
    */
@@ -36,7 +36,7 @@ export interface TextProps extends RNTextProps {
    * Child components - this allows either a string or nested components.
    */
   children?: React.ReactNode;
-}
+} & RNTextProps;
 
 export function Text(props: TextProps) {
   const { weight, size, text, colour, children, style: styleOverride, ...rest } = props;
