@@ -14,7 +14,7 @@ import { Bar } from './components';
 import { useWeeklyAverages } from './hooks/useWeeklyAverages';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
-export const WeeklyOverviewScreen: RootStackScreen<'WeeklyOverview'> = () => {
+export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
   const {
     styles,
     theme: { colours },
