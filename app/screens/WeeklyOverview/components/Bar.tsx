@@ -17,7 +17,7 @@ type Props = {
   goal: number;
 };
 
-export const _Bar = ({ amount, day, goal }: Props): JSX.Element => {
+function _Bar({ amount, day, goal }: Props): JSX.Element {
   const {
     styles,
     theme: { colours },
@@ -53,7 +53,7 @@ export const _Bar = ({ amount, day, goal }: Props): JSX.Element => {
       </MenuOptions>
     </Menu>
   );
-};
+}
 
 export const Bar = React.memo(_Bar);
 

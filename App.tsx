@@ -8,6 +8,7 @@ import AppNavigator from './app/navigation';
 import { Goals, DefaultGoals, useGoals } from '@app/store/goals';
 import { DefaultJournalData, useJournal } from '@app/store/journal';
 import AsyncStorage from '@app/modules/AsyncStorage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Fetch goals and current data from storage on app mount
 (async () => {
@@ -22,12 +23,14 @@ import AsyncStorage from '@app/modules/AsyncStorage';
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <MenuProvider>
-          <AppNavigator />
-        </MenuProvider>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <MenuProvider>
+            <AppNavigator />
+          </MenuProvider>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }
