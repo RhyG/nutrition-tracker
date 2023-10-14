@@ -17,7 +17,7 @@ import { CustomDrawer } from '@components/CustomDrawer/CustomDrawer';
 import { colours } from '@theme';
 
 import { TabBarLabel } from './TabBarLabel';
-import { NewEntryModal } from '@app/components/NewEntryModal';
+import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 type RootStackParamList = {
