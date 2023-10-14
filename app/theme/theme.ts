@@ -7,14 +7,6 @@ import { spacing, elements } from './spacing';
 
 const SPACING_SIZE = 5;
 
-export const HeaderStyle = {
-  shadowColor: 'transparent',
-  elevation: 0,
-  borderBottomWidth: 0,
-  borderWidth: 0,
-  shadowOffset: { height: 0, width: 0 },
-};
-
 export const theme = {
   spacing: {
     ...spacing,
