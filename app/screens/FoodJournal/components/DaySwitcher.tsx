@@ -47,7 +47,6 @@ const stylesFn = (theme: Theme) =>
     container: {
       ...theme.layout.spaceBetweenRow,
       alignItems: 'center',
-      paddingHorizontal: theme.spacing.small,
       paddingTop: theme.spacing.small,
     },
   });

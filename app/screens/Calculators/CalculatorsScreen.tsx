@@ -92,7 +92,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   };
 
   return (
-    <View style={styles.contentContainer}>
+    <View style={styles.screenContainer}>
       <Text preset="heading" style={styles.cacluateTDEEText}>
         Calculate TDEE
       </Text>
@@ -170,9 +170,10 @@ const stylesFn = (theme: Theme) =>
       color: theme.colours.palette.neutral800,
       fontSize: 16,
     },
-    contentContainer: {
+    screenContainer: {
       paddingHorizontal: 20,
       flex: 1,
+      backgroundColor: theme.colours.background,
     },
     activityLevelText: {
       marginTop: 5,

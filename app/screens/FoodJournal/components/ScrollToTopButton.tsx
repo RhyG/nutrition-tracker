@@ -7,7 +7,7 @@ import Animated, { BounceInDown, useAnimatedStyle, withSpring } from 'react-nati
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
 
-const FAB_VISIBLE_BOTTOM_VALUE = 30;
+const FAB_VISIBLE_BOTTOM_VALUE = 10;
 const FAB_HIDDEN_BOTTOM_VALUE = -180;
 
 type Props = {

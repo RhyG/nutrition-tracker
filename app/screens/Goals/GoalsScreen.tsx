@@ -110,7 +110,7 @@ const stylesFn = (theme: Theme) =>
     },
     screenContainer: {
       flex: 1,
-      backgroundColor: theme.colours.palette.neutral100,
+      backgroundColor: theme.colours.background,
       ...theme.spacing.screen,
     },
     inputsContainer: {

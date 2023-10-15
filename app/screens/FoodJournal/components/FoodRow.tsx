@@ -84,7 +84,6 @@ const stylesFn = (theme: Theme) =>
     container: {
       ...theme.layout.spaceBetweenRow,
       paddingVertical: theme.spacing.small,
-      paddingHorizontal: theme.spacing.small,
       alignItems: 'center',
     },
     nameContainer: {

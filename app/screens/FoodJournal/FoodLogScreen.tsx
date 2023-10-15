@@ -30,7 +30,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
   const journalData = useJournal(state => state.journalData);
 
-  const [showScrollToTopButton, setShowScrollToTopButton] = useState(true);
+  const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
 
   const listRef = useRef<FlatList>(null);
 
@@ -57,7 +57,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
   /* Scroll to the top of the list when pressing the header */
   const scrollListToTop = useCallback(() => {
-    setShowScrollToTopButton(true);
+    setShowScrollToTopButton(false);
     listRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   }, []);
 
@@ -116,20 +116,17 @@ const stylesFn = ({ colours, spacing, layout }: Theme) =>
   StyleSheet.create({
     screenContainer: {
       flex: 1,
-      backgroundColor: colours.palette.neutral100,
+      backgroundColor: colours.background,
+      ...spacing.screen,
+      paddingTop: 0,
     },
-    statsContainer: {
-      paddingHorizontal: spacing.small,
-    },
+    statsContainer: {},
     divider: {
       height: 1,
       backgroundColor: colours.palette.neutral200,
-      marginHorizontal: spacing.small,
     },
     mealRowsContainer: {
       flex: 1,
-      // paddingVertical: spacing.base,
-      paddingHorizontal: spacing.small,
     },
     emptyListContainer: {
       ...layout.centerAlignedRow,

@@ -28,7 +28,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
   const journalData = useJournal(state => state.journalData);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screenContainer}>
       <View>
         <View style={styles.statsNumbers}>
           <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
@@ -96,10 +96,10 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
-    container: {
+    screenContainer: {
       flex: 1,
-      backgroundColor: '#fff',
-      padding: 20,
+      backgroundColor: theme.colours.background,
+      ...theme.spacing.screen,
     },
     barsContainer: {
       alignItems: 'center',
