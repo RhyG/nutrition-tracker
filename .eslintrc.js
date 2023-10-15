@@ -1,16 +1,26 @@
 module.exports = {
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   root: true,
-  extends: ['@react-native-community', 'plugin:import/errors', 'plugin:import/warnings'],
+  extends: ['eslint:recommended', 'plugin:import/warnings', 'plugin:react/recommended', 'prettier', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'plugin:react/jsx-runtime'],
+  plugins: ['react', 'react-native', '@typescript-eslint', 'import', 'react-hooks'],
   rules: {
-    'unicorn/better-regex': 'warn',
-    'unicorn/catch-error-name': 'warn',
-    'unicorn/consistent-destructuring': 'warn',
-    'unicorn/consistent-function-scoping': 'warn',
-    'unicorn/empty-brace-spaces': 'warn',
-    'unicorn/error-message': 'warn',
-    'unicorn/explicit-length-check': 'warn',
+    'no-catch-shadow': 0,
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    // 'no-cycle': 2,
+    radix: 0,
+    'react-native/no-inline-styles': 2,
+    'react-native/no-single-element-style-arrays': 2,
+  },
+  env: {
+    // "browser": true,
+    // "es2021": true,
+    'react-native/react-native': true,
   },
   overrides: [
     {
@@ -19,8 +29,9 @@ module.exports = {
         '@typescript-eslint/no-shadow': ['error'],
         'no-shadow': 'off',
         'no-undef': 'off',
+        'react/display-name': 'off',
         'react-hooks/exhaustive-deps': [
-          'warn',
+          'error',
           // Support custom useBlahCallback() hooks
           { additionalHooks: '(use\\w+Callback)' },
         ],
