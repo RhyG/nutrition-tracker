@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
 import { DAYS } from '@app/config/constants';
-import { Day } from '@app/types';
 import { useEvent } from '@app/hooks/useEvent';
+import { Day } from '@app/types';
 
 /**
  * Should this be a union type?
@@ -28,7 +28,7 @@ export const useDaySwitcher = (): {
 
   // Automatically set the day to today on app foreground
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {
         setCurrentDay(format(new Date(), 'EEEE') as Day);
       }

@@ -1,7 +1,7 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { View, Image, StyleSheet } from 'react-native';
 
 export const DrawerHeaderImage = () => {
   const navigation = useNavigation();

@@ -1,24 +1,24 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { useEffect, useRef } from 'react';
-import { Button, StatusBar, Text, TouchableOpacity, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-
-import { AboutScreen } from '@app/screens/About/AboutScreen';
-import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
-import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
-import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
-import { FoodJournalScreen } from '@app/screens/FoodJournal/FoodJournalScreen';
-import { FoodLogScreen } from '@app/screens/FoodJournal/FoodLogScreen';
 import { BurgerMenu } from '@components/BurgerMenu';
 import { CustomDrawer } from '@components/CustomDrawer/CustomDrawer';
+import { Feather } from '@expo/vector-icons';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { colours } from '@theme';
+import React, { useEffect, useRef } from 'react';
+import { Button, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+
+import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
+import { AboutScreen } from '@app/screens/About/AboutScreen';
+import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
+import { FoodJournalScreen } from '@app/screens/FoodJournal/FoodJournalScreen';
+import { FoodLogScreen } from '@app/screens/FoodJournal/FoodLogScreen';
+import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
+import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
 
 import { TabBarLabel } from './TabBarLabel';
-import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
-import BottomSheet from '@gorhom/bottom-sheet';
 
 type RootStackParamList = {
   'Food Log': undefined;
@@ -75,7 +75,7 @@ export default function AppNavigator() {
           component={FoodLogScreen}
           options={{
             tabBarIcon: () => <Feather name="book-open" size={24} color={colours.palette.neutral700} />,
-            tabBarLabel: (props) => (
+            tabBarLabel: props => (
               <Text style={{ fontSize: 10, color: props.focused ? colours.palette.neutral700 : colours.palette.neutral500 }}>Food Log</Text>
             ),
           }}
@@ -85,14 +85,14 @@ export default function AppNavigator() {
           component={GoalsScreen}
           options={{
             tabBarIcon: () => <Feather name="compass" size={24} color={colours.palette.neutral700} />,
-            tabBarLabel: (props) => <TabBarLabel label="Goals" {...props} />,
+            tabBarLabel: props => <TabBarLabel label="Goals" {...props} />,
           }}
         />
         <Tab.Screen
           name="NewEntryModal"
           component={EmptyScreen}
           options={{
-            tabBarButton: (props) => <OpenLogButton {...props} onPress={openSheet} />,
+            tabBarButton: props => <OpenLogButton {...props} onPress={openSheet} />,
             tabBarLabel: () => null,
           }}
         />
@@ -101,7 +101,7 @@ export default function AppNavigator() {
           component={WeeklyOverviewScreen}
           options={{
             tabBarIcon: () => <Feather name="calendar" size={24} color={colours.palette.neutral700} />,
-            tabBarLabel: (props) => <TabBarLabel label="Overview" {...props} />,
+            tabBarLabel: props => <TabBarLabel label="Overview" {...props} />,
           }}
         />
         <Tab.Screen
@@ -109,7 +109,7 @@ export default function AppNavigator() {
           component={CalculatorsScreen}
           options={{
             tabBarIcon: () => <Feather name="divide-circle" size={24} color={colours.palette.neutral700} />,
-            tabBarLabel: (props) => <TabBarLabel label="Calculators" {...props} />,
+            tabBarLabel: props => <TabBarLabel label="Calculators" {...props} />,
           }}
         />
         {/* <Tab.Screen name="About" component={AboutScreen} /> */}

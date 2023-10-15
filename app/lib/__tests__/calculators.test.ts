@@ -1,5 +1,5 @@
 import { FEMALE_TDEE_VARIABLE, MALE_TDEE_VARIABLE } from '../../config/constants';
-import { calculateRemaining, calculateBMR, calculateSizeAsPercentage } from '../calculators';
+import { calculateBMR, calculateRemaining, calculateSizeAsPercentage } from '../calculators';
 
 describe('calculateRemaining', () => {
   const cases = [

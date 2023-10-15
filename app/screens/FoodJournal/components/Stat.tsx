@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { StyleSheet, View } from 'react-native';
-
 import { Text } from '@components/Text';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@theme';
+import React, { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
 type Props = {
   /**

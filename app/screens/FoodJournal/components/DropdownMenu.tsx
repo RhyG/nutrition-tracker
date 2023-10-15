@@ -1,14 +1,14 @@
+import Icon from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
+import { Theme } from '@theme';
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
-import Icon from '@expo/vector-icons/Entypo';
 import shallow from 'zustand/shallow';
 
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useJournal } from '@app/store/journal';
 import { Day } from '@app/types';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { Theme } from '@theme';
 
 type Props = {
   currentDay: Day;
@@ -21,7 +21,7 @@ export const DropdownMenu = ({ currentDay }: Props) => {
   } = useThemedStyles(stylesFn);
   const navigation = useNavigation();
 
-  const { clearJournal, clearDay, copyPreviousDay } = useJournal((state) => ({ ...state }), shallow);
+  const { clearJournal, clearDay, copyPreviousDay } = useJournal(state => ({ ...state }), shallow);
 
   // TODO figure out how to type navigation and remove cast to never.
   const navigateToGoalsScreen = () => {

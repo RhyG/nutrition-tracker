@@ -105,9 +105,7 @@ describe('useJournal', () => {
     });
 
     // Wednesday should be the same as Tuesday
-    expect(result.current.journalData.Wednesday).toEqual(
-      result.current.journalData.Tuesday,
-    );
+    expect(result.current.journalData.Wednesday).toEqual(result.current.journalData.Tuesday);
   });
 
   it('Should copy entries from Sunday if current day is Monday', async () => {
@@ -132,9 +130,7 @@ describe('useJournal', () => {
     });
 
     // Monday should be the same as Sunday
-    expect(result.current.journalData.Monday).toEqual(
-      result.current.journalData.Sunday,
-    );
+    expect(result.current.journalData.Monday).toEqual(result.current.journalData.Sunday);
   });
 
   it('Should allow an entry to be saved', async () => {
@@ -152,10 +148,7 @@ describe('useJournal', () => {
     expect(result.current.journalData.Wednesday).toContain(entry);
 
     // Should have updated storage
-    expect(storageSpy).toHaveBeenCalledWith(
-      'journalData',
-      expect.objectContaining(expected),
-    );
+    expect(storageSpy).toHaveBeenCalledWith('journalData', expect.objectContaining(expected));
   });
 
   it('Should allow an entry to be removed', async () => {
@@ -173,10 +166,7 @@ describe('useJournal', () => {
     expect(result.current.journalData.Wednesday).not.toContain(entry);
 
     // Should have updated storage
-    expect(storageSpy).toHaveBeenCalledWith(
-      'journalData',
-      expect.not.objectContaining(entry),
-    );
+    expect(storageSpy).toHaveBeenCalledWith('journalData', expect.not.objectContaining(entry));
   });
 
   it('Should allow an entry to be updated', async () => {
@@ -196,10 +186,7 @@ describe('useJournal', () => {
     expect(result.current.journalData.Wednesday).toContain(updatedEntry);
 
     // Should have updated storage
-    expect(storageSpy).toHaveBeenCalledWith(
-      'journalData',
-      expect.objectContaining(expected),
-    );
+    expect(storageSpy).toHaveBeenCalledWith('journalData', expect.objectContaining(expected));
   });
 
   it('Should allow a day to be filled in testing', async () => {

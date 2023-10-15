@@ -1,19 +1,19 @@
+import { InputWithLabel } from '@components/InputWithLabel';
+import { RadioButton } from '@components/RadioButton';
+import { Space } from '@components/Space';
+import { Text } from '@components/Text';
+import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '@config/constants';
+import { useThemedStyles } from '@hooks/useThemedStyles';
 import { useFocusEffect } from '@react-navigation/native';
+import { Theme } from '@theme';
 import React, { useCallback, useState } from 'react';
 import { Alert, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 //@ts-ignore no types available
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { RadioButton } from '@components/RadioButton';
-import { InputWithLabel } from '@components/InputWithLabel';
-import { Space } from '@components/Space';
-import { Text } from '@components/Text';
-import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '@config/constants';
-import { useThemedStyles } from '@hooks/useThemedStyles';
-import { isInputNumber } from '@app/lib/validation';
 import { calculateBMR } from '@app/lib/calculators';
-import { Theme } from '@theme';
+import { isInputNumber } from '@app/lib/validation';
 import { RootStackScreen } from '@app/navigation/types';
 import { ActivityLevel } from '@app/types';
 
@@ -69,14 +69,14 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       }
     }
 
-    setFormData((prevData) => ({
+    setFormData(prevData => ({
       ...prevData,
       [property]: value,
     }));
   };
 
   /* Boolean indicating if any inputs are incomplete */
-  const TDEEFormIncomplete = Object.values(formData).some((property) => !property);
+  const TDEEFormIncomplete = Object.values(formData).some(property => !property);
 
   const calculateTDEE = () => {
     if (TDEEFormIncomplete) {
@@ -144,7 +144,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           setValue={setActivityLevel}
           //@ts-ignore typing on this library is a bit odd
           value={activityLevel}
-          onSelectItem={(item) => {
+          onSelectItem={item => {
             //@ts-ignore typing on this library is a bit odd
             handleCalculatorChange('activityMultiplier', item.multiplier);
           }}

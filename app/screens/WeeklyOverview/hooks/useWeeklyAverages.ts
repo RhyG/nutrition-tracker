@@ -30,7 +30,7 @@ const getAverages = (data: JournalData) => {
 };
 
 export const useWeeklyAverages = () => {
-  const journalData = useJournal((state) => state.journalData);
+  const journalData = useJournal(state => state.journalData);
 
   const averages = getAverages(journalData);
 

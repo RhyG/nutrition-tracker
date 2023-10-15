@@ -1,7 +1,8 @@
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { LabelPosition } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import React from 'react';
 import { Text } from 'react-native';
+
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
 interface Props {
   focused: boolean;

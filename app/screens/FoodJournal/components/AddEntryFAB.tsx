@@ -1,11 +1,11 @@
+import Icon from '@expo/vector-icons/Entypo';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { BounceInDown, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import Icon from '@expo/vector-icons/Entypo';
 
-import { Theme } from '@app/theme';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { Theme } from '@app/theme';
 
 const FAB_VISIBLE_BOTTOM_VALUE = 30;
 const FAB_HIDDEN_BOTTOM_VALUE = -180;

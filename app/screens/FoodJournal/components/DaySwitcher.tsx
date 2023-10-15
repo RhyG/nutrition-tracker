@@ -1,10 +1,9 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import Icon from '@expo/vector-icons/AntDesign';
-
 import { Text } from '@components/Text';
+import Icon from '@expo/vector-icons/AntDesign';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Directions } from '../hooks/useDaySwitcher';
 

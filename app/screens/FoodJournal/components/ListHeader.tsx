@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, TouchableHighlight } from 'react-native';
-
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@theme';
+import React from 'react';
+import { StyleSheet, TouchableHighlight, View } from 'react-native';
+
 import { Text } from '@app/components/Text';
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
 export const ListHeader = ({ onHeadingsPress }: { onHeadingsPress: () => void }) => {
   const { styles } = useThemedStyles(stylesFn);

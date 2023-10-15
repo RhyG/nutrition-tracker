@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { theme, Theme } from '../theme';
+import { Theme, theme } from '../theme';
 
 export type StyleFunction<Styles> = (theme: Theme) => Styles;
 

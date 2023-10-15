@@ -1,8 +1,10 @@
-import { HeaderStyle } from '@app/theme';
-import { Day } from '@app/types';
-import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useLayoutEffect } from 'react';
+
+import { HeaderStyle } from '@app/theme';
 import { theme } from '@app/theme';
+import { Day } from '@app/types';
+
 import { DropdownMenu } from '../components';
 
 /* Sets the dropdown menu in the right side of the header */

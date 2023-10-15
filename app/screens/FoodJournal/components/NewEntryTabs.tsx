@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
-// import styled from 'styled-components/native';
 
+// import styled from 'styled-components/native';
 import { Text } from '@app/components/Text';
 
 type Props = {

@@ -1,14 +1,15 @@
-import 'react-native-gesture-handler';
-import 'react-native-get-random-values';
 import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import 'react-native-get-random-values';
 import { MenuProvider } from 'react-native-popup-menu';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import AsyncStorage from '@app/modules/AsyncStorage';
+import { DefaultGoals, Goals, useGoals } from '@app/store/goals';
+import { DefaultJournalData, useJournal } from '@app/store/journal';
 
 import AppNavigator from './app/navigation';
-import { Goals, DefaultGoals, useGoals } from '@app/store/goals';
-import { DefaultJournalData, useJournal } from '@app/store/journal';
-import AsyncStorage from '@app/modules/AsyncStorage';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Fetch goals and current data from storage on app mount
 (async () => {

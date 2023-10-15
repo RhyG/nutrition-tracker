@@ -1,13 +1,13 @@
+import Icon from '@expo/vector-icons/MaterialIcons';
 import React, { memo } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import Icon from '@expo/vector-icons/MaterialIcons';
 
 import { Text } from '@app/components/Text';
-import { JournalEntry } from '@app/types';
-import { Theme } from '@app/theme';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { Theme } from '@app/theme';
+import { JournalEntry } from '@app/types';
 
 type Props = {
   entry: JournalEntry;

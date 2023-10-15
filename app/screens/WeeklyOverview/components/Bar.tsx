@@ -3,10 +3,10 @@ import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { Menu, MenuOptions, MenuTrigger, renderers } from 'react-native-popup-menu';
 
 import { Text } from '@app/components/Text';
-import { Day } from '@app/types';
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { calculateSizeAsPercentage } from '@app/lib/calculators';
 import { Theme } from '@app/theme';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { Day } from '@app/types';
 
 const { Popover } = renderers;
 

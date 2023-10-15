@@ -72,7 +72,7 @@ export const DefaultJournalData: JournalData = {
  * The store for the journal entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournal = create<IJournalState>((set) => ({
+export const useJournal = create<IJournalState>(set => ({
   journalData: DefaultJournalData,
   updateJournal: async (data: JournalData) => {
     await AsyncStorage.setItem('journalData', data);
@@ -126,7 +126,7 @@ export const useJournal = create<IJournalState>((set) => ({
   removeItem: (id: string, day: Day) => {
     set(({ journalData }) => {
       // Filter current entries for all but the one matching the received ID
-      const todayFood = journalData[day].filter((item) => item.id !== id);
+      const todayFood = journalData[day].filter(item => item.id !== id);
 
       const newJournalData = {
         ...journalData,
@@ -144,10 +144,10 @@ export const useJournal = create<IJournalState>((set) => ({
   updateItem: (updatedItem: JournalEntry, day: Day) => {
     set(({ journalData }) => {
       // Get the index of the item to be updated.
-      const itemIndex = journalData[day].findIndex((item) => item.id === updatedItem.id);
+      const itemIndex = journalData[day].findIndex(item => item.id === updatedItem.id);
 
       // Filter out the item.
-      const updatedEntries = journalData[day].filter((item) => item.id !== updatedItem.id);
+      const updatedEntries = journalData[day].filter(item => item.id !== updatedItem.id);
 
       //  Insert the updated item at the index of the item being updated.
       updatedEntries.splice(itemIndex, 0, updatedItem);

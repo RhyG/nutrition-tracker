@@ -59,7 +59,7 @@ const StorageModule: StorageModule = {
       StorageModule.cache[key] = value;
     } catch (error) {}
   },
-  removeItem: async (key) => {
+  removeItem: async key => {
     try {
       await AsyncStorage.removeItem(key);
       delete StorageModule.cache[key];

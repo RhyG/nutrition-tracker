@@ -1,23 +1,23 @@
+import { InputWithLabel } from '@components/InputWithLabel';
+import { Text } from '@components/Text';
+import { useThemedStyles } from '@hooks/useThemedStyles';
+import { Goals, useGoals } from '@store/goals';
+import { Theme } from '@theme';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import shallow from 'zustand/shallow';
 
-import { Text } from '@components/Text';
-import { InputWithLabel } from '@components/InputWithLabel';
-import { RootStackScreen } from '@app/navigation/types';
-import { Goals, useGoals } from '@store/goals';
-import { isInputNumber } from '@app/lib/validation';
-import { useThemedStyles } from '@hooks/useThemedStyles';
-import { Theme } from '@theme';
 import { Space } from '@app/components/Space';
+import { isInputNumber } from '@app/lib/validation';
+import { RootStackScreen } from '@app/navigation/types';
 
 const DEFAULT_GOALS = { calories: 2000, protein: 80 };
 
 export const GoalsScreen: RootStackScreen<'Goals'> = () => {
   const { styles } = useThemedStyles(stylesFn);
 
-  const updateGoals = useGoals((state) => state.updateGoals);
-  const currentGoals = useGoals((state) => ({ calories: state.calories, protein: state.protein }), shallow);
+  const updateGoals = useGoals(state => state.updateGoals);
+  const currentGoals = useGoals(state => ({ calories: state.calories, protein: state.protein }), shallow);
 
   const [inputs, setInputs] = useState<Goals>(currentGoals || DEFAULT_GOALS);
 
@@ -30,7 +30,7 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
       return;
     }
 
-    setInputs((prevInputs) => ({
+    setInputs(prevInputs => ({
       ...prevInputs,
       [name]: Number(value),
     }));

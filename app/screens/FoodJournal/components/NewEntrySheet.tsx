@@ -1,19 +1,18 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { Theme } from '@theme';
+import { nanoid } from 'nanoid';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { RadioButton } from '@app/components/RadioButton';
 import { Text } from '@app/components/Text';
-import { JournalEntry, Day } from '@app/types';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
-import { Theme } from '@theme';
-import { useJournal } from '@app/store/journal';
-import { isInputNumber } from '@app/lib/validation';
-
-import { nanoid } from 'nanoid';
 import { useEvent } from '@app/hooks/useEvent';
+import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { isInputNumber } from '@app/lib/validation';
+import { useJournal } from '@app/store/journal';
+import { Day, JournalEntry } from '@app/types';
 
 type Props = {
   currentDay: Day;
@@ -45,8 +44,8 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
     } = useThemedStyles(stylesFn);
     const snapPoints = useSafeAreaSnapPoints();
 
-    const saveItem = useJournal((state) => state.saveItem);
-    const updateItem = useJournal((state) => state.updateItem);
+    const saveItem = useJournal(state => state.saveItem);
+    const updateItem = useJournal(state => state.updateItem);
 
     const [addAnotherEntrySelected, setAddAnotherEntry] = useState(false);
 
@@ -132,7 +131,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
           <BottomSheetTextInput
             style={styles.input}
             placeholder="Name"
-            onChangeText={(text) => onChangeEntryDetails('name', text)}
+            onChangeText={text => onChangeEntryDetails('name', text)}
             value={name}
             // @ts-expect-error this type is gross, not sure how to fix
             ref={entryNameInputRef}
@@ -143,7 +142,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             style={[styles.input, styles.marginTop]}
             placeholder="Calories"
             value={String(calories)}
-            onChangeText={(text) => onChangeEntryDetails('calories', text)}
+            onChangeText={text => onChangeEntryDetails('calories', text)}
             // @ts-expect-error this type is gross, not sure how to fix
             ref={caloriesInputRef}
             placeholderTextColor={colours.palette.neutral300}
@@ -153,7 +152,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
           <BottomSheetTextInput
             style={[styles.input, styles.marginTop]}
             placeholder="Protein"
-            onChangeText={(text) => onChangeEntryDetails('protein', text)}
+            onChangeText={text => onChangeEntryDetails('protein', text)}
             // @ts-expect-error this type is gross, not sure how to fix
             ref={proteinInputRef}
             placeholderTextColor={colours.palette.neutral300}
@@ -171,7 +170,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             {!entryBeingUpdated ? (
               <RadioButton
                 label="Add another"
-                onPress={() => setAddAnotherEntry((current) => !current)}
+                onPress={() => setAddAnotherEntry(current => !current)}
                 selected={addAnotherEntrySelected}
                 containerStyle={styles.radioButtonContainer}
               />

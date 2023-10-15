@@ -1,18 +1,18 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useThemedStyles } from '@hooks/useThemedStyles';
+import { Theme } from '@theme';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
 import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
-import { Theme } from '@theme';
-import { useThemedStyles } from '@hooks/useThemedStyles';
+import { useEvent } from '@app/hooks/useEvent';
+import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation/types';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
-import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
-import { useEvent } from '@app/hooks/useEvent';
 
 import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
@@ -35,7 +35,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
 
   const { calories: caloriesGoal, protein: proteinGoal } = useGoals(({ calories, protein }) => ({ calories, protein }));
 
-  const { journalData, removeItem } = useJournal((state) => ({ ...state }), shallow);
+  const { journalData, removeItem } = useJournal(state => ({ ...state }), shallow);
 
   const [showAddEntryButton, setShowAddEntryButton] = useState(true);
   const [entryBeingUpdated, setEntryBeingUpdated] = useState(false);
@@ -50,7 +50,7 @@ export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
   const [entryDetails, setEntryDetails] = useState<JournalEntry>(DEFAULT_ENTRY_DETAILS);
 
   const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
-    setEntryDetails((prevDetails) => ({ ...prevDetails, [key]: value }));
+    setEntryDetails(prevDetails => ({ ...prevDetails, [key]: value }));
   };
 
   const onNewEntryPress = () => {

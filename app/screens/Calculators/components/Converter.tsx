@@ -1,14 +1,14 @@
+import { Text } from '@components/Text';
 import React, { memo, useReducer } from 'react';
+import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from '@components/Text';
-import { isInputNumber } from '@app/lib/validation';
+import { Space } from '@app/components/Space';
+import { useEvent } from '@app/hooks/useEvent';
 import { caloriesToKj, kjToCalories } from '@app/lib/energy';
+import { isInputNumber } from '@app/lib/validation';
 
 import { InputWithLabel } from '../../../components/InputWithLabel';
-import { Space } from '@app/components/Space';
-import { useCallback } from 'react';
-import { useEvent } from '@app/hooks/useEvent';
 
 type ReducerState = {
   calories: number;

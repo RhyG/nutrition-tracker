@@ -1,7 +1,6 @@
-import React from 'react';
-import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
-
 import { colours, typography } from '@theme';
+import React from 'react';
+import { Text as RNText, TextProps as RNTextProps, StyleProp, TextStyle } from 'react-native';
 
 type Sizes = keyof typeof sizeStyles;
 type Weights = keyof typeof typography.weights;

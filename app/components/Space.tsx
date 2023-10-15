@@ -1,6 +1,5 @@
-import { StyleSheet, View } from 'react-native';
-
 import { theme } from '@theme';
+import { StyleSheet, View } from 'react-native';
 
 type Props = {
   flex?: number;

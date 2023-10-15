@@ -1,10 +1,9 @@
+import { REPO_URL } from '@config/constants';
+import Icon from '@expo/vector-icons/AntDesign';
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { colours } from '@theme';
 import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
-import Icon from '@expo/vector-icons/AntDesign';
-
-import { REPO_URL } from '@config/constants';
-import { colours } from '@theme';
 
 import { DrawerHeaderImage } from './DrawerHeaderImage';
 

@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Animated, StyleSheet, Dimensions } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';

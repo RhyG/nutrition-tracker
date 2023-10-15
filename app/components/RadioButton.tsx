@@ -1,9 +1,8 @@
-import React from 'react';
-import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle, View } from 'react-native';
 import Icon from '@expo/vector-icons/Feather';
-
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
+import React from 'react';
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
 import { Text } from './Text';
 

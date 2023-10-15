@@ -1,18 +1,18 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
 import { Space } from '@components/Space';
 import { Text } from '@components/Text';
 import { DAYS } from '@config/constants';
 import { Theme } from '@theme';
-import { useGoals } from '@app/store/goals';
-import { useJournal } from '@app/store/journal';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation/types';
+import { useGoals } from '@app/store/goals';
+import { useJournal } from '@app/store/journal';
 
 import { Bar } from './components';
 import { useWeeklyAverages } from './hooks/useWeeklyAverages';
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
 export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
   const {
@@ -22,10 +22,10 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
   const { averageProtein, averageCalories } = useWeeklyAverages();
 
-  const calorieGoal = useGoals((state) => state.calories);
-  const proteinGoal = useGoals((state) => state.protein);
+  const calorieGoal = useGoals(state => state.calories);
+  const proteinGoal = useGoals(state => state.protein);
 
-  const journalData = useJournal((state) => state.journalData);
+  const journalData = useJournal(state => state.journalData);
 
   return (
     <View style={styles.container}>
@@ -53,7 +53,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         </View>
         <View style={styles.barsContainer}>
           <View style={styles.bars}>
-            {DAYS.map((day) => {
+            {DAYS.map(day => {
               return <Bar amount={getCurrentCalories(journalData[day])} goal={calorieGoal} day={day} key={day} type="calories" />;
             })}
           </View>
@@ -84,7 +84,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         </View>
         <View style={styles.barsContainer}>
           <View style={styles.bars}>
-            {DAYS.map((day) => (
+            {DAYS.map(day => (
               <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
             ))}
           </View>

@@ -1,9 +1,8 @@
+import Icon from '@expo/vector-icons/Entypo';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { colours } from '@theme';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import Icon from '@expo/vector-icons/Entypo';
-
-import { colours } from '@theme';
 
 export const BurgerMenu = () => {
   const { dispatch } = useNavigation();
