@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { DAYS } from '@app/config/constants';
 import AsyncStorage from '@app/modules/AsyncStorage';

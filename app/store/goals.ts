@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { DEFAULT_CALORIES, DEFAULT_PROTEIN } from '@app/config/constants';
 import AsyncStorage from '@app/modules/AsyncStorage';
