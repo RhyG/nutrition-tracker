@@ -44,8 +44,8 @@ export function Text(props: TextProps) {
   const content = text || children;
 
   const preset: Presets = props.preset ?? 'default';
-  const color = { color: colour };
-  // @ts-ignore - I want to use `undefined` as an index so that it returns undefined
+  const color = { color: colour ?? colours.text };
+  // @ts-expect-error - I want to use `undefined` as an index so that it returns undefined
   const styles = [presets[preset], fontWeightStyles[weight], sizeStyles[size], color, styleOverride];
 
   return (
