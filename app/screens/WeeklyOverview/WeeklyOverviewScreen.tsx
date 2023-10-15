@@ -7,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
-import { RootStackScreen } from '@app/navigation/types';
+import { RootStackScreen } from '@app/navigation';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 

@@ -7,15 +7,12 @@ import { useThemedStyles } from '@hooks/useThemedStyles';
 import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import React, { useCallback, useState } from 'react';
-import { Alert, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-//@ts-ignore no types available
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { calculateBMR } from '@app/lib/calculators';
 import { isInputNumber } from '@app/lib/validation';
-import { RootStackScreen } from '@app/navigation/types';
-import { ActivityLevel } from '@app/types';
+import { RootStackScreen } from '@app/navigation';
 
 import { Converter } from './components';
 
@@ -45,7 +42,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     styles,
   } = useThemedStyles(stylesFn);
 
-  const [activityLevel, setActivityLevel] = useState<ActivityLevel>(ACTIVITY_LEVELS[0]);
+  const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[0]);
   const [formData, setFormData] = useState<TDEEFormData>(DEFAULT_FORM_DATA);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -95,72 +92,71 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={80}>
-      <View style={styles.contentContainer}>
-        <Text preset="heading" style={styles.cacluateTDEEText}>
-          Calculate TDEE
-        </Text>
-        <View style={styles.TDEEFields}>
-          <View style={styles.fieldContainer}>
-            <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} value={formData.age} />
-          </View>
-          <View style={styles.fieldContainer}>
-            <InputWithLabel
-              label="Weight (kg)"
-              placeholder="74"
-              onInputChange={(text: string) => handleCalculatorChange('weight', text)}
-              value={formData.weight}
-              keyboardType="number-pad"
-            />
-          </View>
-          <View style={styles.fieldContainer}>
-            <Space units={3} />
-            <InputWithLabel
-              label="Height (cm)"
-              placeholder="178"
-              onInputChange={(text: string) => handleCalculatorChange('height', text)}
-              value={formData.height}
-              keyboardType="number-pad"
-            />
-          </View>
-          <View style={styles.fieldContainer}>
-            <Space units={3} />
-            <Text preset="formHelper">Gender</Text>
-            <View style={styles.radiosContainer}>
-              <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
-              <Space horizontal units={3} />
-              <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
-            </View>
+    <View style={styles.contentContainer}>
+      <Text preset="heading" style={styles.cacluateTDEEText}>
+        Calculate TDEE
+      </Text>
+      <View style={styles.TDEEFields}>
+        <View style={styles.fieldContainer}>
+          <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} value={formData.age} />
+        </View>
+        <View style={styles.fieldContainer}>
+          <InputWithLabel
+            label="Weight (kg)"
+            placeholder="74"
+            onInputChange={(text: string) => handleCalculatorChange('weight', text)}
+            value={formData.weight}
+            keyboardType="number-pad"
+          />
+        </View>
+        <View style={styles.fieldContainer}>
+          <Space units={3} />
+          <InputWithLabel
+            label="Height (cm)"
+            placeholder="178"
+            onInputChange={(text: string) => handleCalculatorChange('height', text)}
+            value={formData.height}
+            keyboardType="number-pad"
+          />
+        </View>
+        <View style={styles.fieldContainer}>
+          <Space units={3} />
+          <Text preset="formHelper">Gender</Text>
+          <View style={styles.radiosContainer}>
+            <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
+            <Space horizontal units={3} />
+            <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
           </View>
         </View>
-        <Space units={4} />
-        <Text preset="heading" style={styles.activityLevelText}>
-          Activity level
-        </Text>
-        <DropDownPicker
-          items={ACTIVITY_LEVELS}
-          open={dropdownOpen}
-          setOpen={setDropdownOpen}
-          setValue={setActivityLevel}
-          //@ts-ignore typing on this library is a bit odd
-          value={activityLevel}
-          onSelectItem={item => {
-            //@ts-ignore typing on this library is a bit odd
-            handleCalculatorChange('activityMultiplier', item.multiplier);
-          }}
-          labelStyle={styles.pickerLabel}
-        />
-        <TouchableOpacity
-          disabled={TDEEFormIncomplete}
-          onPress={calculateTDEE}
-          style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
-          <Text colour="#fff">Calculate TDEE</Text>
-        </TouchableOpacity>
-        <Space units={5} />
-
-        <Converter />
       </View>
-    </KeyboardAwareScrollView>
+      <Space units={4} />
+      <Text preset="heading" style={styles.activityLevelText}>
+        Activity level
+      </Text>
+      <DropDownPicker
+        //@ts-expect-error typing on this library is a bit odd
+        items={ACTIVITY_LEVELS}
+        open={dropdownOpen}
+        setOpen={setDropdownOpen}
+        setValue={setActivityLevel}
+        //@ts-expect-error typing on this library is a bit odd
+        value={activityLevel}
+        onSelectItem={item => {
+          //@ts-expect-error typing on this library is a bit odd
+          handleCalculatorChange('activityMultiplier', item.multiplier);
+        }}
+        labelStyle={styles.pickerLabel}
+      />
+      <TouchableOpacity
+        disabled={TDEEFormIncomplete}
+        onPress={calculateTDEE}
+        style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
+        <Text colour="#fff">Calculate TDEE</Text>
+      </TouchableOpacity>
+      <Space units={5} />
+
+      <Converter />
+    </View>
   );
 };
 

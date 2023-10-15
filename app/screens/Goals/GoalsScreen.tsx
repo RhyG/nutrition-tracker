@@ -1,15 +1,14 @@
 import { InputWithLabel } from '@components/InputWithLabel';
 import { Text } from '@components/Text';
 import { useThemedStyles } from '@hooks/useThemedStyles';
-import { Goals, useGoals } from '@store/goals';
+import { useGoals } from '@store/goals';
 import { Theme } from '@theme';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
-import { isInputNumber } from '@app/lib/validation';
-import { RootStackScreen } from '@app/navigation/types';
+import { RootStackScreen } from '@app/navigation';
 
 const DEFAULT_GOALS = { calories: 2000, protein: 80 };
 
@@ -19,22 +18,8 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
   const updateGoals = useGoals(state => state.updateGoals);
   const currentGoals = useGoals(state => ({ calories: state.calories, protein: state.protein }), shallow);
 
-  const [inputs, setInputs] = useState<Goals>(currentGoals || DEFAULT_GOALS);
-
   const [calories, setCalories] = useState(String(currentGoals.calories || DEFAULT_GOALS.calories));
   const [protein, setProtein] = useState(String(currentGoals.protein || DEFAULT_GOALS.protein));
-
-  const handleChange = (name: keyof Goals, value: string) => {
-    /* Prevent entering non-numbers */
-    if (!isInputNumber(value)) {
-      return;
-    }
-
-    setInputs(prevInputs => ({
-      ...prevInputs,
-      [name]: Number(value),
-    }));
-  };
 
   const handleSaveUpdatedGoals = () => {
     const newGoals = {

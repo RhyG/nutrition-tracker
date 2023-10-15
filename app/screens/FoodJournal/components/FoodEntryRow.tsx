@@ -15,15 +15,6 @@ type Props = {
   onDeletePress: (id: string) => void;
 };
 
-const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 const _FoodEntryRow = ({ entry, onEntryPress, onDeletePress }: Props) => {
   const { styles } = useThemedStyles(stylesFn);
 

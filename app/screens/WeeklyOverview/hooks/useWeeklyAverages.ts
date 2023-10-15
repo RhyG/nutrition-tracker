@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { JournalData, useJournal } from '@app/store/journal';
 import { Day, JournalEntry } from '@app/types';
 

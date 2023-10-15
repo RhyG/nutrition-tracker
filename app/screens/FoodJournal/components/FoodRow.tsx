@@ -16,7 +16,7 @@ type Props = {
 function _FoodRow({ entry }: Props) {
   const { styles } = useThemedStyles(stylesFn);
 
-  const { name, calories, protein, id } = entry;
+  const { name, calories, protein } = entry;
 
   const onDeleteButtonPress = () => {};
 

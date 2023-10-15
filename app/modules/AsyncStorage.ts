@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// TODO: Migrate to MMKV
 type StorageModule = {
   /**
    * A quick access cache to help reduce read time of the storage.
@@ -11,7 +12,7 @@ type StorageModule = {
    * @param {string} key - key of the item to be retrieved.
    * @param {string | number | Record<string, unknown>} defaultValue - default to return if no item found.
    */
-  getItem: <TItem extends unknown>(key: string, defaultValue: string | number | Record<string, unknown>) => Promise<TItem>;
+  getItem: <TItem>(key: string, defaultValue: string | number | Record<string, unknown>) => Promise<TItem>;
   /**
    * Stores an item in storage.
    * @param {string} key - key of the item to be stored.
@@ -38,7 +39,8 @@ const StorageModule: StorageModule = {
       result = await AsyncStorage.getItem(key);
 
       if (result && result.startsWith('json:')) {
-        result = JSON.parse(result.split('json:')[1]);
+        const value = result.split('json:')[1];
+        if (value) result = JSON.parse(value);
       }
 
       StorageModule.cache[key] = result;
@@ -57,13 +59,17 @@ const StorageModule: StorageModule = {
       }
 
       StorageModule.cache[key] = value;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
   removeItem: async key => {
     try {
       await AsyncStorage.removeItem(key);
       delete StorageModule.cache[key];
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 

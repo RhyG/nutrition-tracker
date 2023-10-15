@@ -1,19 +1,14 @@
-import { BurgerMenu } from '@components/BurgerMenu';
-import { CustomDrawer } from '@components/CustomDrawer/CustomDrawer';
 import { Feather } from '@expo/vector-icons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { colours } from '@theme';
-import React, { useEffect, useRef } from 'react';
-import { Button, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 
 import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
-import { AboutScreen } from '@app/screens/About/AboutScreen';
 import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
-import { FoodJournalScreen } from '@app/screens/FoodJournal/FoodJournalScreen';
 import { FoodLogScreen } from '@app/screens/FoodJournal/FoodLogScreen';
 import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
 import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
@@ -34,7 +29,7 @@ type RootStackScreenProps<Name extends keyof RootStackParamList> = {
   route: RouteProp<RootStackParamList, Name>;
 };
 
-export interface RootStackScreen<Name extends keyof RootStackParamList, Props = {}> extends React.FC<RootStackScreenProps<Name> & Props> {}
+export interface RootStackScreen<Name extends keyof RootStackParamList, Props = Record<string, unknown>> extends React.FC<RootStackScreenProps<Name> & Props> {}
 
 const headerStyle = {
   shadowColor: 'transparent',
@@ -59,8 +54,6 @@ function OpenLogButton({ onPress }: { onPress: () => void }) {
 }
 
 export default function AppNavigator() {
-  const [modalVisible, setModalVisible] = React.useState(false);
-
   const ref = useRef<BottomSheet>(null);
 
   const openSheet = () => {

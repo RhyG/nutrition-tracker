@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import useDaySwitcher, { Directions } from '../useDaySwitcher';
+import { Directions, useDaySwitcher } from '../useDaySwitcher';
 
 jest.mock('date-fns', () => ({
   format: jest.fn(() => 'Wednesday'),

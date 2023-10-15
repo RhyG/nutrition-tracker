@@ -48,6 +48,7 @@ module.exports = {
         '@hooks': './app/hooks',
         '@config': './app/config',
         '@types': './app/types',
+        '@tests': './app/tests',
       },
     },
   },

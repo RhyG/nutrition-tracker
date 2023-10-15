@@ -4,13 +4,9 @@ import { AppState } from 'react-native';
 
 import { DAYS } from '@app/config/constants';
 import { useEvent } from '@app/hooks/useEvent';
-import { Day } from '@app/types';
 
-/**
- * Should this be a union type?
- * Pros: Better devex, less chance of erros because of typos, only update in one place.
- * Conds: Enums add to bundle size.
- */
+export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
 export const Directions = {
   LEFT: 'LEFT',
   RIGHT: 'RIGHT',
@@ -24,7 +20,7 @@ export const useDaySwitcher = (): {
   currentDay: Day;
   handleDayChange: (direction: Directions) => void;
 } => {
-  const [currentDay, setCurrentDay] = useState<Day>(DAYS[DAYS.indexOf(TODAY)]);
+  const [currentDay, setCurrentDay] = useState<Day>(DAYS[DAYS.indexOf(TODAY)]!);
 
   // Automatically set the day to today on app foreground
   useEffect(() => {
@@ -45,14 +41,16 @@ export const useDaySwitcher = (): {
     switch (direction) {
       case Directions.LEFT:
         if (todayIndex > 0) {
-          setCurrentDay(DAYS[todayIndex - 1]);
+          const day = DAYS[todayIndex - 1];
+          if (day) setCurrentDay(day);
           return;
         } else {
           return;
         }
       case Directions.RIGHT:
         if (todayIndex < 6) {
-          setCurrentDay(DAYS[todayIndex + 1]);
+          const day = DAYS[todayIndex + 1];
+          if (day) setCurrentDay(day);
           return;
         } else {
           return;

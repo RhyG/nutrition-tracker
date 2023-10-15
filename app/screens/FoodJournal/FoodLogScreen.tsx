@@ -14,7 +14,7 @@ import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 
-import { AddEntryFAB, DaySwitcher, FoodEntryRow, ListHeader, NewEntrySheet, Stat } from './components';
+import { AddEntryFAB, DaySwitcher, ListHeader, NewEntrySheet, Stat } from './components';
 import { FoodRow } from './components/FoodRow';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
 import { useDropdownHeader } from './hooks/useDropdownHeader';

@@ -1,6 +1,6 @@
-import { ActivityLevel, Day } from '@app/types';
+import { Day } from '@app/types';
 
-export const ACTIVITY_LEVELS: ActivityLevel[] = [
+export const ACTIVITY_LEVELS = [
   {
     label: 'Sedentary (little to no exercise + work a desk job)',
     value: 'Sedentary (little to no exercise + work a desk job)',
@@ -26,7 +26,7 @@ export const ACTIVITY_LEVELS: ActivityLevel[] = [
     value: 'Extremely active (very heavy exercise, hard labor job, training 2x / day)',
     multiplier: 1.9,
   },
-];
+] as const;
 
 export const FEMALE_TDEE_VARIABLE = -161;
 export const MALE_TDEE_VARIABLE = 5;

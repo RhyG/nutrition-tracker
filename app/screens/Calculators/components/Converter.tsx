@@ -1,6 +1,5 @@
 import { Text } from '@components/Text';
 import React, { memo, useReducer } from 'react';
-import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Space } from '@app/components/Space';

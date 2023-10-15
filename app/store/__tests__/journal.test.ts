@@ -1,10 +1,51 @@
 import { act, renderHook } from '@testing-library/react-hooks';
+import { nanoid } from 'nanoid';
 
 import AsyncStorage from '@app/modules/AsyncStorage';
 import { JournalEntry } from '@app/types';
-import { generateEntries } from '@app/utils/generateEntries';
 
 import { useJournal } from '../journal';
+
+const FOODS = [
+  'Burger',
+  'Pizza',
+  'Fruit salad',
+  'Pasta',
+  'Steak',
+  'Parmi',
+  'Fish & Chips',
+  'Ramen',
+  'Curry',
+  'Stew',
+  'Sandwich',
+  'Tuna',
+  'Burritos',
+  'Casserole',
+  'Soup',
+  'Oyster Kilpatrick',
+  'Snag in bread',
+  'Katsu sando',
+];
+
+const generateRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+
+const generateEntries = (amount = 20): JournalEntry[] => {
+  const entries: JournalEntry[] = [];
+
+  if (!__DEV__) {
+    return entries;
+  }
+
+  for (let i = 0; i < amount; i++) {
+    const name = FOODS[generateRandomNumber(0, FOODS.length)] ?? '';
+    const calories = generateRandomNumber(10, 500);
+    const protein = generateRandomNumber(5, 35);
+
+    entries.push({ id: nanoid(), name, calories, protein });
+  }
+
+  return entries;
+};
 
 const mockData = {
   Monday: generateEntries(3),

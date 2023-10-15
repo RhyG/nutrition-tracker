@@ -1,8 +1,9 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { RootStackScreen } from '@app/navigation';
+
 import { Text } from '../../components/Text';
-import { RootStackScreen } from '../../navigation/types';
 
 export const AboutScreen: RootStackScreen<'About'> = () => {
   return (

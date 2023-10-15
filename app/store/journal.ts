@@ -96,14 +96,21 @@ export const useJournal = create<IJournalState>(set => ({
 
       // Get the entries and copy them
       const dayToCopy = DAYS[indexOfDay];
-      const newItems = [...journalData[dayToCopy]];
 
-      return {
-        journalData: {
-          ...journalData,
-          [currentDay]: newItems,
-        },
-      };
+      if (dayToCopy) {
+        const newItems = [...journalData[dayToCopy]];
+
+        return {
+          journalData: {
+            ...journalData,
+            [currentDay]: newItems,
+          },
+        };
+      } else {
+        return {
+          journalData,
+        };
+      }
     });
   },
   saveItem: async (newItem: JournalEntry, day: Day) => {

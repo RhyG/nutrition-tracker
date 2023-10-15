@@ -9,7 +9,7 @@ import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
 import { useEvent } from '@app/hooks/useEvent';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
-import { RootStackScreen } from '@app/navigation/types';
+import { RootStackScreen } from '@app/navigation';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
@@ -29,7 +29,7 @@ const DEFAULT_ENTRY_DETAILS = {
   id: '',
 } as unknown as JournalEntry;
 
-export const FoodJournalScreen: RootStackScreen<'FoodJournal'> = () => {
+export const FoodJournalScreen: RootStackScreen<'Food Log'> = () => {
   const { styles } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 

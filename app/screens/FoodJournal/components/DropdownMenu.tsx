@@ -1,6 +1,5 @@
 import Icon from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
-import { Theme } from '@theme';
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
@@ -42,6 +41,7 @@ export const DropdownMenu = ({ currentDay }: Props) => {
   return (
     <TouchableOpacity style={styles.touchableHeader}>
       <Menu>
+        {/* eslint-disable-next-line react/no-children-prop -- this is a valid prop from the lib */}
         <MenuTrigger children={<Icon name="dots-three-vertical" size={22} color={colours.palette.neutral800} />} />
         <MenuOptions customStyles={optionsStyles}>
           <MenuOption onSelect={() => copyPreviousDay(currentDay)}>
@@ -62,7 +62,7 @@ export const DropdownMenu = ({ currentDay }: Props) => {
   );
 };
 
-const stylesFn = (theme: Theme) =>
+const stylesFn = () =>
   StyleSheet.create({
     touchableHeader: {
       paddingRight: 12.5,
