@@ -1,27 +1,24 @@
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, TextInput, View, Animated, ListRenderItem, Dimensions } from 'react-native';
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import React, { useRef } from 'react';
+import { Dimensions, ListRenderItem, StyleSheet, TextInput, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
-import { Text } from '../Text';
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
-import { Feather } from '@expo/vector-icons';
+
+import { Text } from '../Text';
+import { Tab, Tabs, sections } from './Tabs';
 
 const { width } = Dimensions.get('window');
 
-type Tab = 'QUICK_ADD' | 'SAVED';
-
 const renderBackdrop = (props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={1} />;
 
-export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
+export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknown>>((_, ref) => {
   const {
     styles,
     theme: { colours, spacing },
   } = useThemedStyles(stylesFn);
-
-  const scrollX = useRef(new Animated.Value(0)).current;
 
   const snapPoints = useSafeAreaSnapPoints();
 
@@ -29,20 +26,18 @@ export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
   const caloriesInputRef = useRef<TextInput>(null);
   const proteinInputRef = useRef<TextInput>(null);
 
-  const sections = ['QUICK_ADD', 'SAVED'];
-
-  const listRef = useRef<FlatList<string>>(null);
+  const listRef = useRef<FlatList<Tab>>(null);
 
   const scrollToTab = (tab: Tab) => {
     listRef.current?.scrollToIndex({ index: tab === 'QUICK_ADD' ? 0 : 1, animated: true });
   };
 
-  const renderItem: ListRenderItem<string> = ({ item }) => {
+  const renderItem: ListRenderItem<Tab> = ({ item }) => {
     switch (item) {
       case 'QUICK_ADD':
         return (
-          <View style={{ width }}>
-            <View style={{ marginHorizontal: spacing.base, flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
+          <View style={styles.selectionContainer}>
+            <View style={styles.quickAddInnerContainer}>
               <BottomSheetTextInput
                 style={styles.input}
                 placeholder="Name"
@@ -99,7 +94,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
               />
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.saveButton} onPress={() => {}}>
-                  <Text colour="#fff">Save</Text>
+                  <Text colour={colours.palette.neutral100}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cancelButton} onPress={() => {}}>
                   <Text>Cancel</Text>
@@ -110,7 +105,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
         );
       case 'SAVED':
         return (
-          <View style={{ width }}>
+          <View style={styles.selectionContainer}>
             <View style={{ marginHorizontal: spacing.base, flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
               <Text>SAVED</Text>
             </View>
@@ -124,9 +119,8 @@ export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
   return (
     <BottomSheet snapPoints={snapPoints} ref={ref} backdropComponent={renderBackdrop} enablePanDownToClose={true}>
       <View style={styles.sheetContainer}>
-        <Tabs scrollX={scrollX} onTabSelected={scrollToTab} />
+        <Tabs onTabSelected={scrollToTab} />
         <FlatList
-          // onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], { useNativeDriver: false })}
           bounces={false}
           data={sections}
           renderItem={renderItem}
@@ -141,91 +135,19 @@ export const NewEntryModal = React.forwardRef<BottomSheet, {}>((props, ref) => {
   );
 });
 
-function Tabs({ onTabSelected }: { onTabSelected: (index: Tab) => void }) {
-  const {
-    styles,
-    theme: { spacing, colours },
-  } = useThemedStyles(stylesFn);
-  const indicatorContainerWidth = width - spacing.base * 2;
-  const indicatorWidth = indicatorContainerWidth / 2;
-
-  /* 
-    Yeah we could drive this via data and allow any number of tabs but bit early for that,
-    and placing the state here also means it doesn't re-render the list in the parent when changing tabs.
-  */
-  const [selectedTab, setSelectedTab] = useState('QUICK_ADD');
-
-  const selectionIndiicatorPosition = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const newPosition = selectedTab === 'QUICK_ADD' ? 0 : indicatorContainerWidth - indicatorWidth;
-
-    Animated.spring(selectionIndiicatorPosition, {
-      toValue: newPosition,
-      useNativeDriver: true,
-      tension: 40,
-      overshootClamping: true,
-    }).start();
-  }, [selectedTab]);
-
-  const selectTab = (tab: Tab) => {
-    setSelectedTab(tab);
-    onTabSelected(tab);
-  };
-
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => selectTab('QUICK_ADD')} style={{ flexDirection: 'row' }}>
-            <Feather name="plus" size={24} color="black" />
-            <Text preset="formLabel" style={styles.sheetHeading}>
-              Quick Add
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => selectTab('SAVED')} style={{ flexDirection: 'row' }}>
-            <Feather name="save" size={24} color="black" />
-            <Text preset="formLabel" style={styles.sheetHeading}>
-              Saved
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{ height: 5, width: indicatorContainerWidth }}>
-        <Animated.View
-          style={{ backgroundColor: colours.palette.accent400, width: indicatorWidth, height: 3, transform: [{ translateX: selectionIndiicatorPosition }] }}
-        />
-      </View>
-    </View>
-  );
-}
-
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({
-    box: {
-      width: '100%',
-    },
     sheetContainer: {
       flex: 1,
-      // paddingHorizontal: spacing.base,
       paddingTop: spacing.small,
-    },
-    sheetHeading: {
-      marginBottom: 8,
-      marginLeft: 8,
     },
     saveButton: {
       backgroundColor: colours.palette.green,
       padding: spacing.small,
       borderRadius: 5,
     },
-    addEntryButtonText: {
-      color: '#fff',
-    },
     cancelButton: {
-      backgroundColor: '#fff',
+      backgroundColor: colours.palette.neutral100,
       padding: spacing.small,
       borderRadius: 5,
     },
@@ -234,12 +156,18 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       marginTop: spacing.medium,
     },
     input: {
-      backgroundColor: '#f5f5f5',
+      backgroundColor: colours.palette.neutral200,
       borderRadius: 5,
       fontSize: 15,
       padding: 8,
       color: '#000',
     },
     marginTop: { marginTop: 15 },
-    radioButtonContainer: { marginLeft: 'auto' },
+    quickAddInnerContainer: {
+      marginHorizontal: spacing.base,
+      flexDirection: 'column',
+      flex: 1,
+      justifyContent: 'center',
+    },
+    selectionContainer: { width },
   });
