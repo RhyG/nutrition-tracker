@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
-import shallow from 'zustand/shallow';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useJournal } from '@app/store/journal';
@@ -20,7 +19,9 @@ export const DropdownMenu = ({ currentDay }: Props) => {
   } = useThemedStyles(stylesFn);
   const navigation = useNavigation();
 
-  const { clearJournal, clearDay, copyPreviousDay } = useJournal(state => ({ ...state }), shallow);
+  const clearJournal = useJournal(state => state.clearJournal);
+  const clearDay = useJournal(state => state.clearDay);
+  const copyPreviousDay = useJournal(state => state.copyPreviousDay);
 
   // TODO figure out how to type navigation and remove cast to never.
   const navigateToGoalsScreen = () => {

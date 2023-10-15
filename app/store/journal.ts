@@ -6,7 +6,7 @@ import { Day, JournalEntry } from '@app/types';
 
 export type JournalData = Record<Day, JournalEntry[]>;
 
-interface IJournalState {
+interface JournalState {
   /**
    * Journal Data for each day.
    * Defaults to empty.
@@ -72,7 +72,7 @@ export const DefaultJournalData: JournalData = {
  * The store for the journal entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournal = create<IJournalState>(set => ({
+export const useJournal = create<JournalState>(set => ({
   journalData: DefaultJournalData,
   updateJournal: async (data: JournalData) => {
     await AsyncStorage.setItem('journalData', data);

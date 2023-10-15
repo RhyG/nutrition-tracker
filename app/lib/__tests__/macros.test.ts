@@ -5,12 +5,13 @@ const entries = [
     id: 'JGjZ5Bwgy',
     name: 'Oyster Kilpatrick',
     calories: 253,
+    timestamp: Date.now().toString(),
     protein: 28,
   },
-  { id: 'TMQF9dJny7', name: 'Fruit salad', calories: 375, protein: 9 },
-  { id: 'IKYZp3rw1J', name: 'Sandwich', calories: 431, protein: 30 },
-  { id: 'KkSxpMp-gD', name: 'Parmi', calories: 219, protein: 15 },
-  { id: 'VBpzi4DT0h', name: 'Tuna', calories: 290, protein: 10 },
+  { id: 'TMQF9dJny7', name: 'Fruit salad', calories: 375, timestamp: Date.now().toString(), protein: 9 },
+  { id: 'IKYZp3rw1J', name: 'Sandwich', calories: 431, timestamp: Date.now().toString(), protein: 30 },
+  { id: 'KkSxpMp-gD', name: 'Parmi', calories: 219, timestamp: Date.now().toString(), protein: 15 },
+  { id: 'VBpzi4DT0h', name: 'Tuna', calories: 290, timestamp: Date.now().toString(), protein: 10 },
 ];
 
 describe('getCurrentCalories', () => {

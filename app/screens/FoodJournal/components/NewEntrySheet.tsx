@@ -86,7 +86,7 @@ export const NewEntrySheet = React.forwardRef<BottomSheet, Props>(
             },
             currentDay,
           )
-        : saveItem({ id: nanoid(), ...newEntryDetails }, currentDay);
+        : saveItem({ id: nanoid(), ...newEntryDetails, timestamp: Date.now().toString() }, currentDay);
 
       setAddAnotherEntry(false);
       clearEntryDetails();

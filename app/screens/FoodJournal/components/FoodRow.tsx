@@ -14,7 +14,10 @@ type Props = {
 };
 
 function _FoodRow({ entry }: Props) {
-  const { styles } = useThemedStyles(stylesFn);
+  const {
+    styles,
+    theme: { colours },
+  } = useThemedStyles(stylesFn);
 
   const { name, calories, protein } = entry;
 
@@ -47,14 +50,27 @@ function _FoodRow({ entry }: Props) {
   return (
     <Swipeable friction={2} leftThreshold={40} rightThreshold={40} overshootLeft={false} overshootRight={false} renderRightActions={renderRightActions}>
       <TouchableOpacity onPress={onPress} style={styles.container}>
-        <View style={styles.nameContainer}>
-          <Text size="md">{name ?? ''}</Text>
+        <View style={styles.leftColumn}>
+          <View style={styles.nameContainer}>
+            <Text size="sm">{name ?? ''}</Text>
+          </View>
+          <Text size="xs" colour={colours.palette.neutral400}>
+            8:35
+          </Text>
         </View>
-        <View style={styles.valueContainer}>
-          <Text size="md">{calories ?? ''}</Text>
-        </View>
-        <View style={styles.valueContainer}>
-          <Text size="md">{protein ?? ''}</Text>
+        <View style={styles.rightColumn}>
+          <View style={styles.valueContainer}>
+            <Text size="sm">{calories ?? ''}</Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Text size="sm">{protein ?? ''}P</Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Text size="sm">86C</Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Text size="sm">12F</Text>
+          </View>
         </View>
       </TouchableOpacity>
     </Swipeable>
@@ -67,20 +83,28 @@ const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     container: {
       ...theme.layout.spaceBetweenRow,
-      paddingVertical: 15,
+      paddingVertical: theme.spacing.small,
       paddingHorizontal: theme.spacing.small,
+      alignItems: 'center',
     },
     nameContainer: {
       flex: 2,
     },
     valueContainer: {
-      flex: 1,
-      alignItems: 'flex-end',
+      marginLeft: 20,
     },
     deleteButton: {
       backgroundColor: theme.colours.palette.angry500,
       ...theme.layout.fullyCentred,
       width: 80,
+    },
+    leftColumn: {
+      flex: 1,
+    },
+    rightColumn: {
+      ...theme.layout.spaceBetweenRow,
+      flex: 1.5,
+      alignItems: 'flex-end',
     },
     button: {
       flex: 1,

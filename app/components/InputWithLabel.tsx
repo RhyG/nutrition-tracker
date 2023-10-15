@@ -53,8 +53,8 @@ const stylesFn = ({ colours, typography }: Theme) =>
     },
     textInput: {
       backgroundColor: colours.palette.neutral200,
-      padding: 10,
+      padding: 8,
       borderRadius: 6,
-      fontSize: typography.sizes.lg,
+      fontSize: typography.sizes.sm,
     },
   });

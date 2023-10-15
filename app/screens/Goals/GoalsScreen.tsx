@@ -5,7 +5,6 @@ import { useGoals } from '@store/goals';
 import { Theme } from '@theme';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { RootStackScreen } from '@app/navigation';
@@ -13,13 +12,17 @@ import { RootStackScreen } from '@app/navigation';
 const DEFAULT_GOALS = { calories: 2000, protein: 80 };
 
 export const GoalsScreen: RootStackScreen<'Goals'> = () => {
-  const { styles } = useThemedStyles(stylesFn);
+  const {
+    styles,
+    theme: { spacing },
+  } = useThemedStyles(stylesFn);
 
   const updateGoals = useGoals(state => state.updateGoals);
-  const currentGoals = useGoals(state => ({ calories: state.calories, protein: state.protein }), shallow);
+  const goalCalories = useGoals(state => state.calories);
+  const goalProtein = useGoals(state => state.protein);
 
-  const [calories, setCalories] = useState(String(currentGoals.calories || DEFAULT_GOALS.calories));
-  const [protein, setProtein] = useState(String(currentGoals.protein || DEFAULT_GOALS.protein));
+  const [calories, setCalories] = useState(String(goalCalories || DEFAULT_GOALS.calories));
+  const [protein, setProtein] = useState(String(goalProtein || DEFAULT_GOALS.protein));
 
   const handleSaveUpdatedGoals = () => {
     const newGoals = {
@@ -27,7 +30,6 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
       protein: Number(protein),
     };
 
-    // updateGoals(inputs);
     updateGoals(newGoals);
   };
 
@@ -61,6 +63,34 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
           />
         </View>
       </View>
+      <View style={[styles.inputsContainer, { marginTop: spacing.small }]}>
+        <View style={styles.inputContainer}>
+          <InputWithLabel
+            label="Carbohydrates"
+            // placeholder="74"
+            onInputChange={setCalories}
+            // onInputChange={(text: string) => handleChange('calories', text)}
+            value={calories}
+            // value={String(inputs.calories)}
+            keyboardType="number-pad"
+            onBlur={handleSaveUpdatedGoals}
+            testID="goals-screen-calories-input"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <InputWithLabel
+            label="Fat"
+            // placeholder="74"
+            onInputChange={setProtein}
+            // onInputChange={(text: string) => handleChange('protein', text)}
+            value={protein}
+            // value={String(inputs.protein)}
+            keyboardType="number-pad"
+            onBlur={handleSaveUpdatedGoals}
+            testID="goals-screen-protein-input"
+          />
+        </View>
+      </View>
       <Space units={4} />
       <Text>Goals will automatically update and are used to track your progress in the journal and weekly overview.</Text>
     </View>
@@ -80,7 +110,7 @@ const stylesFn = (theme: Theme) =>
     },
     screenContainer: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: theme.colours.palette.neutral100,
       ...theme.spacing.screen,
     },
     inputsContainer: {

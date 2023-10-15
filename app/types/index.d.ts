@@ -11,6 +11,7 @@ export type JournalEntry = {
   name: string;
   calories: number;
   protein: number;
+  timestamp: string;
 };
 
 export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';

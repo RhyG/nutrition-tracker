@@ -49,7 +49,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 testID="name-input"
               />
               <BottomSheetTextInput
-                style={[styles.input, styles.marginTop]}
+                style={styles.input}
                 placeholder="Calories"
                 // value={String(calories)}
                 // onChangeText={(text) => onChangeEntryDetails('calories', text)}
@@ -60,7 +60,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 testID="calories-input"
               />
               <BottomSheetTextInput
-                style={[styles.input, styles.marginTop]}
+                style={styles.input}
                 placeholder="Protein"
                 // onChangeText={(text) => onChangeEntryDetails('protein', text)}
                 // @ts-expect-error this type is gross, not sure how to fix
@@ -71,7 +71,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 testID="protein-input"
               />
               <BottomSheetTextInput
-                style={[styles.input, styles.marginTop]}
+                style={styles.input}
                 placeholder="Carbohydrates"
                 // onChangeText={(text) => onChangeEntryDetails('protein', text)}
                 // @ts-expect-error this type is gross, not sure how to fix
@@ -82,7 +82,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 testID="carbohydrates-input"
               />
               <BottomSheetTextInput
-                style={[styles.input, styles.marginTop]}
+                style={styles.input}
                 placeholder="Fat"
                 // onChangeText={(text) => onChangeEntryDetails('protein', text)}
                 // @ts-expect-error this type is gross, not sure how to fix
@@ -135,7 +135,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
   );
 });
 
-const stylesFn = ({ spacing, colours }: Theme) =>
+const stylesFn = ({ spacing, colours, typography }: Theme) =>
   StyleSheet.create({
     sheetContainer: {
       flex: 1,
@@ -157,16 +157,16 @@ const stylesFn = ({ spacing, colours }: Theme) =>
     },
     input: {
       backgroundColor: colours.palette.neutral200,
-      borderRadius: 5,
-      fontSize: 15,
+      borderRadius: 6,
+      fontSize: typography.sizes.sm,
       padding: 8,
       color: '#000',
+      marginTop: spacing.medium,
     },
     marginTop: { marginTop: 15 },
     quickAddInnerContainer: {
       marginHorizontal: spacing.base,
       flexDirection: 'column',
-      flex: 1,
       justifyContent: 'center',
     },
     selectionContainer: { width },

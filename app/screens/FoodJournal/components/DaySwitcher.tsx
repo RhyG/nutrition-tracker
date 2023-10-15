@@ -24,8 +24,8 @@ export const DaySwitcher = ({ changeDay, currentDay }: Props) => {
   } = useThemedStyles(stylesFn);
 
   // Sets the colours for the left and right most days as white when selected.
-  const leftArrowColour = currentDay === 'Monday' ? colours.palette.neutral200 : colours.palette.neutral800;
-  const rightArrowColour = currentDay === 'Sunday' ? colours.palette.neutral200 : colours.palette.neutral800;
+  const leftArrowColour = currentDay === 'Monday' ? colours.palette.neutral100 : colours.palette.neutral800;
+  const rightArrowColour = currentDay === 'Sunday' ? colours.palette.neutral100 : colours.palette.neutral800;
 
   return (
     <View style={styles.container}>
@@ -47,7 +47,6 @@ const stylesFn = (theme: Theme) =>
     container: {
       ...theme.layout.spaceBetweenRow,
       alignItems: 'center',
-      backgroundColor: theme.colours.palette.neutral200,
       paddingHorizontal: theme.spacing.small,
       paddingTop: theme.spacing.small,
     },

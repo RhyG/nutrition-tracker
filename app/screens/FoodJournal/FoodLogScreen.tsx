@@ -1,9 +1,7 @@
-import BottomSheet from '@gorhom/bottom-sheet';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
-import shallow from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
@@ -14,21 +12,14 @@ import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 
-import { AddEntryFAB, DaySwitcher, ListHeader, NewEntrySheet, Stat } from './components';
+import { DaySwitcher, Stat } from './components';
 import { FoodRow } from './components/FoodRow';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { useDaySwitcher } from './hooks/useDaySwitcher';
 import { useDropdownHeader } from './hooks/useDropdownHeader';
 
 const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
-const STICKY_HEADER_INDICES = [0];
-
-const DEFAULT_ENTRY_DETAILS = {
-  name: '',
-  calories: '',
-  protein: '',
-  id: '',
-} as unknown as JournalEntry;
 
 export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const { styles } = useThemedStyles(stylesFn);
@@ -37,43 +28,15 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const caloriesGoal = useGoals(state => state.calories);
   const proteinGoal = useGoals(state => state.protein);
 
-  const { journalData, removeItem } = useJournal(state => ({ ...state }), shallow);
+  const journalData = useJournal(state => state.journalData);
 
-  const [showAddEntryButton, setShowAddEntryButton] = useState(true);
-  const [entryBeingUpdated, setEntryBeingUpdated] = useState(false);
+  const [showScrollToTopButton, setShowScrollToTopButton] = useState(true);
 
-  const newEntrySheetRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
 
   const currentDayEntries: JournalEntry[] = useMemo(() => journalData[currentDay] ?? EMPTY_ARRAY, [currentDay, journalData]);
 
   useDropdownHeader(currentDay);
-
-  const [entryDetails, setEntryDetails] = useState<JournalEntry>(DEFAULT_ENTRY_DETAILS);
-
-  const onChangeEntryDetails = (key: keyof JournalEntry, value: string) => {
-    setEntryDetails(prevDetails => ({ ...prevDetails, [key]: value }));
-  };
-
-  const onNewEntryPress = () => {
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-    newEntrySheetRef?.current?.expand();
-  };
-
-  /* Deletes an item from the list by filtering out the item with the matching ID */
-  const removeItemFromList = useEvent((id: string) => {
-    removeItem(id, currentDay);
-  });
-
-  const onEntryPress = useEvent((entry: JournalEntry) => {
-    setEntryBeingUpdated(true);
-    setEntryDetails(entry);
-    newEntrySheetRef?.current?.expand();
-  });
-
-  const clearEntryDetails = () => {
-    setEntryDetails(DEFAULT_ENTRY_DETAILS);
-  };
 
   /**
    * Handles the hiding/showing of the FAB when scrolling.
@@ -84,33 +47,29 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
     // If there is enough entries to reach the FAB and the user srolls
     if (currentDayEntries.length > 6 && scrollOffsetY > 5) {
-      setShowAddEntryButton(false);
-    } else if (!showAddEntryButton && scrollOffsetY < 150) {
-      setShowAddEntryButton(true);
+      setShowScrollToTopButton(false);
+    } else if (!showScrollToTopButton && scrollOffsetY < 150) {
+      setShowScrollToTopButton(true);
     } else {
-      setShowAddEntryButton(true);
+      setShowScrollToTopButton(true);
     }
   });
 
   /* Scroll to the top of the list when pressing the header */
   const scrollListToTop = useCallback(() => {
-    setShowAddEntryButton(true);
+    setShowScrollToTopButton(true);
     listRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   }, []);
 
   // TODO optimise component props
-  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} />, [onEntryPress, removeItemFromList]);
-
-  const ListHeaderComponent = useMemo(() => {
-    return currentDayEntries.length > 0 ? <ListHeader onHeadingsPress={scrollListToTop} /> : null;
-  }, [scrollListToTop, currentDayEntries.length]);
+  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} />, []);
 
   const currentCalories = getCurrentCalories(journalData[currentDay]);
   const currentProtein = getCurrentProtein(journalData[currentDay]);
 
   return (
-    <>
-      <View style={styles.offWhiteContainer}>
+    <View style={styles.screenContainer}>
+      <View>
         <DaySwitcher currentDay={currentDay} changeDay={handleDayChange} />
         <Space units={3} />
         <View style={styles.statsContainer}>
@@ -121,31 +80,21 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
         <Space units={3} />
       </View>
 
+      <View style={styles.divider} />
+
       <View style={styles.mealRowsContainer}>
         <FlatList
-          ListHeaderComponent={ListHeaderComponent}
           data={currentDayEntries}
           renderItem={renderJournalEntry}
           onScroll={listScrollHandler}
           ref={listRef}
           ListEmptyComponent={ListEmptyComponent}
           contentContainerStyle={LIST_CONTENT_CONTAINER_STYLE}
-          stickyHeaderIndices={STICKY_HEADER_INDICES}
           initialNumToRender={15}
         />
-        <AddEntryFAB buttonVisible={showAddEntryButton} onPress={onNewEntryPress} />
+        <ScrollToTopButton buttonVisible={showScrollToTopButton} onPress={scrollListToTop} />
       </View>
-
-      <NewEntrySheet
-        ref={newEntrySheetRef}
-        currentDay={currentDay}
-        entryBeingUpdated={entryBeingUpdated}
-        setEntryBeingUpdated={setEntryBeingUpdated}
-        onChangeEntryDetails={onChangeEntryDetails}
-        entryDetails={entryDetails}
-        clearEntryDetails={clearEntryDetails}
-      />
-    </>
+    </View>
   );
 };
 
@@ -165,18 +114,21 @@ const listEmptyComponentStyles = {
 
 const stylesFn = ({ colours, spacing, layout }: Theme) =>
   StyleSheet.create({
-    offWhiteContainer: {
-      backgroundColor: colours.palette.neutral200,
+    screenContainer: {
+      flex: 1,
+      backgroundColor: colours.palette.neutral100,
     },
     statsContainer: {
       paddingHorizontal: spacing.small,
     },
+    divider: {
+      height: 1,
+      backgroundColor: colours.palette.neutral200,
+      marginHorizontal: spacing.small,
+    },
     mealRowsContainer: {
-      backgroundColor: '#fff',
       flex: 1,
-      borderTopLeftRadius: 15,
-      borderTopRightRadius: 15,
-      paddingVertical: spacing.base,
+      // paddingVertical: spacing.base,
       paddingHorizontal: spacing.small,
     },
     emptyListContainer: {

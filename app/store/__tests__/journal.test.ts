@@ -41,7 +41,7 @@ const generateEntries = (amount = 20): JournalEntry[] => {
     const calories = generateRandomNumber(10, 500);
     const protein = generateRandomNumber(5, 35);
 
-    entries.push({ id: nanoid(), name, calories, protein });
+    entries.push({ id: nanoid(), name, calories, protein, timestamp: Date.now().toLocaleString() });
   }
 
   return entries;
@@ -72,6 +72,7 @@ const entry: JournalEntry = {
   name: 'Burger',
   calories: 500,
   protein: 35,
+  timestamp: Date.now().toLocaleString(),
 };
 
 describe('useJournal', () => {

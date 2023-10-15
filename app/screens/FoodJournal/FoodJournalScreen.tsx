@@ -3,7 +3,7 @@ import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
