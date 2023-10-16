@@ -9,9 +9,7 @@ import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useJournal } from '@app/store/journal';
 import { Theme } from '@app/theme';
-import { JournalEntry } from '@app/types';
-
-import { Day } from '../hooks/useDaySwitcher';
+import { Day, JournalEntry } from '@app/types';
 
 type Props = {
   entry: JournalEntry;

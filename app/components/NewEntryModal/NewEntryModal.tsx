@@ -7,6 +7,7 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
+import { useDayStore } from '@app/store/day';
 import { useJournal } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
@@ -39,6 +40,8 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
   } = useThemedStyles(stylesFn);
 
   const snapPoints = useSafeAreaSnapPoints();
+
+  const currentDay = useDayStore(state => state.currentDay);
 
   const saveItem = useJournal(state => state.saveItem);
 
@@ -77,7 +80,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
       timestamp: Date.now(),
     };
 
-    saveItem(detailsToSave, 'Monday');
+    saveItem(detailsToSave, currentDay);
     clearInputs();
     entryNameInputRef?.current?.focus();
   }
