@@ -54,7 +54,7 @@ export const Converter = memo(() => {
   return (
     <>
       <Text preset="heading" style={styles.heading}>
-        Convert Kilojoules to Calories
+        Convert Kilojoules / Calories
       </Text>
       <View style={styles.fieldsWrapper}>
         <View style={styles.fieldContainer}>

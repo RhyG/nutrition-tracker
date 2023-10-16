@@ -72,11 +72,21 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
       <View>
         <DaySwitcher currentDay={currentDay} changeDay={handleDayChange} />
         <Space units={3} />
+
         <View style={styles.statsContainer}>
-          <Stat name="Calories" currentAmount={currentCalories} max={caloriesGoal} />
+          <View style={styles.statsRow}>
+            <Stat name="Calories" currentAmount={currentCalories} max={caloriesGoal} />
+            <Space horizontal units={3} />
+            <Stat name="Protein" currentAmount={currentProtein} max={proteinGoal} />
+          </View>
           <Space units={3} />
-          <Stat name="Protein" currentAmount={currentProtein} max={proteinGoal} />
+          <View style={styles.statsRow}>
+            <Stat name="Carbs" currentAmount={46} max={200} />
+            <Space horizontal units={3} />
+            <Stat name="Fat" currentAmount={currentProtein} max={proteinGoal} />
+          </View>
         </View>
+
         <Space units={3} />
       </View>
 
@@ -121,6 +131,9 @@ const stylesFn = ({ colours, spacing, layout }: Theme) =>
       paddingTop: 0,
     },
     statsContainer: {},
+    statsRow: {
+      ...layout.spaceBetweenRow,
+    },
     divider: {
       height: 1,
       backgroundColor: colours.palette.neutral200,

@@ -48,32 +48,24 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
     };
   }, [max, currentAmount]);
 
-  const remaining = max - currentAmount;
-
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.reminaingMacroContainer}>
-        <Text weight="medium" size="md">
-          {name}
-        </Text>
-        <Text size="md" style={styles.remainingText}>
-          {remaining} remaining
+        <Text>{name}</Text>
+        <Text colour={colours.palette.neutral400} size="xs">
+          {currentAmount} / {max}
         </Text>
       </View>
       <View style={styles.outerProgressBar}>
-        <View style={styles.progressBarTextContainer}>
-          <Text weight="medium" colour="#fff">
-            {currentAmount} / {max}
-          </Text>
-        </View>
         <Animated.View style={[progressBarStyle, styles.innerProgressBar]} />
       </View>
-    </>
+    </View>
   );
 });
 
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
+    container: { flex: 1 },
     reminaingMacroContainer: {
       ...theme.layout.spaceBetweenRow,
       alignItems: 'center',
@@ -81,13 +73,12 @@ const stylesFn = (theme: Theme) =>
     outerProgressBar: {
       backgroundColor: theme.colours.palette.neutral300,
       borderRadius: 8,
-      position: 'relative',
-      height: 30,
+      height: 10,
     },
     innerProgressBar: {
       borderRadius: 8,
       zIndex: 1,
-      height: 30,
+      height: 10,
     },
     progressBarTextContainer: {
       position: 'absolute',

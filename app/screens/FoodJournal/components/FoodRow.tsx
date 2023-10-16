@@ -19,7 +19,7 @@ function _FoodRow({ entry }: Props) {
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
-  const { name, calories, protein } = entry;
+  const { name, calories, protein, carbohydrates, fat } = entry;
 
   const onDeleteButtonPress = () => {};
 
@@ -66,10 +66,10 @@ function _FoodRow({ entry }: Props) {
             <Text size="sm">{protein ?? ''}P</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text size="sm">86C</Text>
+            <Text size="sm">{carbohydrates ?? ''}C</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text size="sm">12F</Text>
+            <Text size="sm">{fat ?? ''}F</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -83,7 +83,7 @@ const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     container: {
       ...theme.layout.spaceBetweenRow,
-      paddingVertical: theme.spacing.small,
+      paddingVertical: theme.spacing.extraSmall,
       alignItems: 'center',
     },
     nameContainer: {

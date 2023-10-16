@@ -11,6 +11,8 @@ export type JournalEntry = {
   name: string;
   calories: number;
   protein: number;
+  carbohydrates: number;
+  fat: number;
   timestamp: string;
 };
 
