@@ -123,14 +123,15 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           <Space units={3} />
           <Text preset="formHelper">Gender</Text>
           <View style={styles.radiosContainer}>
+            {/* TODO: Make dropdown instead of radios */}
             <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
             <Space horizontal units={3} />
             <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
           </View>
         </View>
       </View>
-      <Space units={4} />
-      <Text preset="heading" style={styles.activityLevelText}>
+      <Space units={3} />
+      <Text preset="formHelper" style={styles.activityLevelText}>
         Activity level
       </Text>
       <DropDownPicker
@@ -176,7 +177,6 @@ const stylesFn = (theme: Theme) =>
       backgroundColor: theme.colours.background,
     },
     activityLevelText: {
-      marginTop: 5,
       marginBottom: 10,
     },
     cacluateTDEEText: {
