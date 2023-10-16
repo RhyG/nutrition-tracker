@@ -1,8 +1,7 @@
 import { InputWithLabel } from '@components/InputWithLabel';
-import { RadioButton } from '@components/RadioButton';
 import { Space } from '@components/Space';
 import { Text } from '@components/Text';
-import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, Genders, MALE_TDEE_VARIABLE } from '@config/constants';
+import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, MALE_TDEE_VARIABLE } from '@config/constants';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
@@ -10,6 +9,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+import { RadioButton } from '@app/components/RadioButton';
 import { calculateBMR } from '@app/lib/calculators';
 import { isInputNumber } from '@app/lib/validation';
 import { RootStackScreen } from '@app/navigation';
@@ -23,6 +23,12 @@ type TDEEFormData = {
   gender: keyof typeof Genders;
   activityMultiplier: number;
 };
+
+const GENDERS = ['M', 'F'] as const;
+const Genders = {
+  FEMALE: 'FEMALE',
+  MALE: 'MALE',
+} as const;
 
 const DEFAULT_FORM_DATA: TDEEFormData = {
   age: '',
@@ -42,10 +48,13 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     styles,
   } = useThemedStyles(stylesFn);
 
-  const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[0]);
   const [formData, setFormData] = useState<TDEEFormData>(DEFAULT_FORM_DATA);
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [selectedGender, setSelectedGender] = useState<keyof typeof Genders>(Genders.MALE);
+  // const [genderDropdownOpen, setGenderDropdownOpen] = useState(false);
+
+  const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[0]);
+  const [activityLevelDropdownOpen, setActivityLevelDropdownOpen] = useState(false);
 
   /* Clear all inputs when screen is unfocused */
   useFocusEffect(
@@ -127,6 +136,22 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
             <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
             <Space horizontal units={3} />
             <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
+            {/* <DropDownPicker
+              //@ts-expect-error typing on this library is a bit odd
+              items={Object.values(Genders)}
+              open={genderDropdownOpen}
+              setOpen={setGenderDropdownOpen}
+              // maxHeight={44}
+              labelStyle={{ height: 4 }}
+              setValue={setSelectedGender}
+              value={selectedGender}
+              zIndex={1000}
+              onSelectItem={item => {
+                //@ts-expect-error typing on this library is a bit odd
+                handleCalculatorChange('gender', item);
+              }}
+              labelStyle={styles.pickerLabel}
+            /> */}
           </View>
         </View>
       </View>
@@ -137,11 +162,12 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       <DropDownPicker
         //@ts-expect-error typing on this library is a bit odd
         items={ACTIVITY_LEVELS}
-        open={dropdownOpen}
-        setOpen={setDropdownOpen}
+        open={activityLevelDropdownOpen}
+        setOpen={setActivityLevelDropdownOpen}
         setValue={setActivityLevel}
         //@ts-expect-error typing on this library is a bit odd
         value={activityLevel}
+        zIndex={1}
         onSelectItem={item => {
           //@ts-expect-error typing on this library is a bit odd
           handleCalculatorChange('activityMultiplier', item.multiplier);
@@ -177,7 +203,7 @@ const stylesFn = (theme: Theme) =>
       backgroundColor: theme.colours.background,
     },
     activityLevelText: {
-      marginBottom: 10,
+      marginBottom: 1,
     },
     cacluateTDEEText: {
       marginVertical: 10,
