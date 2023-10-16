@@ -1,4 +1,5 @@
 import Icon from '@expo/vector-icons/MaterialIcons';
+import { format } from 'date-fns';
 import React, { memo } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
@@ -6,22 +7,30 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { useJournal } from '@app/store/journal';
 import { Theme } from '@app/theme';
 import { JournalEntry } from '@app/types';
 
+import { Day } from '../hooks/useDaySwitcher';
+
 type Props = {
   entry: JournalEntry;
+  day: Day;
 };
 
-function _FoodRow({ entry }: Props) {
+function _FoodRow({ entry, day }: Props) {
   const {
     styles,
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
-  const { name, calories, protein, carbohydrates, fat } = entry;
+  const { name, calories, protein, carbohydrates, fat, id, timestamp } = entry;
 
-  const onDeleteButtonPress = () => {};
+  const removeItem = useJournal(state => state.removeItem);
+
+  const onDeleteButtonPress = () => {
+    removeItem(id, day);
+  };
 
   const onPress = () => {};
 
@@ -55,7 +64,7 @@ function _FoodRow({ entry }: Props) {
             <Text size="sm">{name ?? ''}</Text>
           </View>
           <Text size="xs" colour={colours.palette.neutral400}>
-            8:35
+            {format(timestamp, 'h:maaa')}
           </Text>
         </View>
         <View style={styles.rightColumn}>

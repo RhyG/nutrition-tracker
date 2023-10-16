@@ -74,7 +74,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
       protein: Number(newDetails.protein ?? 0),
       carbohydrates: Number(newDetails.carbohydrates ?? 0),
       fat: Number(newDetails.fat ?? 0),
-      timestamp: Date.now().toString(),
+      timestamp: Date.now(),
     };
 
     saveItem(detailsToSave, 'Monday');
@@ -107,7 +107,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 style={styles.input}
                 placeholder="Name"
                 onChangeText={text => onChangeEntryDetails('name', text)}
-                // value={name}
                 // @ts-expect-error this type is gross, not sure how to fix
                 ref={entryNameInputRef}
                 placeholderTextColor={colours.palette.neutral300}
@@ -116,7 +115,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
               <BottomSheetTextInput
                 style={styles.input}
                 placeholder="Calories"
-                // value={String(calories)}
                 onChangeText={text => onChangeEntryDetails('calories', text)}
                 // @ts-expect-error this type is gross, not sure how to fix
                 ref={caloriesInputRef}
@@ -131,7 +129,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 // @ts-expect-error this type is gross, not sure how to fix
                 ref={proteinInputRef}
                 placeholderTextColor={colours.palette.neutral300}
-                // value={String(protein)}
                 keyboardType="numeric"
                 testID="protein-input"
               />
@@ -142,7 +139,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 // @ts-expect-error this type is gross, not sure how to fix
                 ref={carbInputRef}
                 placeholderTextColor={colours.palette.neutral300}
-                // value={String(protein)}
                 keyboardType="numeric"
                 testID="carbohydrates-input"
               />
@@ -153,7 +149,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
                 // @ts-expect-error this type is gross, not sure how to fix
                 ref={fatInputRef}
                 placeholderTextColor={colours.palette.neutral300}
-                // value={String(protein)}
                 keyboardType="numeric"
                 testID="fat-input"
               />

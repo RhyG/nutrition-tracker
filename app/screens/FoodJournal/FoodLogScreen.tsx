@@ -62,7 +62,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   }, []);
 
   // TODO optimise component props
-  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} />, []);
+  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} day={currentDay} />, [currentDay]);
 
   const currentCalories = getCurrentCalories(journalData[currentDay]);
   const currentProtein = getCurrentProtein(journalData[currentDay]);

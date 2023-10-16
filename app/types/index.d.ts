@@ -13,7 +13,7 @@ export type JournalEntry = {
   protein: number;
   carbohydrates: number;
   fat: number;
-  timestamp: string;
+  timestamp: number;
 };
 
 export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
