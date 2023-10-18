@@ -1,6 +1,6 @@
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import React, { forwardRef } from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
@@ -13,10 +13,14 @@ export const Input = forwardRef(
       field,
       onChangeText,
       keyboardType = 'numeric',
-    }: { field: string; onChangeText: (field: string, text: string) => void; keyboardType?: TextInputProps['keyboardType'] },
+      hideUnit,
+    }: { field: string; onChangeText: (field: string, text: string) => void; keyboardType?: TextInputProps['keyboardType']; hideUnit?: boolean },
     ref,
   ) => {
-    const { styles } = useThemedStyles(stylesFn);
+    const {
+      styles,
+      theme: { colours },
+    } = useThemedStyles(stylesFn);
 
     const lowercaseFieldName = field.toLowerCase();
 
@@ -25,15 +29,22 @@ export const Input = forwardRef(
         <Text preset="formHelper" style={styles.text}>
           {field}
         </Text>
-        <BottomSheetTextInput
-          style={styles.input}
-          onChangeText={text => onChangeText(lowercaseFieldName, text)}
-          // @ts-expect-error this type is gross, not sure how to fix
-          ref={ref}
-          testID={`${lowercaseFieldName}-input`}
-          // defaultValue="0"
-          keyboardType={keyboardType}
-        />
+        <View style={styles.inputContainer}>
+          <BottomSheetTextInput
+            style={styles.input}
+            onChangeText={text => onChangeText(lowercaseFieldName, text)}
+            // @ts-expect-error this type is gross, not sure how to fix
+            ref={ref}
+            testID={`${lowercaseFieldName}-input`}
+            // defaultValue="0"
+            keyboardType={keyboardType}
+          />
+          {!hideUnit ? (
+            <Text colour={colours.palette.neutral500} style={styles.unit}>
+              g
+            </Text>
+          ) : null}
+        </View>
       </>
     );
   },
@@ -44,11 +55,19 @@ const stylesFn = ({ colours, typography }: Theme) =>
     text: {
       marginBottom: 1,
     },
-    input: {
+    inputContainer: {
       backgroundColor: colours.palette.neutral200,
       borderRadius: 6,
-      fontSize: typography.sizes.sm,
       padding: 8,
-      color: '#000',
+      flexDirection: 'row',
+    },
+    input: {
+      fontSize: typography.sizes.sm,
+      color: colours.text,
+      flex: 1,
+      marginRight: 2,
+    },
+    unit: {
+      marginLeft: 'auto',
     },
   });

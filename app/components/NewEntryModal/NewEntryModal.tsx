@@ -106,7 +106,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
         return (
           <View style={styles.selectionContainer}>
             <View style={styles.quickAddInnerContainer}>
-              <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" />
+              <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
               <Space units={2} />
               <Input field="Calories" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
               <Space units={2} />
@@ -115,6 +115,7 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
               <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
               <Space units={2} />
               <Input field="Fat" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Space units={2} />
 
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.buttonContainer} onPress={saveEntry}>
@@ -174,7 +175,6 @@ const stylesFn = ({ spacing, colours, typography }: Theme) =>
     },
     buttonsContainer: {
       flexDirection: 'row',
-      marginTop: spacing.medium,
       justifyContent: 'flex-end',
     },
     input: {
@@ -191,7 +191,7 @@ const stylesFn = ({ spacing, colours, typography }: Theme) =>
       flexDirection: 'column',
       justifyContent: 'center',
     },
-    selectionContainer: { width, paddingTop: spacing.small },
+    selectionContainer: { width, paddingTop: spacing.medium },
     buttonContainer: {
       backgroundColor: colours.palette.green,
       height: 40,
