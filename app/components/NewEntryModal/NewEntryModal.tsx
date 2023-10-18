@@ -1,5 +1,5 @@
 import Icon from '@expo/vector-icons/Entypo';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
 import { Dimensions, ListRenderItem, StyleSheet, TextInput, View } from 'react-native';

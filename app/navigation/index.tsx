@@ -5,7 +5,6 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { colours } from '@theme';
 import React, { useRef } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 
 import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
 import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
@@ -13,6 +12,7 @@ import { FoodLogScreen } from '@app/screens/FoodJournal/FoodLogScreen';
 import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
 import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
 
+import { OpenLogButton } from './OpenLogButton';
 import { TabBarLabel } from './TabBarLabel';
 
 type RootStackParamList = {
@@ -45,14 +45,6 @@ function EmptyScreen() {
   return null;
 }
 
-function OpenLogButton({ onPress }: { onPress: () => void }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', justifyContent: 'center', width: 50 }}>
-      <Feather name="plus" size={35} color={colours.palette.neutral700} />
-    </TouchableOpacity>
-  );
-}
-
 export default function AppNavigator() {
   const ref = useRef<BottomSheet>(null);
 
@@ -68,9 +60,7 @@ export default function AppNavigator() {
           component={FoodLogScreen}
           options={{
             tabBarIcon: () => <Feather name="book-open" size={24} color={colours.palette.neutral700} />,
-            tabBarLabel: props => (
-              <Text style={{ fontSize: 10, color: props.focused ? colours.palette.neutral700 : colours.palette.neutral500 }}>Food Log</Text>
-            ),
+            tabBarLabel: props => <TabBarLabel label="Food Log" {...props} />,
           }}
         />
         <Tab.Screen
@@ -105,7 +95,6 @@ export default function AppNavigator() {
             tabBarLabel: props => <TabBarLabel label="Calculators" {...props} />,
           }}
         />
-        {/* <Tab.Screen name="About" component={AboutScreen} /> */}
       </Tab.Navigator>
       <NewEntryModal ref={ref} />
     </>
