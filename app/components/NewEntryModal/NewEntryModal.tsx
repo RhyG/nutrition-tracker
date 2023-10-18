@@ -108,13 +108,13 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
             <View style={styles.quickAddInnerContainer}>
               <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
               <Space units={2} />
-              <Input field="Calories" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Input field="Calories" onChangeText={onChangeEntryDetails} ref={caloriesInputRef} />
               <Space units={2} />
-              <Input field="Protein" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Input field="Protein" onChangeText={onChangeEntryDetails} ref={proteinInputRef} />
               <Space units={2} />
-              <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={carbInputRef} />
               <Space units={2} />
-              <Input field="Fat" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Input field="Fat" onChangeText={onChangeEntryDetails} ref={fatInputRef} />
               <Space units={2} />
 
               <View style={styles.buttonsContainer}>
