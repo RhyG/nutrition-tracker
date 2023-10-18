@@ -59,37 +59,37 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
           </View>
         </View>
       </View>
-      <>
-        <Space units={4} />
-        <View style={styles.statsNumbers}>
-          <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
-            Protein
+
+      <Space units={4} />
+
+      <View style={styles.statsNumbers}>
+        <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
+          Protein
+        </Text>
+        <View style={styles.titleAndNumberContainer}>
+          <Text colour={colours.palette.neutral400} size="md">
+            Average
           </Text>
-          <View style={styles.titleAndNumberContainer}>
-            <Text colour={colours.palette.neutral400} size="md">
-              Average
-            </Text>
-            <Text size="xl" weight="semiBold">
-              {averageProtein}
-            </Text>
-          </View>
-          <View style={styles.titleAndNumberContainer}>
-            <Text colour={colours.palette.neutral400} size="md">
-              Goal
-            </Text>
-            <Text size="xl" weight="semiBold">
-              {proteinGoal}
-            </Text>
-          </View>
+          <Text size="xl" weight="semiBold">
+            {averageProtein}
+          </Text>
         </View>
-        <View style={styles.barsContainer}>
-          <View style={styles.bars}>
-            {DAYS.map(day => (
-              <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
-            ))}
-          </View>
+        <View style={styles.titleAndNumberContainer}>
+          <Text colour={colours.palette.neutral400} size="md">
+            Goal
+          </Text>
+          <Text size="xl" weight="semiBold">
+            {proteinGoal}
+          </Text>
         </View>
-      </>
+      </View>
+      <View style={styles.barsContainer}>
+        <View style={styles.bars}>
+          {DAYS.map(day => (
+            <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
+          ))}
+        </View>
+      </View>
     </View>
   );
 };

@@ -1,3 +1,4 @@
+import Icon from '@expo/vector-icons/Entypo';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
@@ -11,7 +12,9 @@ import { useDayStore } from '@app/store/day';
 import { useJournal } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
+import { Space } from '../Space';
 import { Text } from '../Text';
+import { Input } from './Input';
 import { Tab, Tabs, sections } from './Tabs';
 
 const { width } = Dimensions.get('window');
@@ -36,7 +39,7 @@ function inputsValid({ name, calories, protein, carbohydrates, fat }: { name: st
 export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknown>>((_, ref) => {
   const {
     styles,
-    theme: { colours, spacing },
+    theme: { spacing },
   } = useThemedStyles(stylesFn);
 
   const snapPoints = useSafeAreaSnapPoints();
@@ -57,11 +60,6 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
 
   function scrollToTab(tab: Tab) {
     listRef.current?.scrollToIndex({ index: tab === 'QUICK_ADD' ? 0 : 1, animated: true });
-  }
-
-  function closeSheet() {
-    // @ts-expect-error ref types will be why I suck start a 9mm
-    ref?.current?.close();
   }
 
   function saveEntry() {
@@ -98,6 +96,8 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
     proteinInputRef?.current?.clear();
     carbInputRef?.current?.clear();
     fatInputRef?.current?.clear();
+
+    logEntryDetails.current = defaultValues;
   }
 
   const renderItem: ListRenderItem<Tab> = ({ item }) => {
@@ -106,61 +106,19 @@ export const NewEntryModal = React.forwardRef<BottomSheet, Record<string, unknow
         return (
           <View style={styles.selectionContainer}>
             <View style={styles.quickAddInnerContainer}>
-              <BottomSheetTextInput
-                style={styles.input}
-                placeholder="Name"
-                onChangeText={text => onChangeEntryDetails('name', text)}
-                // @ts-expect-error this type is gross, not sure how to fix
-                ref={entryNameInputRef}
-                placeholderTextColor={colours.palette.neutral300}
-                testID="name-input"
-              />
-              <BottomSheetTextInput
-                style={styles.input}
-                placeholder="Calories"
-                onChangeText={text => onChangeEntryDetails('calories', text)}
-                // @ts-expect-error this type is gross, not sure how to fix
-                ref={caloriesInputRef}
-                placeholderTextColor={colours.palette.neutral300}
-                keyboardType="numeric"
-                testID="calories-input"
-              />
-              <BottomSheetTextInput
-                style={styles.input}
-                placeholder="Protein"
-                onChangeText={text => onChangeEntryDetails('protein', text)}
-                // @ts-expect-error this type is gross, not sure how to fix
-                ref={proteinInputRef}
-                placeholderTextColor={colours.palette.neutral300}
-                keyboardType="numeric"
-                testID="protein-input"
-              />
-              <BottomSheetTextInput
-                style={styles.input}
-                placeholder="Carbohydrates"
-                onChangeText={text => onChangeEntryDetails('carbohydrates', text)}
-                // @ts-expect-error this type is gross, not sure how to fix
-                ref={carbInputRef}
-                placeholderTextColor={colours.palette.neutral300}
-                keyboardType="numeric"
-                testID="carbohydrates-input"
-              />
-              <BottomSheetTextInput
-                style={styles.input}
-                placeholder="Fat"
-                onChangeText={text => onChangeEntryDetails('fat', text)}
-                // @ts-expect-error this type is gross, not sure how to fix
-                ref={fatInputRef}
-                placeholderTextColor={colours.palette.neutral300}
-                keyboardType="numeric"
-                testID="fat-input"
-              />
+              <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" />
+              <Space units={2} />
+              <Input field="Calories" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Space units={2} />
+              <Input field="Protein" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Space units={2} />
+              <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+              <Space units={2} />
+              <Input field="Fat" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} />
+
               <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.saveButton} onPress={saveEntry}>
-                  <Text colour={colours.palette.neutral100}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={closeSheet}>
-                  <Text>Cancel</Text>
+                <TouchableOpacity style={styles.buttonContainer} onPress={saveEntry}>
+                  <Icon name="plus" color="#fff" size={30} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -217,6 +175,7 @@ const stylesFn = ({ spacing, colours, typography }: Theme) =>
     buttonsContainer: {
       flexDirection: 'row',
       marginTop: spacing.medium,
+      justifyContent: 'flex-end',
     },
     input: {
       backgroundColor: colours.palette.neutral200,
@@ -232,5 +191,13 @@ const stylesFn = ({ spacing, colours, typography }: Theme) =>
       flexDirection: 'column',
       justifyContent: 'center',
     },
-    selectionContainer: { width },
+    selectionContainer: { width, paddingTop: spacing.small },
+    buttonContainer: {
+      backgroundColor: colours.palette.green,
+      height: 40,
+      width: 40,
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   });

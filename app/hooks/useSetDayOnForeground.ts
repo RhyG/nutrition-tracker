@@ -1,8 +1,9 @@
+import { Day } from '@types';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
-import { Day, useDayStore } from '@app/store/day';
+import { useDayStore } from '@app/store/day';
 
 export function useSetDayOnForeground() {
   const changeDay = useDayStore(state => state.changeDay);
