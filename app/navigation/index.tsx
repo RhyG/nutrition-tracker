@@ -8,7 +8,7 @@ import React, { useRef } from 'react';
 
 import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
 import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
-import { FoodLogScreen } from '@app/screens/FoodJournal/FoodLogScreen';
+import { FoodLogScreen } from '@app/screens/FoodLog/FoodLogScreen';
 import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
 import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
 
