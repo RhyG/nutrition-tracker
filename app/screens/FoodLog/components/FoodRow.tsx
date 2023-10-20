@@ -68,7 +68,7 @@ function _FoodRow({ entry, day }: Props) {
           </View>
           {Boolean(timestamp) && (
             <Text size="xs" colour={colours.palette.neutral400}>
-              {format(timestamp, 'h:maaa')}
+              {format(timestamp, 'h:mmaaa')}
             </Text>
           )}
         </View>
