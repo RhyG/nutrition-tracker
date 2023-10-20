@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { fillDay, fillWeek } from '@app/lib/populate-journal';
 import { useJournal } from '@app/store/journal';
 import { Day } from '@app/types';
 
@@ -57,6 +58,16 @@ export const DropdownMenu = ({ currentDay }: Props) => {
           <MenuOption onSelect={navigateToGoalsScreen}>
             <Text>Set goals</Text>
           </MenuOption>
+          {__DEV__ ? (
+            <>
+              <MenuOption onSelect={fillDay}>
+                <Text>Fill day</Text>
+              </MenuOption>
+              <MenuOption onSelect={fillWeek}>
+                <Text>Fill week</Text>
+              </MenuOption>
+            </>
+          ) : null}
         </MenuOptions>
       </Menu>
     </TouchableOpacity>

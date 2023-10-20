@@ -1,51 +1,10 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { nanoid } from 'nanoid';
 
+import { generateEntries } from '@app/lib/populate-journal';
 import AsyncStorage from '@app/modules/AsyncStorage';
 import { JournalEntry } from '@app/types';
 
 import { useJournal } from '../journal';
-
-const FOODS = [
-  'Burger',
-  'Pizza',
-  'Fruit salad',
-  'Pasta',
-  'Steak',
-  'Parmi',
-  'Fish & Chips',
-  'Ramen',
-  'Curry',
-  'Stew',
-  'Sandwich',
-  'Tuna',
-  'Burritos',
-  'Casserole',
-  'Soup',
-  'Oyster Kilpatrick',
-  'Snag in bread',
-  'Katsu sando',
-];
-
-const generateRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
-
-const generateEntries = (amount = 20): JournalEntry[] => {
-  const entries: JournalEntry[] = [];
-
-  if (!__DEV__) {
-    return entries;
-  }
-
-  for (let i = 0; i < amount; i++) {
-    const name = FOODS[generateRandomNumber(0, FOODS.length)] ?? '';
-    const calories = generateRandomNumber(10, 500);
-    const protein = generateRandomNumber(5, 35);
-
-    entries.push({ id: nanoid(), name, calories, protein, timestamp: Date.now().toLocaleString() });
-  }
-
-  return entries;
-};
 
 const mockData = {
   Monday: generateEntries(3),
@@ -72,7 +31,9 @@ const entry: JournalEntry = {
   name: 'Burger',
   calories: 500,
   protein: 35,
-  timestamp: Date.now().toLocaleString(),
+  carbohydrates: 40,
+  fat: 5,
+  timestamp: Date.now(),
 };
 
 describe('useJournal', () => {
