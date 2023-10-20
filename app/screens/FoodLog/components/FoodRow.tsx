@@ -61,9 +61,11 @@ function _FoodRow({ entry, day }: Props) {
           <View style={styles.nameContainer}>
             <Text size="sm">{name ?? ''}</Text>
           </View>
-          <Text size="xs" colour={colours.palette.neutral400}>
-            {format(timestamp, 'h:maaa')}
-          </Text>
+          {Boolean(timestamp) && (
+            <Text size="xs" colour={colours.palette.neutral400}>
+              {timestamp}
+            </Text>
+          )}
         </View>
         <View style={styles.rightColumn}>
           <View style={styles.valueContainer}>
