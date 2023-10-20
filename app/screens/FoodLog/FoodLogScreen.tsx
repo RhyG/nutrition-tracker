@@ -8,7 +8,7 @@ import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
 import { useEvent } from '@app/hooks/useEvent';
 import { useSetDayOnForeground } from '@app/hooks/useSetDayOnForeground';
-import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
+import { getCurrentMacroTotals } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
 import { useGoals } from '@app/store/goals';
 import { useJournal } from '@app/store/journal';
@@ -70,8 +70,12 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   // TODO optimise component props
   const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} day={currentDay} />, [currentDay]);
 
-  const currentCalories = getCurrentCalories(journalData[currentDay]);
-  const currentProtein = getCurrentProtein(journalData[currentDay]);
+  const {
+    calories: currentCalories,
+    protein: currentProtein,
+    fat: currentFat,
+    carbohydrates: currentCarbohydrates,
+  } = getCurrentMacroTotals(journalData[currentDay]);
 
   return (
     <View style={styles.screenContainer}>
@@ -87,9 +91,9 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
           </View>
           <Space units={3} />
           <View style={styles.statsRow}>
-            <Stat name="Carbs" currentAmount={46} max={200} />
+            <Stat name="Carbs" currentAmount={currentCarbohydrates} max={200} />
             <Space horizontal units={3} />
-            <Stat name="Fat" currentAmount={currentProtein} max={proteinGoal} />
+            <Stat name="Fat" currentAmount={currentFat} max={proteinGoal} />
           </View>
         </View>
 

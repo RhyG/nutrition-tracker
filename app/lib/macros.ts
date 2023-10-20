@@ -1,15 +1,30 @@
 import { JournalEntry } from '@app/types';
 
-/**
- * Sum up all the calories for the passed day
- * @param entries an array of entries for a day
- * @returns {number} the total of the calories for each entry
- */
-export const getCurrentCalories = (entries: JournalEntry[] = []): number => entries.reduce((acc, curr) => acc + Number(curr.calories), 0);
+type Macro = Pick<JournalEntry, 'calories' | 'protein' | 'carbohydrates' | 'fat'>;
 
 /**
- * Sum up all the protein for the passed day
- * @param entries an array of entries for a day
- * @returns {number} the total of the protein for each entry
+ * Returns the total of a given macro for a given day.
+ * @param macro the macro to get the total for.
+ * @param entries the list of entries to get the total from.
  */
-export const getCurrentProtein = (entries: JournalEntry[] = []): number => entries.reduce((acc, curr) => acc + Number(curr.protein), 0);
+export function getCurrentMacroTotal(macro: keyof Macro, entries: JournalEntry[] = []) {
+  return entries.reduce((acc, curr) => acc + Number(curr[macro]), 0);
+}
+
+/**
+ * Returns the total of all macros for a given day.
+ * @param entries the list of entries to get the total from.
+ */
+export function getCurrentMacroTotals(entries: JournalEntry[] = []) {
+  return entries.reduce(
+    (acc, curr) => {
+      return {
+        fat: acc.fat + Number(curr.fat),
+        protein: acc.protein + Number(curr.protein),
+        calories: acc.calories + Number(curr.calories),
+        carbohydrates: acc.carbohydrates + Number(curr.carbohydrates),
+      };
+    },
+    { fat: 0, protein: 0, calories: 0, carbohydrates: 0 },
+  );
+}
