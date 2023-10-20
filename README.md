@@ -4,7 +4,7 @@
 [![Repo Link](https://img.shields.io/badge/Repo-Link-black.svg)](https://github.com/RhyG/nutrition-tracker-app)
 [![Coverage](/badge.svg)](https://github.com/RhyG/nutrition-tracker-app) -->
 
-A dead simple daily calorie and protein tracker. Built because all the other apps were overkill for someone who doesn't want to create an account, track graphs and generally has a good idea what the nutritional profile of their food is.
+A dead simple daily macros tracker. Built because all the other apps were overkill for someone who doesn't want to create an account, track graphs and generally has a good idea what the nutritional profile of their food is.
 
 <br />
 
@@ -15,10 +15,11 @@ A dead simple daily calorie and protein tracker. Built because all the other app
 
 ## Features
 
-- Set daily calorie and protein goals
-- Track daily progress
-- Log and save food
-- Convert between kj and calories
+- Set daily macronutrient goals.
+- Track daily progress.
+- Log and save foods.
+- Convert between kj and calories.
+- TDEE calculator.
 
 ## Stack
 
