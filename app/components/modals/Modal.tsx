@@ -52,7 +52,7 @@ export const Modal = () => {
     element = <NewEntryModal.Component />;
   } else if (activeModal.name === ModalNames.EDIT_ENTRY) {
     snapPoints = EditEntryModal.snapPoints;
-    element = <EditEntryModal.Component {...activeModal.params} />;
+    element = <EditEntryModal.Component {...activeModal} />;
   } else {
     return null;
   }

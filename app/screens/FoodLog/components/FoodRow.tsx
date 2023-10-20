@@ -8,6 +8,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useJournal } from '@app/store/journal';
+import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
 
@@ -24,13 +25,17 @@ function _FoodRow({ entry, day }: Props) {
 
   const { name, calories, protein, carbohydrates, fat, id, timestamp } = entry;
 
+  const setActiveModal = useModalStore(state => state.setActiveModal);
+
   const removeItem = useJournal(state => state.removeItem);
 
   const onDeleteButtonPress = () => {
     removeItem(id, day);
   };
 
-  const onPress = () => {};
+  const onPress = () => {
+    setActiveModal({ name: ModalNames.EDIT_ENTRY, params: { entry, day } });
+  };
 
   /* Renders the delete button when swiping right */
   const renderRightActions = (progress: Animated.AnimatedInterpolation<0>) => {
@@ -63,7 +68,7 @@ function _FoodRow({ entry, day }: Props) {
           </View>
           {Boolean(timestamp) && (
             <Text size="xs" colour={colours.palette.neutral400}>
-              {timestamp}
+              {format(timestamp, 'h:maaa')}
             </Text>
           )}
         </View>

@@ -5,8 +5,8 @@ import React, { useRef } from 'react';
 import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Input } from '@app/components/NewEntryModal/Input';
 import { Space } from '@app/components/Space';
+import { Input } from '@app/components/edit-entry/Input';
 import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
@@ -34,10 +34,7 @@ function inputsValid({ name, calories, protein, carbohydrates, fat }: { name: st
 }
 
 export const EditEntryModal = React.forwardRef<BottomSheet, Record<string, unknown>>((_, ref) => {
-  const {
-    styles,
-    theme: { spacing },
-  } = useThemedStyles(stylesFn);
+  const { styles } = useThemedStyles(stylesFn);
 
   const snapPoints = useSafeAreaSnapPoints();
 
@@ -92,7 +89,7 @@ export const EditEntryModal = React.forwardRef<BottomSheet, Record<string, unkno
   }
 
   return (
-    <BottomSheet snapPoints={snapPoints} ref={ref} backdropComponent={renderBackdrop} enablePanDownToClose={true} animateOnMount={false}>
+    <BottomSheet snapPoints={snapPoints} ref={ref} backdropComponent={renderBackdrop} enablePanDownToClose={true} animateOnMount={false} index={-1}>
       <View style={styles.sheetContainer}>
         <View style={styles.selectionContainer}>
           <View style={styles.quickAddInnerContainer}>
