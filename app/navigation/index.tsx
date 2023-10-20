@@ -1,16 +1,16 @@
 import { Feather } from '@expo/vector-icons';
-import BottomSheet from '@gorhom/bottom-sheet';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { colours } from '@theme';
-import React, { useRef } from 'react';
+import React from 'react';
 
-import { NewEntryModal } from '@app/components/NewEntryModal/NewEntryModal';
+import { Modal } from '@app/components/modals/Modal';
 import { CalculatorsScreen } from '@app/screens/Calculators/CalculatorsScreen';
 import { FoodLogScreen } from '@app/screens/FoodLog/FoodLogScreen';
 import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
 import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
+import { ModalNames, useModalStore } from '@app/store/modal';
 
 import { OpenLogButton } from './OpenLogButton';
 import { TabBarLabel } from './TabBarLabel';
@@ -46,11 +46,7 @@ function EmptyScreen() {
 }
 
 export default function AppNavigator() {
-  const ref = useRef<BottomSheet>(null);
-
-  const openSheet = () => {
-    ref.current?.expand();
-  };
+  const setActiveModal = useModalStore(state => state.setActiveModal);
 
   return (
     <>
@@ -75,7 +71,7 @@ export default function AppNavigator() {
           name="NewEntryModal"
           component={EmptyScreen}
           options={{
-            tabBarButton: props => <OpenLogButton {...props} onPress={openSheet} />,
+            tabBarButton: props => <OpenLogButton {...props} onPress={() => setActiveModal({ name: ModalNames.NEW_ENTRY })} />,
             tabBarLabel: () => null,
           }}
         />
@@ -96,7 +92,7 @@ export default function AppNavigator() {
           }}
         />
       </Tab.Navigator>
-      <NewEntryModal ref={ref} />
+      <Modal />
     </>
   );
 }
