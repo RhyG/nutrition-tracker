@@ -1,37 +1,52 @@
-import { InputWithLabel } from '@components/InputWithLabel';
-import { Text } from '@components/Text';
-import { useThemedStyles } from '@hooks/useThemedStyles';
-import { useGoalsStore } from '@store/goals';
-import { Theme } from '@theme';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
+import { InputWithLabel } from '@app/components/InputWithLabel';
 import { Space } from '@app/components/Space';
+import { Text } from '@app/components/Text';
+import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { RootStackScreen } from '@app/navigation';
+import { DefaultGoals, useGoalsStore } from '@app/store/goals';
+import { Theme } from '@app/theme';
 
-const DEFAULT_GOALS = { calories: 2000, protein: 80 };
-
-export const GoalsScreen: RootStackScreen<'Goals'> = () => {
+export const GoalsScreen: RootStackScreen<'Goals'> = ({ navigation }) => {
   const {
     styles,
     theme: { spacing },
   } = useThemedStyles(stylesFn);
 
-  const updateGoals = useGoalsStore(state => state.updateGoals);
-  const goalCalories = useGoalsStore(state => state.calories);
-  const goalProtein = useGoalsStore(state => state.protein);
+  const goalInputs = useRef(DefaultGoals);
 
-  const [calories, setCalories] = useState(String(goalCalories || DEFAULT_GOALS.calories));
-  const [protein, setProtein] = useState(String(goalProtein || DEFAULT_GOALS.protein));
+  const { calories, protein, carbohydrates, fat, updateGoals } = useGoalsStore(useShallow(state => ({ ...state })));
 
-  const handleSaveUpdatedGoals = () => {
+  const handleSaveUpdatedGoals = useCallback(() => {
+    const values = goalInputs.current;
     const newGoals = {
-      calories: Number(calories),
-      protein: Number(protein),
+      calories: Number(values.calories),
+      protein: Number(values.protein),
+      carbohydrates: Number(values.carbohydrates),
+      fat: Number(values.fat),
     };
 
     updateGoals(newGoals);
-  };
+  }, [updateGoals]);
+
+  function onChangeGoals(key: string, value: string) {
+    goalInputs.current = {
+      ...goalInputs.current,
+      [key]: value,
+    };
+  }
+
+  useEffect(
+    function saveGoalsOnBlur() {
+      const unsubscribe = navigation.addListener('blur', handleSaveUpdatedGoals);
+
+      return unsubscribe;
+    },
+    [navigation, handleSaveUpdatedGoals],
+  );
 
   return (
     <View style={styles.screenContainer}>
@@ -39,27 +54,21 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
         <View style={styles.inputContainer}>
           <InputWithLabel
             label="Calories"
-            // placeholder="74"
-            onInputChange={setCalories}
-            // onInputChange={(text: string) => handleChange('calories', text)}
-            value={calories}
-            // value={String(inputs.calories)}
+            onInputChange={text => onChangeGoals('calories', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-calories-input"
+            defaultValue={String(calories)}
           />
         </View>
         <View style={styles.inputContainer}>
           <InputWithLabel
             label="Protein"
-            // placeholder="74"
-            onInputChange={setProtein}
-            // onInputChange={(text: string) => handleChange('protein', text)}
-            value={protein}
-            // value={String(inputs.protein)}
+            onInputChange={text => onChangeGoals('protein', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-protein-input"
+            defaultValue={String(protein)}
           />
         </View>
       </View>
@@ -67,27 +76,21 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
         <View style={styles.inputContainer}>
           <InputWithLabel
             label="Carbohydrates"
-            // placeholder="74"
-            onInputChange={setCalories}
-            // onInputChange={(text: string) => handleChange('calories', text)}
-            value={calories}
-            // value={String(inputs.calories)}
+            onInputChange={text => onChangeGoals('carbohydrates', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-calories-input"
+            defaultValue={String(carbohydrates)}
           />
         </View>
         <View style={styles.inputContainer}>
           <InputWithLabel
             label="Fat"
-            // placeholder="74"
-            onInputChange={setProtein}
-            // onInputChange={(text: string) => handleChange('protein', text)}
-            value={protein}
-            // value={String(inputs.protein)}
+            onInputChange={text => onChangeGoals('fat', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-protein-input"
+            defaultValue={String(fat)}
           />
         </View>
       </View>

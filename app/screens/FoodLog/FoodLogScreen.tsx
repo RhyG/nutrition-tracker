@@ -31,6 +31,8 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
   const caloriesGoal = useGoalsStore(state => state.calories);
   const proteinGoal = useGoalsStore(state => state.protein);
+  const carbohydratesGoal = useGoalsStore(state => state.carbohydrates);
+  const fatGoal = useGoalsStore(state => state.fat);
 
   const journalData = useJournalStore(state => state.journalData);
 
@@ -91,9 +93,9 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
           </View>
           <Space units={3} />
           <View style={styles.statsRow}>
-            <Stat name="Carbs" currentAmount={currentCarbohydrates} max={200} />
+            <Stat name="Carbs" currentAmount={currentCarbohydrates} max={carbohydratesGoal} />
             <Space horizontal units={3} />
-            <Stat name="Fat" currentAmount={currentFat} max={proteinGoal} />
+            <Stat name="Fat" currentAmount={currentFat} max={fatGoal} />
           </View>
         </View>
 

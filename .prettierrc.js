@@ -4,7 +4,7 @@ module.exports = {
   bracketSpacing: true,
   singleQuote: true,
   trailingComma: 'all',
-  importOrder: ['<THIRD_PARTY_MODULES>', '^@features/(.*)$', '^@app/(.*)$', '^@server/(.*)$', '^[./]'],
+  importOrder: ['<THIRD_PARTY_MODULES>', '^@features/(.*)$', '^@app/(.*)$', '^@components/(.*)$', '^@hooks/(.*)$', '^[./]'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   printWidth: 160,

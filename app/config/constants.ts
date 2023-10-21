@@ -40,5 +40,7 @@ export const DAYS: Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 
 export const REPO_URL = 'https://github.com/RhyG/nutrition-tracker';
 
-export const DEFAULT_CALORIES = 2000;
-export const DEFAULT_PROTEIN = 100;
+export const DEFAULT_CALORIES = 2500;
+export const DEFAULT_PROTEIN = 150;
+export const DEFAULT_CARBOHYDRATES = 190;
+export const DEFAULT_FAT = 63;

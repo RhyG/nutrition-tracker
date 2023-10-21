@@ -17,7 +17,7 @@ type Props = {
   /**
    * Current value of the input.
    */
-  value: string;
+  value?: string;
   /**
    * Label to render above the input.
    */
@@ -35,7 +35,7 @@ export const InputWithLabel = memo(({ onInputChange, placeholder, value, label =
       <TextInput
         placeholder={placeholder ?? label}
         onChangeText={onInputChange}
-        value={String(value)}
+        // value={String(value)}
         placeholderTextColor={theme.colours.palette.neutral500}
         testID={`input-with-label-${label}-input`}
         style={styles.textInput}
