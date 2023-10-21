@@ -1,4 +1,4 @@
-import { StackScreenProps } from '@react-navigation/stack';
+import type { StackScreenProps } from '@react-navigation/stack';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
@@ -7,7 +7,7 @@ import { InputWithLabel } from '@app/components/InputWithLabel';
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { RootStackParamList } from '@app/navigation';
+import type { RootStackParamList } from '@app/navigation';
 import { DefaultGoals, useGoalsStore } from '@app/store/goals';
 import { Theme } from '@app/theme';
 

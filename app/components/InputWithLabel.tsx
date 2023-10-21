@@ -24,7 +24,7 @@ type Props = {
   label: string;
 } & TextInputProps;
 
-export const InputWithLabel = memo(({ onInputChange, placeholder, value, label = '', ...inputProps }: Props) => {
+export const InputWithLabel = memo(({ onInputChange, placeholder, label = '', ...inputProps }: Props) => {
   const { styles, theme } = useThemedStyles(stylesFn);
 
   return (
@@ -35,7 +35,6 @@ export const InputWithLabel = memo(({ onInputChange, placeholder, value, label =
       <TextInput
         placeholder={placeholder ?? label}
         onChangeText={onInputChange}
-        // value={String(value)}
         placeholderTextColor={theme.colours.palette.neutral500}
         testID={`input-with-label-${label}-input`}
         style={styles.textInput}

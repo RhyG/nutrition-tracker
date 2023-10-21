@@ -5,7 +5,7 @@ import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, MALE_TDEE_VARIABLE } from '@conf
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -24,7 +24,6 @@ type TDEEFormData = {
   activityMultiplier: number;
 };
 
-const GENDERS = ['M', 'F'] as const;
 const Genders = {
   FEMALE: 'FEMALE',
   MALE: 'MALE',
@@ -48,10 +47,9 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     styles,
   } = useThemedStyles(stylesFn);
 
-  const [formData, setFormData] = useState<TDEEFormData>(DEFAULT_FORM_DATA);
+  const [gender, setGender] = useState<keyof typeof Genders>(Genders.MALE);
 
-  // const [selectedGender, setSelectedGender] = useState<keyof typeof Genders>(Genders.MALE);
-  // const [genderDropdownOpen, setGenderDropdownOpen] = useState(false);
+  const inputs = useRef<TDEEFormData>(DEFAULT_FORM_DATA);
 
   const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[0]);
   const [activityLevelDropdownOpen, setActivityLevelDropdownOpen] = useState(false);
@@ -60,10 +58,10 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   useFocusEffect(
     useCallback(() => {
       const clearAllFields = () => {
-        setFormData(DEFAULT_FORM_DATA);
+        inputs.current = DEFAULT_FORM_DATA;
       };
 
-      return () => clearAllFields();
+      return clearAllFields;
     }, []),
   );
 
@@ -75,21 +73,21 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       }
     }
 
-    setFormData(prevData => ({
-      ...prevData,
+    inputs.current = {
+      ...inputs.current,
       [property]: value,
-    }));
+    };
   };
 
   /* Boolean indicating if any inputs are incomplete */
-  const TDEEFormIncomplete = Object.values(formData).some(property => !property);
+  const TDEEFormIncomplete = Object.values(inputs.current).some(property => !property);
 
-  const calculateTDEE = () => {
+  function calculateTDEE() {
     if (TDEEFormIncomplete) {
       return;
     }
 
-    const { age, weight, height, gender, activityMultiplier } = formData;
+    const { age, weight, height, activityMultiplier } = inputs.current;
 
     const genderVariable = gender === Genders.MALE ? MALE_TDEE_VARIABLE : FEMALE_TDEE_VARIABLE;
 
@@ -98,7 +96,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     const finalTDEE = Math.round(BMR * Number(activityMultiplier));
 
     Alert.alert(`Your TDEE is ${finalTDEE} calories.`);
-  };
+  }
 
   return (
     <View style={styles.screenContainer}>
@@ -107,14 +105,13 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       </Text>
       <View style={styles.TDEEFields}>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} value={formData.age} />
+          <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} />
         </View>
         <View style={styles.fieldContainer}>
           <InputWithLabel
             label="Weight (kg)"
             placeholder="74"
             onInputChange={(text: string) => handleCalculatorChange('weight', text)}
-            value={formData.weight}
             keyboardType="number-pad"
           />
         </View>
@@ -124,7 +121,6 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
             label="Height (cm)"
             placeholder="178"
             onInputChange={(text: string) => handleCalculatorChange('height', text)}
-            value={formData.height}
             keyboardType="number-pad"
           />
         </View>
@@ -133,9 +129,9 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
           <Text preset="formHelper">Gender</Text>
           <View style={styles.radiosContainer}>
             {/* TODO: Make dropdown instead of radios */}
-            <RadioButton label="Male" selected={formData.gender === Genders.MALE} onPress={() => handleCalculatorChange('gender', Genders.MALE)} />
+            <RadioButton label="Male" selected={gender === Genders.MALE} onPress={() => setGender(Genders.MALE)} />
             <Space horizontal units={3} />
-            <RadioButton label="Female" selected={formData.gender === Genders.FEMALE} onPress={() => handleCalculatorChange('gender', Genders.FEMALE)} />
+            <RadioButton label="Female" selected={gender === Genders.FEMALE} onPress={() => setGender(Genders.FEMALE)} />
             {/* <DropDownPicker
               //@ts-expect-error typing on this library is a bit odd
               items={Object.values(Genders)}
