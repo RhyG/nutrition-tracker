@@ -15,7 +15,7 @@ import { ModalNames, useModalStore } from '@app/store/modal';
 import { OpenLogButton } from './OpenLogButton';
 import { TabBarLabel } from './TabBarLabel';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   'Food Log': undefined;
   Calculators: undefined;
   Goals: undefined;
