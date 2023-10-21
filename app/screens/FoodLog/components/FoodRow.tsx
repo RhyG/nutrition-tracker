@@ -7,7 +7,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { useJournal } from '@app/store/journal';
+import { useJournalStore } from '@app/store/journal';
 import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
@@ -27,7 +27,7 @@ function _FoodRow({ entry, day }: Props) {
 
   const setActiveModal = useModalStore(state => state.setActiveModal);
 
-  const removeItem = useJournal(state => state.removeItem);
+  const removeItem = useJournalStore(state => state.removeItem);
 
   const onDeleteButtonPress = () => {
     removeItem(id, day);

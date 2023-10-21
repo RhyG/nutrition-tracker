@@ -1,7 +1,7 @@
 import { InputWithLabel } from '@components/InputWithLabel';
 import { Text } from '@components/Text';
 import { useThemedStyles } from '@hooks/useThemedStyles';
-import { useGoals } from '@store/goals';
+import { useGoalsStore } from '@store/goals';
 import { Theme } from '@theme';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -17,9 +17,9 @@ export const GoalsScreen: RootStackScreen<'Goals'> = () => {
     theme: { spacing },
   } = useThemedStyles(stylesFn);
 
-  const updateGoals = useGoals(state => state.updateGoals);
-  const goalCalories = useGoals(state => state.calories);
-  const goalProtein = useGoals(state => state.protein);
+  const updateGoals = useGoalsStore(state => state.updateGoals);
+  const goalCalories = useGoalsStore(state => state.calories);
+  const goalProtein = useGoalsStore(state => state.protein);
 
   const [calories, setCalories] = useState(String(goalCalories || DEFAULT_GOALS.calories));
   const [protein, setProtein] = useState(String(goalProtein || DEFAULT_GOALS.protein));

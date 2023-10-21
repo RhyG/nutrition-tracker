@@ -6,7 +6,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
 import { useDayStore } from '@app/store/day';
-import { useJournal } from '@app/store/journal';
+import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
 import { Text } from '../Text';
@@ -38,7 +38,7 @@ export const Component = () => {
 
   const currentDay = useDayStore(state => state.currentDay);
 
-  const saveItem = useJournal(state => state.saveItem);
+  const saveItem = useJournalStore(state => state.saveItem);
 
   const logEntryDetails = useRef(defaultValues);
 

@@ -11,7 +11,7 @@ import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
 import { useDayStore } from '@app/store/day';
-import { useJournal } from '@app/store/journal';
+import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
 const { width } = Dimensions.get('window');
@@ -40,7 +40,7 @@ export const EditEntryModal = React.forwardRef<BottomSheet, Record<string, unkno
 
   const currentDay = useDayStore(state => state.currentDay);
 
-  const saveItem = useJournal(state => state.saveItem);
+  const saveItem = useJournalStore(state => state.saveItem);
 
   const logEntryDetails = useRef(defaultValues);
 

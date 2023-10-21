@@ -4,7 +4,7 @@ import { generateEntries } from '@app/lib/populate-journal';
 import AsyncStorage from '@app/modules/AsyncStorage';
 import { JournalEntry } from '@app/types';
 
-import { useJournal } from '../journal';
+import { useJournalStore } from '../journal';
 
 const mockData = {
   Monday: generateEntries(3),
@@ -38,7 +38,7 @@ const entry: JournalEntry = {
 
 describe('useJournal', () => {
   it('Should return default journal data', () => {
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     expect(result.current.journalData).toEqual(expect.objectContaining([]));
   });
@@ -46,7 +46,7 @@ describe('useJournal', () => {
   it('Should update the journal and save it to storage', async () => {
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     await act(async () => {
       result.current.updateJournal(mockData);
@@ -60,7 +60,7 @@ describe('useJournal', () => {
   it('Should allow the journal and storage to be cleared', async () => {
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     await act(async () => {
       result.current.clearJournal();
@@ -72,7 +72,7 @@ describe('useJournal', () => {
   });
 
   it('Should allow the day to be cleared', async () => {
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Populate the entries
     await act(async () => {
@@ -87,7 +87,7 @@ describe('useJournal', () => {
   });
 
   it('Should allow copying the previous day to the current day', async () => {
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Populate the entries
     await act(async () => {
@@ -112,7 +112,7 @@ describe('useJournal', () => {
   });
 
   it('Should copy entries from Sunday if current day is Monday', async () => {
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Populate the entries
     await act(async () => {
@@ -141,7 +141,7 @@ describe('useJournal', () => {
 
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Save the item to Wednesday
     await act(async () => {
@@ -159,7 +159,7 @@ describe('useJournal', () => {
 
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Remove the item from Wednesday
     await act(async () => {
@@ -179,7 +179,7 @@ describe('useJournal', () => {
 
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     // Save the updated item to Wednesday
     await act(async () => {
@@ -193,7 +193,7 @@ describe('useJournal', () => {
   });
 
   it('Should allow a day to be filled in testing', async () => {
-    const { result } = renderHook(() => useJournal());
+    const { result } = renderHook(() => useJournalStore());
 
     const entries = generateEntries(3);
     const expected = { ...mockEmptyData, Wednesday: entries };

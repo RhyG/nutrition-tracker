@@ -10,8 +10,8 @@ import { useEvent } from '@app/hooks/useEvent';
 import { useSetDayOnForeground } from '@app/hooks/useSetDayOnForeground';
 import { getCurrentMacroTotals } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
-import { useGoals } from '@app/store/goals';
-import { useJournal } from '@app/store/journal';
+import { useGoalsStore } from '@app/store/goals';
+import { useJournalStore } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 
 import { DaySwitcher } from './components/DaySwitcher';
@@ -29,10 +29,10 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const { styles } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
-  const caloriesGoal = useGoals(state => state.calories);
-  const proteinGoal = useGoals(state => state.protein);
+  const caloriesGoal = useGoalsStore(state => state.calories);
+  const proteinGoal = useGoalsStore(state => state.protein);
 
-  const journalData = useJournal(state => state.journalData);
+  const journalData = useJournalStore(state => state.journalData);
 
   const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
 

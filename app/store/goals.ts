@@ -29,7 +29,7 @@ type GoalState = {
   updateGoals: (newGoals: Goals) => void;
 };
 
-export const useGoals = create<GoalState>(set => ({
+export const useGoalsStore = create<GoalState>(set => ({
   calories: DEFAULT_CALORIES,
   protein: DEFAULT_PROTEIN,
   updateGoals: async (newGoals: Goals) => {

@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import AsyncStorage from '@app/modules/AsyncStorage';
 
-import { useGoals } from '../goals';
+import { useGoalsStore } from '../goals';
 
 jest.mock('@react-native-async-storage/async-storage', () => {
   return {
@@ -14,7 +14,7 @@ jest.mock('@react-native-async-storage/async-storage', () => {
 
 describe('useGoals', () => {
   it('Fetches the current goals', () => {
-    const { result } = renderHook(() => useGoals());
+    const { result } = renderHook(() => useGoalsStore());
 
     expect(result.current.calories).toEqual(2000);
     expect(result.current.protein).toEqual(100);
@@ -23,7 +23,7 @@ describe('useGoals', () => {
   it('Should allow updating goals', async () => {
     const storageSpy = jest.spyOn(AsyncStorage, 'setItem');
 
-    const { result } = renderHook(() => useGoals());
+    const { result } = renderHook(() => useGoalsStore());
 
     const updatedGoals = { calories: 5000, protein: 200 };
 

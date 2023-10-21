@@ -72,7 +72,7 @@ export const DefaultJournalData: JournalData = {
  * The store for the journal entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournal = create<JournalState>(set => ({
+export const useJournalStore = create<JournalState>(set => ({
   journalData: DefaultJournalData,
   updateJournal: async (data: JournalData) => {
     await AsyncStorage.setItem('journalData', data);

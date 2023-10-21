@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
-import { useJournal } from '@app/store/journal';
+import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
 
@@ -38,7 +38,7 @@ export const Component = (props: Props) => {
   const { entry, day } = props;
   const { styles } = useThemedStyles(stylesFn);
 
-  const updateItem = useJournal(state => state.updateItem);
+  const updateItem = useJournalStore(state => state.updateItem);
 
   const logEntryDetails = useRef(defaultValues);
 

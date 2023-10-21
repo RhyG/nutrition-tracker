@@ -1,4 +1,4 @@
-import { JournalData, useJournal } from '@app/store/journal';
+import { JournalData, useJournalStore } from '@app/store/journal';
 import { Day, JournalEntry } from '@app/types';
 
 type ReducedJournalEntry = Pick<JournalEntry, 'protein' | 'calories'>;
@@ -28,7 +28,7 @@ const getAverages = (data: JournalData) => {
 };
 
 export const useWeeklyAverages = () => {
-  const journalData = useJournal(state => state.journalData);
+  const journalData = useJournalStore(state => state.journalData);
 
   const averages = getAverages(journalData);
 

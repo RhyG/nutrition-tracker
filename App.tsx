@@ -6,20 +6,20 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AsyncStorage from '@app/modules/AsyncStorage';
-import { DefaultGoals, Goals, useGoals } from '@app/store/goals';
-import { DefaultJournalData, useJournal } from '@app/store/journal';
+import { DefaultGoals, Goals, useGoalsStore } from '@app/store/goals';
+import { DefaultJournalData, useJournalStore } from '@app/store/journal';
 
 import AppNavigator from './app/navigation';
 
 // Fetch goals and current data from storage on app mount
 (async () => {
   const storedGoals = await AsyncStorage.getItem<Goals>('goals', DefaultGoals);
-  useGoals.getState().updateGoals(storedGoals);
+  useGoalsStore.getState().updateGoals(storedGoals);
 
   const storedData = await AsyncStorage.getItem<{
     [key in keyof typeof DefaultJournalData]: [];
   }>('journalData', DefaultJournalData);
-  useJournal.getState().updateJournal(storedData);
+  useJournalStore.getState().updateJournal(storedData);
 })();
 
 export default function App() {

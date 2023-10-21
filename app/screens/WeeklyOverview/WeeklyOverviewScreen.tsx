@@ -8,8 +8,8 @@ import { StyleSheet, View } from 'react-native';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
-import { useGoals } from '@app/store/goals';
-import { useJournal } from '@app/store/journal';
+import { useGoalsStore } from '@app/store/goals';
+import { useJournalStore } from '@app/store/journal';
 
 import { Bar } from './components';
 import { useWeeklyAverages } from './hooks/useWeeklyAverages';
@@ -22,10 +22,10 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
   const { averageProtein, averageCalories } = useWeeklyAverages();
 
-  const calorieGoal = useGoals(state => state.calories);
-  const proteinGoal = useGoals(state => state.protein);
+  const calorieGoal = useGoalsStore(state => state.calories);
+  const proteinGoal = useGoalsStore(state => state.protein);
 
-  const journalData = useJournal(state => state.journalData);
+  const journalData = useJournalStore(state => state.journalData);
 
   return (
     <View style={styles.screenContainer}>

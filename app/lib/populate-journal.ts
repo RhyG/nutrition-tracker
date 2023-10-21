@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 
 import { useDayStore } from '@app/store/day';
-import { useJournal } from '@app/store/journal';
+import { useJournalStore } from '@app/store/journal';
 import { Day, JournalEntry } from '@app/types';
 
 const FOODS = [
@@ -77,7 +77,7 @@ export function generateEntries(amount = 20): JournalEntry[] {
 
 export function fillDay(day?: Day) {
   const entries = generateEntries();
-  useJournal.getState().fillDay(entries, day ?? useDayStore.getState().currentDay);
+  useJournalStore.getState().fillDay(entries, day ?? useDayStore.getState().currentDay);
 }
 
 export function fillWeek() {
