@@ -6,7 +6,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { getCurrentCalories, getCurrentProtein } from '@app/lib/macros';
+import { getCurrentMacroTotal } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
 import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
@@ -54,7 +54,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         <View style={styles.barsContainer}>
           <View style={styles.bars}>
             {DAYS.map(day => {
-              return <Bar amount={getCurrentCalories(journalData[day])} goal={calorieGoal} day={day} key={day} type="calories" />;
+              return <Bar amount={getCurrentMacroTotal('calories', journalData[day])} goal={calorieGoal} day={day} key={day} type="calories" />;
             })}
           </View>
         </View>
@@ -86,7 +86,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={styles.barsContainer}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentProtein(journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('protein', journalData[day])} goal={proteinGoal} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>
