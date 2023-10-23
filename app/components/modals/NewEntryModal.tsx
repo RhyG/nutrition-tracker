@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
-import { Dimensions, ListRenderItem, StyleSheet, View } from 'react-native';
+import { Dimensions, ListRenderItem, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
@@ -33,7 +33,7 @@ function inputsValid({ name, calories, protein, carbohydrates, fat }: { name: st
 export const Component = () => {
   const {
     styles,
-    theme: { spacing },
+    theme: { spacing, colours },
   } = useThemedStyles(stylesFn);
 
   const currentDay = useDayStore(state => state.currentDay);
@@ -82,6 +82,11 @@ export const Component = () => {
         return (
           <View style={styles.selectionContainer}>
             <EntryDetailsInputs onChangeText={onChangeEntryDetails} onSavePress={saveEntry} />
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.addButton} onPress={() => {}}>
+                <Text colour={colours.palette.neutral200}>Done</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         );
       case 'SAVED':
@@ -116,7 +121,24 @@ export const Component = () => {
 
 export const snapPoints = ['63%'];
 
-const stylesFn = ({ spacing }: Theme) =>
+const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({
     selectionContainer: { width, paddingTop: spacing.medium, paddingHorizontal: spacing.base },
+    buttonsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+    addButton: {
+      backgroundColor: colours.palette.green,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.medium,
+      paddingVertical: spacing.extraSmall,
+      borderRadius: 6,
+    },
+    barsContainer: {
+      alignItems: 'center',
+      marginTop: 20,
+      width: '100%',
+    },
   });
