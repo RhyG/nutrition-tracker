@@ -46,7 +46,7 @@ function EmptyScreen() {
 }
 
 export default function AppNavigator() {
-  const setActiveModal = useModalStore(state => state.setActiveModal);
+  const openModal = useModalStore(state => state.openModal);
 
   return (
     <>
@@ -71,7 +71,7 @@ export default function AppNavigator() {
           name="NewEntryModal"
           component={EmptyScreen}
           options={{
-            tabBarButton: props => <OpenLogButton {...props} onPress={() => setActiveModal({ name: ModalNames.NEW_ENTRY })} />,
+            tabBarButton: props => <OpenLogButton {...props} onPress={() => openModal({ name: ModalNames.NEW_ENTRY })} />,
             tabBarLabel: () => null,
           }}
         />

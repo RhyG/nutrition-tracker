@@ -14,17 +14,17 @@ type ActiveModal = { name: ModalName; snapPoints?: SnapPoints; params?: ModalPar
 type ModalState = {
   isModalActive: boolean;
   activeModal: ActiveModal | null;
-  setActiveModal: (params: ActiveModal) => void;
+  openModal: (params: ActiveModal) => void;
   closeModal: () => void;
 };
 
 export const useModalStore = create<ModalState>(set => ({
   isModalActive: false,
   activeModal: null,
-  setActiveModal: ({ name, snapPoints, params }) => {
+  openModal: ({ name, snapPoints, params }) => {
     set(() => ({
       isModalActive: true,
-      activeModal: { name, snapPoints: snapPoints ?? undefined, ...params },
+      activeModal: { name, snapPoints: snapPoints ?? undefined, params },
     }));
   },
   closeModal: () => set(() => ({ isModalActive: false, activeModal: null })),

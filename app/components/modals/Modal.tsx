@@ -7,7 +7,7 @@ import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
 
-import * as EditEntryModal from './EditEntryModal';
+import * as EditEntryModal from './EntryDetailsModal';
 import * as NewEntryModal from './NewEntryModal';
 
 const { width } = Dimensions.get('window');
@@ -42,19 +42,15 @@ export const Modal = () => {
     [isModalActive],
   );
 
-  if (!activeModal) return null;
-
   let snapPoints = defaultSnapPoints;
   let element: JSX.Element;
 
-  if (activeModal.name === ModalNames.NEW_ENTRY) {
+  if (activeModal?.name === ModalNames.NEW_ENTRY) {
     snapPoints = NewEntryModal.snapPoints;
     element = <NewEntryModal.Component />;
-  } else if (activeModal.name === ModalNames.EDIT_ENTRY) {
+  } else if (activeModal?.name === ModalNames.EDIT_ENTRY) {
     snapPoints = EditEntryModal.snapPoints;
-    element = <EditEntryModal.Component {...activeModal} />;
-  } else {
-    return null;
+    element = <EditEntryModal.Component {...activeModal.params} />;
   }
 
   return (

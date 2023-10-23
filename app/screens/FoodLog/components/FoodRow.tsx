@@ -25,7 +25,7 @@ function _FoodRow({ entry, day }: Props) {
 
   const { name, calories, protein, carbohydrates, fat, id, timestamp } = entry;
 
-  const setActiveModal = useModalStore(state => state.setActiveModal);
+  const openModal = useModalStore(state => state.openModal);
 
   const removeItem = useJournalStore(state => state.removeItem);
 
@@ -34,7 +34,7 @@ function _FoodRow({ entry, day }: Props) {
   };
 
   const onPress = () => {
-    setActiveModal({ name: ModalNames.EDIT_ENTRY, params: { entry, day } });
+    openModal({ name: ModalNames.EDIT_ENTRY, params: { entry, day } });
   };
 
   /* Renders the delete button when swiping right */
