@@ -1,15 +1,18 @@
-import Icon from '@expo/vector-icons/Entypo';
+import Icon from '@expo/vector-icons/Feather';
 import React, { useRef } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useShallow } from 'zustand/react/shallow';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
+import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
 
+import { Space } from '../Space';
 import { Text } from '../Text';
-import { EntryDetailsInputs } from '../edit-entry/EntryDetailsInputs';
+import { ProgressIndicator } from '../edit-entry/ProgressIndicator';
 
 const { width } = Dimensions.get('window');
 
@@ -34,62 +37,134 @@ type Props = {
 };
 
 export const Component = (props: Props) => {
-  console.log({ props });
-  const { entry, day } = props;
+  const { entry } = props;
   const { styles } = useThemedStyles(stylesFn);
 
-  const updateItem = useJournalStore(state => state.updateItem);
+  const { calories: goalCalories, protein: goalProtein, carbohydrates: goalCarbohydrates, fat: goalFat } = useGoalsStore(useShallow(state => ({ ...state })));
 
-  const logEntryDetails = useRef(defaultValues);
+  function calculatePercentage(current: number, max: number): number {
+    // The formula to calculate percentage is (current / max) * 100
+    const percentage = (current / max) * 100;
 
-  function updateEntry() {
-    const newDetails = logEntryDetails.current;
-    if (!inputsValid(newDetails)) {
-      return;
-    }
-  }
-
-  function onChangeEntryDetails(key: string, value: string) {
-    logEntryDetails.current = {
-      ...logEntryDetails.current,
-      [key]: value,
-    };
+    // Rounding to 2 decimal places for better readability
+    return Math.round((percentage + Number.EPSILON) * 100) / 100;
   }
 
   return (
-    <View style={styles.selectionContainer}>
-      <Text preset="subheading">{entry.name}</Text>
-      <View style={styles.macrosContainer}></View>
-      <EntryDetailsInputs onChangeText={onChangeEntryDetails} onSavePress={updateEntry} />
+    <View style={styles.container}>
+      <Text preset="subheading" style={styles.name}>
+        {entry.name}
+      </Text>
 
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.addButton} onPress={() => {}}>
-          <Icon name="plus" color="#fff" size={30} />
+      <Space units={2} />
+
+      <View style={styles.statsNumbers}>
+        <Macro title="Calories" amount={entry.calories} />
+        <Macro title="Protein" amount={entry.protein} />
+        <Macro title="Carbs" amount={entry.carbohydrates} />
+        <Macro title="Fat" amount={entry.fat} />
+      </View>
+
+      <View style={styles.divider} />
+
+      <Text preset="subheading">Progress to Goals</Text>
+      <View style={styles.progressIndicatorsContainer}>
+        <ProgressIndicator progress={calculatePercentage(entry.calories, goalCalories)} />
+        <ProgressIndicator progress={calculatePercentage(entry.protein, goalProtein)} />
+        <ProgressIndicator progress={calculatePercentage(entry.carbohydrates, goalCarbohydrates)} />
+        <ProgressIndicator progress={calculatePercentage(entry.fat, goalFat)} />
+      </View>
+
+      <View style={styles.actionButtonsContainer}>
+        <TouchableOpacity style={[styles.button, styles.addButton]} onPress={() => {}}>
+          <Icon name="save" size={24} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={() => {}}>
+          <Icon name="trash" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export const snapPoints = ['60%'];
+function Macro({ title, amount }: { title: string; amount: number }) {
+  const {
+    styles,
+    theme: { colours },
+  } = useThemedStyles(stylesFn);
 
-const stylesFn = ({ spacing, colours, typography }: Theme) =>
+  return (
+    <View style={styles.titleAndNumberContainer}>
+      <Text colour={colours.palette.neutral400} size="sm">
+        {title}
+      </Text>
+      <Text size="lg" weight="semiBold">
+        {amount}
+      </Text>
+    </View>
+  );
+}
+
+export const snapPoints = ['42%'];
+
+const stylesFn = ({ spacing, colours, layout }: Theme) =>
   StyleSheet.create({
-    selectionContainer: {
+    container: {
       width,
       paddingHorizontal: spacing.base,
+    },
+    name: {
+      textAlign: 'center',
     },
     macrosContainer: {},
     buttonsContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-end',
     },
-    addButton: {
-      backgroundColor: colours.palette.green,
+    button: {
       height: 40,
       width: 40,
       borderRadius: 40,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    addButton: {
+      backgroundColor: colours.palette.green,
+    },
+    removeButton: {
+      backgroundColor: colours.palette.angry500,
+    },
+    barsContainer: {
+      alignItems: 'center',
+      marginTop: 20,
+      width: '100%',
+    },
+    statsNumbers: {
+      ...layout.spaceBetweenRow,
+      paddingHorizontal: spacing.extraLarge,
+    },
+    bars: {
+      ...layout.spaceBetweenRow,
+      alignItems: 'flex-end',
+      width: '100%',
+    },
+    macroHeading: {
+      width: '45%',
+    },
+    titleAndNumberContainer: {
+      alignItems: 'flex-end',
+    },
+    divider: {
+      height: 1,
+      backgroundColor: colours.palette.neutral200,
+      marginVertical: spacing.small,
+    },
+    actionButtonsContainer: {
+      marginTop: spacing.medium,
+      flexDirection: 'row',
+    },
+    progressIndicatorsContainer: {
+      ...layout.spaceBetweenRow,
+      paddingTop: spacing.medium,
     },
   });

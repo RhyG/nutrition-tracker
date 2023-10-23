@@ -1,4 +1,4 @@
-import Icon from '@expo/vector-icons/MaterialIcons';
+import Icon from '@expo/vector-icons/Feather';
 import { format } from 'date-fns';
 import React, { memo } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -53,7 +53,7 @@ function _FoodRow({ entry, day }: Props) {
           },
         ]}>
         <RectButton onPress={onDeleteButtonPress} style={styles.button}>
-          <Icon name="delete" color="#fff" size={26} />
+          <Icon name="trash" color="#fff" size={26} />
         </RectButton>
       </Animated.View>
     );
