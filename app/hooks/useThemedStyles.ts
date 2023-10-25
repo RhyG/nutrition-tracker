@@ -17,15 +17,15 @@ export type StyleFunction<Styles> = (theme: Theme) => Styles;
 type WithoutStyles = { theme: Theme; styles: undefined };
 type WithStyles<Styles> = { theme: Theme; styles: Styles };
 
-export function useThemedStyles<Styles>(): WithoutStyles;
+export function useThemedStyles(): WithoutStyles;
 export function useThemedStyles<Styles>(stylesFn: StyleFunction<Styles>): WithStyles<Styles>;
 export function useThemedStyles<Styles>(stylesFn?: StyleFunction<Styles>): WithoutStyles | WithStyles<Styles> {
-  // @ts-expect-error
+  // @ts-expect-error -- types are hard
   return React.useMemo(
     () => ({
       theme,
       styles: typeof stylesFn === 'function' ? stylesFn(theme) : undefined,
     }),
-    [stylesFn, theme],
+    [stylesFn],
   );
 }
