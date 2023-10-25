@@ -26,7 +26,10 @@ const EMPTY_ARRAY = [] as const;
 const LIST_CONTENT_CONTAINER_STYLE = { paddingBottom: 50 };
 
 export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
-  const { styles } = useThemedStyles(stylesFn);
+  const {
+    styles,
+    theme: { colours },
+  } = useThemedStyles(stylesFn);
   const { currentDay, handleDayChange } = useDaySwitcher();
 
   const caloriesGoal = useGoalsStore(state => state.calories);
@@ -87,15 +90,15 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
         <View style={styles.statsContainer}>
           <View style={styles.statsRow}>
-            <Stat name="Calories" currentAmount={currentCalories} max={caloriesGoal} />
+            <Stat name="Calories" currentAmount={currentCalories} max={caloriesGoal} progressColour={colours.palette.green} />
             <Space horizontal units={3} />
-            <Stat name="Protein" currentAmount={currentProtein} max={proteinGoal} />
+            <Stat name="Protein" currentAmount={currentProtein} max={proteinGoal} progressColour={colours.palette.orange} />
           </View>
           <Space units={3} />
           <View style={styles.statsRow}>
-            <Stat name="Carbs" currentAmount={currentCarbohydrates} max={carbohydratesGoal} />
+            <Stat name="Carbs" currentAmount={currentCarbohydrates} max={carbohydratesGoal} progressColour={colours.palette.accent400} />
             <Space horizontal units={3} />
-            <Stat name="Fat" currentAmount={currentFat} max={fatGoal} />
+            <Stat name="Fat" currentAmount={currentFat} max={fatGoal} progressColour={colours.palette.blue} />
           </View>
         </View>
 

@@ -21,9 +21,13 @@ type Props = {
    * Maximum number of that macro for the day.
    */
   max: number;
+  /**
+   * Colour of the inner progress bar.
+   */
+  progressColour: string;
 };
 
-export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
+export const Stat = memo(({ name, currentAmount, max, progressColour }: Props): JSX.Element => {
   const {
     styles,
     theme: { colours },
@@ -44,7 +48,6 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
 
     return {
       width: `${statWidth.value}%`,
-      backgroundColor: currentAmount > max ? colours.palette.angry500 : colours.palette.green,
     };
   }, [max, currentAmount]);
 
@@ -57,7 +60,9 @@ export const Stat = memo(({ name, currentAmount, max }: Props): JSX.Element => {
         </Text>
       </View>
       <View style={styles.outerProgressBar}>
-        <Animated.View style={[progressBarStyle, styles.innerProgressBar]} />
+        <Animated.View
+          style={[progressBarStyle, styles.innerProgressBar, { backgroundColor: currentAmount > max ? colours.palette.angry500 : progressColour }]}
+        />
       </View>
     </View>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, G } from 'react-native-svg';
 
-export const ProgressIndicator = ({ progress = 0 }) => {
+export const ProgressIndicator = ({ progress = 0, colour }: { progress: number; colour: string }) => {
   const strokeWidth = 5;
   const radius = (80 - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -23,7 +23,7 @@ export const ProgressIndicator = ({ progress = 0 }) => {
             cy="40"
             r={radius}
             strokeWidth={strokeWidth}
-            stroke="#3498db"
+            stroke={colour}
             fill="none"
             strokeDasharray={strokeDasharray}
             strokeDashoffset={strokeDashoffset}

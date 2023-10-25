@@ -1,10 +1,9 @@
 import Icon from '@expo/vector-icons/Feather';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { isInputNumber } from '@app/lib/validation';
 import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
 import { useModalStore } from '@app/store/modal';
@@ -17,21 +16,6 @@ import { ProgressIndicator } from '../edit-entry/ProgressIndicator';
 
 const { width } = Dimensions.get('window');
 
-const defaultValues = { name: '', calories: 0, protein: 0, carbohydrates: 0, fat: 0 };
-
-function inputsValid({ name, calories, protein, carbohydrates, fat }: { name: string; calories: number; protein: number; carbohydrates: number; fat: number }) {
-  // Check if value of name is not empty.
-  const nameIsValid = name.length > 0;
-
-  // Check all macros are valid numbers.
-  const caloriesIsValid = isInputNumber(String(calories));
-  const proteinIsValid = isInputNumber(String(protein));
-  const carbohydratesIsValid = isInputNumber(String(carbohydrates));
-  const fatIsValid = isInputNumber(String(fat));
-
-  return nameIsValid && caloriesIsValid && proteinIsValid && carbohydratesIsValid && fatIsValid;
-}
-
 type Props = {
   entry: JournalEntry;
   day: Day;
@@ -39,7 +23,10 @@ type Props = {
 
 export const Component = (props: Props) => {
   const { entry, day } = props;
-  const { styles } = useThemedStyles(stylesFn);
+  const {
+    styles,
+    theme: { colours },
+  } = useThemedStyles(stylesFn);
 
   const closeModal = useModalStore(state => state.closeModal);
 
@@ -79,10 +66,10 @@ export const Component = (props: Props) => {
 
       <Text preset="subheading">Progress to Goals</Text>
       <View style={styles.progressIndicatorsContainer}>
-        <ProgressIndicator progress={calculatePercentage(entry.calories, goalCalories)} />
-        <ProgressIndicator progress={calculatePercentage(entry.protein, goalProtein)} />
-        <ProgressIndicator progress={calculatePercentage(entry.carbohydrates, goalCarbohydrates)} />
-        <ProgressIndicator progress={calculatePercentage(entry.fat, goalFat)} />
+        <ProgressIndicator progress={calculatePercentage(entry.calories, goalCalories)} colour={colours.palette.green} />
+        <ProgressIndicator progress={calculatePercentage(entry.protein, goalProtein)} colour={colours.palette.orange} />
+        <ProgressIndicator progress={calculatePercentage(entry.carbohydrates, goalCarbohydrates)} colour={colours.palette.accent400} />
+        <ProgressIndicator progress={calculatePercentage(entry.fat, goalFat)} colour={colours.palette.blue} />
       </View>
 
       <View style={styles.actionButtonsContainer}>
