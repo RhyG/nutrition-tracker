@@ -1,11 +1,10 @@
-import Icon from '@expo/vector-icons/Entypo';
 import React, { useRef } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
 
-import { Space } from '../Space';
+import { Space } from '../../Space';
 import { Input } from './Input';
 
 type Props = {
@@ -21,13 +20,6 @@ export function EntryDetailsInputs({ onChangeText, onSavePress: _onSavePress }: 
   const proteinInputRef = useRef<TextInput>(null);
   const carbInputRef = useRef<TextInput>(null);
   const fatInputRef = useRef<TextInput>(null);
-
-  function onSavePress() {
-    _onSavePress();
-
-    // TODO: Don't clear inputs if it doesn't save properly
-    clearInputs();
-  }
 
   function clearInputs() {
     entryNameInputRef?.current?.clear();
@@ -55,7 +47,7 @@ export function EntryDetailsInputs({ onChangeText, onSavePress: _onSavePress }: 
   );
 }
 
-const stylesFn = ({ spacing, colours }: Theme) =>
+const stylesFn = ({ colours }: Theme) =>
   StyleSheet.create({
     container: {
       // marginHorizontal: spacing.base,

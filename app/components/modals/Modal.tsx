@@ -7,8 +7,8 @@ import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
 
-import * as EditEntryModal from './EntryDetailsModal';
-import * as NewEntryModal from './NewEntryModal';
+import * as EditEntryModal from '../../screens/FoodLog/components/EntryDetailsModal/EntryDetailsModal';
+import * as NewEntryModal from './NewEntryModal/NewEntryModal';
 
 const { width } = Dimensions.get('window');
 

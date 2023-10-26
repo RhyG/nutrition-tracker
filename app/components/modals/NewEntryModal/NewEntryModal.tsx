@@ -9,9 +9,9 @@ import { useDayStore } from '@app/store/day';
 import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
-import { Text } from '../Text';
-import { EntryDetailsInputs } from '../edit-entry/EntryDetailsInputs';
-import { Tab, Tabs, sections } from '../edit-entry/Tabs';
+import { Text } from '../../Text';
+import { EntryDetailsInputs } from './EntryDetailsInputs';
+import { Tab, Tabs, sections } from './Tabs';
 
 const { width } = Dimensions.get('window');
 

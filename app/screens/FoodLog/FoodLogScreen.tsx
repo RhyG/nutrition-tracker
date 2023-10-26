@@ -1,4 +1,3 @@
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
@@ -15,7 +14,6 @@ import { useJournalStore } from '@app/store/journal';
 import { JournalEntry } from '@app/types';
 
 import { DaySwitcher } from './components/DaySwitcher';
-import { EditEntryModal } from './components/EditEntryModal';
 import { FoodRow } from './components/FoodRow';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Stat } from './components/Stat';
@@ -41,7 +39,6 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
   const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
 
-  const editEntryModalRef = useRef<BottomSheet>(null);
   const listRef = useRef<FlatList>(null);
 
   const currentDayEntries: JournalEntry[] = useMemo(() => journalData[currentDay] ?? EMPTY_ARRAY, [currentDay, journalData]);
@@ -56,9 +53,9 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const listScrollHandler = useEvent((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollOffsetY = event.nativeEvent.contentOffset.y;
 
-    // If there is enough entries to reach the FAB and the user srolls
+    // If there is enough entries to reach the FAB and the user scrolls
     if (currentDayEntries.length > 6 && scrollOffsetY > 5) {
-      setShowScrollToTopButton(false);
+      setShowScrollToTopButton(true);
     } else if (!showScrollToTopButton && scrollOffsetY < 150) {
       setShowScrollToTopButton(true);
     } else {
@@ -119,8 +116,6 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
         />
         <ScrollToTopButton buttonVisible={showScrollToTopButton} onPress={scrollListToTop} />
       </View>
-
-      <EditEntryModal ref={editEntryModalRef} />
     </View>
   );
 };

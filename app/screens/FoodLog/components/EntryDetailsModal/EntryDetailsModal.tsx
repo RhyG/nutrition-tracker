@@ -10,9 +10,10 @@ import { useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
 
-import { Space } from '../Space';
-import { Text } from '../Text';
-import { ProgressIndicator } from '../edit-entry/ProgressIndicator';
+import { Space } from '../../../../components/Space';
+import { Text } from '../../../../components/Text';
+import { calculatePercentage } from './EntryDetailsModal.utils';
+import { ProgressIndicator } from './ProgressIndicator';
 
 const { width } = Dimensions.get('window');
 
@@ -33,14 +34,6 @@ export const Component = (props: Props) => {
   const { calories: goalCalories, protein: goalProtein, carbohydrates: goalCarbohydrates, fat: goalFat } = useGoalsStore(useShallow(state => ({ ...state })));
 
   const removeItem = useJournalStore(state => state.removeItem);
-
-  function calculatePercentage(current: number, max: number): number {
-    // The formula to calculate percentage is (current / max) * 100
-    const percentage = (current / max) * 100;
-
-    // Rounding to 2 decimal places for better readability
-    return Math.round((percentage + Number.EPSILON) * 100) / 100;
-  }
 
   function onDeletePress() {
     removeItem(entry.id, day);
@@ -78,6 +71,9 @@ export const Component = (props: Props) => {
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={onDeletePress}>
           <Icon name="trash" size={24} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={() => {}}>
+          <Icon name="copy" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
