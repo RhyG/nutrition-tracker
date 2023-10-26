@@ -1,6 +1,4 @@
-import { JournalEntry } from '@app/types';
-
-type Macro = Pick<JournalEntry, 'calories' | 'protein' | 'carbohydrates' | 'fat'>;
+import { JournalEntry, Macro } from '@app/types';
 
 /**
  * Returns the total of a given macro for a given day.
