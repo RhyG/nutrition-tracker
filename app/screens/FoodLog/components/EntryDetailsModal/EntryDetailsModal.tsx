@@ -1,10 +1,9 @@
 import Icon from '@expo/vector-icons/Feather';
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
 
+import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
 import { useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
@@ -31,7 +30,7 @@ export const Component = (props: Props) => {
 
   const closeModal = useModalStore(state => state.closeModal);
 
-  const { calories: goalCalories, protein: goalProtein, carbohydrates: goalCarbohydrates, fat: goalFat } = useGoalsStore(useShallow(state => ({ ...state })));
+  const { goalCalories, goalProtein, goalCarbohydrates, goalFat } = useMacroGoals();
 
   const removeItem = useJournalStore(state => state.removeItem);
 

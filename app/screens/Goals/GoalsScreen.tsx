@@ -1,14 +1,14 @@
 import type { StackScreenProps } from '@react-navigation/stack';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
 
 import { InputWithLabel } from '@app/components/InputWithLabel';
 import { Space } from '@app/components/Space';
 import { Text } from '@app/components/Text';
+import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import type { RootStackParamList } from '@app/navigation';
-import { DefaultGoals, useGoalsStore } from '@app/store/goals';
+import { DefaultGoals } from '@app/store/goals';
 import { Theme } from '@app/theme';
 
 type Props = StackScreenProps<RootStackParamList, 'Goals'>;
@@ -21,7 +21,7 @@ export function GoalsScreen({ navigation }: Props) {
 
   const goalInputs = useRef(DefaultGoals);
 
-  const { calories, protein, carbohydrates, fat, updateGoals } = useGoalsStore(useShallow(state => ({ ...state })));
+  const { goalCalories, goalProtein, goalCarbohydrates, goalFat, updateGoals } = useMacroGoals();
 
   const handleSaveUpdatedGoals = useCallback(() => {
     const values = goalInputs.current;
@@ -61,7 +61,7 @@ export function GoalsScreen({ navigation }: Props) {
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-calories-input"
-            defaultValue={String(calories)}
+            defaultValue={String(goalCalories)}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -71,7 +71,7 @@ export function GoalsScreen({ navigation }: Props) {
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-protein-input"
-            defaultValue={String(protein)}
+            defaultValue={String(goalProtein)}
           />
         </View>
       </View>
@@ -83,7 +83,7 @@ export function GoalsScreen({ navigation }: Props) {
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-calories-input"
-            defaultValue={String(carbohydrates)}
+            defaultValue={String(goalCarbohydrates)}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -93,7 +93,7 @@ export function GoalsScreen({ navigation }: Props) {
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
             testID="goals-screen-protein-input"
-            defaultValue={String(fat)}
+            defaultValue={String(goalFat)}
           />
         </View>
       </View>

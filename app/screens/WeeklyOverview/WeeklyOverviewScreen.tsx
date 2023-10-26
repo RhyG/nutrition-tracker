@@ -4,12 +4,11 @@ import { DAYS } from '@config/constants';
 import { Theme } from '@theme';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useShallow } from 'zustand/react/shallow';
 
+import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentMacroTotal } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
-import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
 
 import { Bar } from './components';
@@ -23,7 +22,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
   const { averageProtein, averageCalories, averageCarbohydrates, averageFat } = useWeeklyAverages();
 
-  const { calories: goalCalories, protein: goalProtein, carbohydrates: goalCarbohydrates, fat: goalFat } = useGoalsStore(useShallow(state => ({ ...state })));
+  const { goalCalories, goalProtein, goalCarbohydrates, goalFat } = useMacroGoals();
 
   const journalData = useJournalStore(state => state.journalData);
 
