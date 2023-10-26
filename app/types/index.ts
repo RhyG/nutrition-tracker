@@ -1,10 +1,3 @@
-declare namespace NodeJS {
-  interface Global {
-    __DEV__?: boolean;
-    __E2E__: boolean;
-  }
-}
-
 // TODO: Remove all project specific types from here.
 export type JournalEntry = {
   id: string;
@@ -15,5 +8,7 @@ export type JournalEntry = {
   fat: number;
   timestamp: number;
 };
+
+export type Macro = Pick<JournalEntry, 'calories' | 'protein' | 'carbohydrates' | 'fat'>;
 
 export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
