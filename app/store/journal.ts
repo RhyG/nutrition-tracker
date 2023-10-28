@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 
 import { DAYS } from '@app/config/constants';
@@ -49,6 +50,12 @@ interface JournalState {
    * @param {Day} day the day to which the updated entry belongs.
    */
   updateItem: (updatedItem: JournalEntry, day: Day) => void;
+  /**
+   * Copy an item from the received day.
+   * @param {JournalEntry} entry the entry to copy.
+   * @param {Day} day the day to which the updated entry belongs.
+   */
+  copyItem: (entry: JournalEntry, day: Day) => void;
   /**
    * Fills a day with the received entries.
    * Used for testing.
@@ -162,6 +169,31 @@ export const useJournalStore = create<JournalState>(set => ({
       const newJournalData = {
         ...journalData,
         [day]: updatedEntries,
+      };
+
+      // Update the journal in storage
+      AsyncStorage.setItem('journalData', newJournalData);
+
+      return {
+        journalData: newJournalData,
+      };
+    });
+  },
+  copyItem: (entry: JournalEntry, day: Day) => {
+    set(({ journalData }) => {
+      const entriesForDay = [...journalData[day]];
+
+      // Get the index of the entry to be copied.
+      const indexToInsertAt = entriesForDay.findIndex(item => item.id === entry.id) + 1;
+
+      const newEntry = { ...entry, id: nanoid() };
+
+      //  Insert the updated item at the index of the item being updated.
+      entriesForDay.splice(indexToInsertAt, 0, newEntry);
+
+      const newJournalData = {
+        ...journalData,
+        [day]: entriesForDay,
       };
 
       // Update the journal in storage

@@ -1,6 +1,7 @@
 import Icon from '@expo/vector-icons/Feather';
+import { nanoid } from 'nanoid';
 import React from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
@@ -21,7 +22,17 @@ type Props = {
   day: Day;
 };
 
-export const Component = (props: Props) => {
+function Button({ iconName, onPress, buttonStyle }: { iconName: keyof typeof Icon.glyphMap; onPress: () => void; buttonStyle: ViewStyle }) {
+  const { styles } = useThemedStyles(stylesFn);
+
+  return (
+    <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
+      <Icon name={iconName} size={24} color="#fff" />
+    </TouchableOpacity>
+  );
+}
+
+export function Component(props: Props) {
   const { entry, day } = props;
   const {
     styles,
@@ -33,9 +44,15 @@ export const Component = (props: Props) => {
   const { goalCalories, goalProtein, goalCarbohydrates, goalFat } = useMacroGoals();
 
   const removeItem = useJournalStore(state => state.removeItem);
+  const copyItem = useJournalStore(state => state.copyItem);
 
   function onDeletePress() {
     removeItem(entry.id, day);
+    closeModal();
+  }
+
+  function duplicateEntry() {
+    copyItem(entry, day);
     closeModal();
   }
 
@@ -65,19 +82,13 @@ export const Component = (props: Props) => {
       </View>
 
       <View style={styles.actionButtonsContainer}>
-        <TouchableOpacity style={[styles.button, styles.addButton]} onPress={() => {}}>
-          <Icon name="save" size={24} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={onDeletePress}>
-          <Icon name="trash" size={24} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={() => {}}>
-          <Icon name="copy" size={24} color="#fff" />
-        </TouchableOpacity>
+        <Button iconName="save" onPress={() => {}} buttonStyle={styles.addButton} />
+        <Button iconName="trash" onPress={onDeletePress} buttonStyle={styles.removeButton} />
+        <Button iconName="copy" onPress={duplicateEntry} buttonStyle={styles.copyButton} />
       </View>
     </View>
   );
-};
+}
 
 function Macro({ title, amount }: { title: string; amount: number }) {
   const {
@@ -114,14 +125,18 @@ const stylesFn = ({ spacing, colours, layout }: Theme) =>
       justifyContent: 'flex-end',
     },
     button: {
-      height: 40,
-      width: 40,
-      borderRadius: 40,
+      height: 45,
+      width: 45,
+      borderRadius: 45,
       alignItems: 'center',
       justifyContent: 'center',
     },
     addButton: {
       backgroundColor: colours.palette.green,
+    },
+    copyButton: {
+      backgroundColor: colours.palette.blue,
+      marginLeft: spacing.small,
     },
     removeButton: {
       backgroundColor: colours.palette.angry500,
