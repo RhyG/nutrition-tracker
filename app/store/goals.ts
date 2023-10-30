@@ -1,7 +1,8 @@
 import { create } from 'zustand';
+import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import { DEFAULT_CALORIES, DEFAULT_CARBOHYDRATES, DEFAULT_FAT, DEFAULT_PROTEIN } from '@app/config/constants';
-import AsyncStorage from '@app/modules/AsyncStorage';
+import StorageModule from '@app/modules/AsyncStorage';
 
 export type Goals = {
   calories: number;
@@ -41,13 +42,21 @@ type GoalState = {
   updateGoals: (newGoals: Goals) => void;
 };
 
-export const useGoalsStore = create<GoalState>(set => ({
-  calories: DEFAULT_CALORIES,
-  protein: DEFAULT_PROTEIN,
-  carbohydrates: DEFAULT_CARBOHYDRATES,
-  fat: DEFAULT_FAT,
-  updateGoals: async newGoals => {
-    set(state => ({ ...state, ...newGoals }));
-    await AsyncStorage.setItem('goals', newGoals);
-  },
-}));
+export const useGoalsStore = create<GoalState>()(
+  persist(
+    set => ({
+      calories: DEFAULT_CALORIES,
+      protein: DEFAULT_PROTEIN,
+      carbohydrates: DEFAULT_CARBOHYDRATES,
+      fat: DEFAULT_FAT,
+      updateGoals: async newGoals => {
+        set(state => ({ ...state, ...newGoals }));
+      },
+    }),
+    {
+      name: 'macro-goals',
+      // the expected interface for the storage matches the module, but the library expects a weirdly specific type
+      storage: createJSONStorage(() => StorageModule as unknown as StateStorage),
+    },
+  ),
+);
