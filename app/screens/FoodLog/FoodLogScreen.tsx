@@ -55,13 +55,10 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const listScrollHandler = useEvent((event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollOffsetY = event.nativeEvent.contentOffset.y;
 
-    // If there is enough entries to reach the FAB and the user scrolls
-    if (currentDayEntries.length > 6 && scrollOffsetY > 5) {
-      setShowScrollToTopButton(true);
-    } else if (!showScrollToTopButton && scrollOffsetY < 150) {
+    if (scrollOffsetY > 100) {
       setShowScrollToTopButton(true);
     } else {
-      setShowScrollToTopButton(true);
+      setShowScrollToTopButton(false);
     }
   });
 
@@ -124,6 +121,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
           data={currentDayEntries}
           renderItem={renderJournalEntry}
           onScroll={listScrollHandler}
+          scrollEventThrottle={16}
           ref={listRef}
           ListEmptyComponent={ListEmptyComponent}
           contentContainerStyle={LIST_CONTENT_CONTAINER_STYLE}
