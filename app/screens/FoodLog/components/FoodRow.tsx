@@ -7,11 +7,12 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+import { SavedFood } from '@app/store/saved-foods';
 import { Theme } from '@app/theme';
 import { JournalEntry } from '@app/types';
 
 type Props = {
-  entry: JournalEntry;
+  entry: JournalEntry | SavedFood;
   onPress: () => void;
   onDeleteButtonPress: (id: string) => void;
 };
@@ -22,7 +23,7 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
-  const { name, calories, protein, carbohydrates, fat, id, timestamp } = entry;
+  const { name, calories, protein, carbohydrates, fat, id } = entry;
 
   /* Renders the delete button when swiping right */
   const renderRightActions = (progress: Animated.AnimatedInterpolation<0>) => {
@@ -46,6 +47,8 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
     );
   };
 
+  const hasTimestamp = 'timestamp' in entry;
+
   return (
     <Swipeable friction={2} leftThreshold={40} rightThreshold={40} overshootLeft={false} overshootRight={false} renderRightActions={renderRightActions}>
       <TouchableOpacity onPress={onPress} style={styles.container}>
@@ -53,9 +56,9 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
           <View style={styles.nameContainer}>
             <Text size="sm">{name ?? ''}</Text>
           </View>
-          {Boolean(timestamp) && (
+          {hasTimestamp && (
             <Text size="xs" colour={colours.palette.neutral400}>
-              {format(timestamp, 'h:mmaaa')}
+              {format(entry.timestamp, 'h:mmaaa')}
             </Text>
           )}
         </View>

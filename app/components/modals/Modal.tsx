@@ -54,7 +54,13 @@ export const Modal = () => {
   }
 
   return (
-    <BottomSheet snapPoints={snapPoints} ref={sheetRef} backdropComponent={renderBackdrop} enablePanDownToClose={true} onChange={onBottomSheetChange}>
+    <BottomSheet
+      snapPoints={snapPoints}
+      ref={sheetRef}
+      backdropComponent={renderBackdrop}
+      enablePanDownToClose={true}
+      onChange={onBottomSheetChange}
+      index={-1}>
       <View style={styles.sheetContainer}>{element}</View>
     </BottomSheet>
   );

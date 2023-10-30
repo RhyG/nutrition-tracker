@@ -5,7 +5,7 @@ import { FlatList, ListRenderItem } from 'react-native';
 import { FoodRow } from '@app/screens/FoodLog/components/FoodRow';
 import { useDayStore } from '@app/store/day';
 import { useJournalStore } from '@app/store/journal';
-import { useSavedFoodsStore } from '@app/store/saved-foods';
+import { SavedFood, useSavedFoodsStore } from '@app/store/saved-foods';
 import { JournalEntry } from '@app/types';
 
 export function SavedFoods() {
@@ -34,5 +34,7 @@ export function SavedFoods() {
     [currentDay],
   );
 
-  return <FlatList data={savedFoods} renderItem={renderItem} />;
+  return <FlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} />;
 }
+
+const keyExtractor = (item: SavedFood) => item.id;

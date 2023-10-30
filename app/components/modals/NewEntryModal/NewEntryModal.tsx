@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
 import { Dimensions, ListRenderItem, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
@@ -38,6 +39,8 @@ export const Component = () => {
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
+  const navigation = useNavigation();
+
   const currentDay = useDayStore(state => state.currentDay);
 
   const saveItem = useJournalStore(state => state.saveItem);
@@ -77,6 +80,9 @@ export const Component = () => {
     logEntryDetails.current = defaultValues;
     clearInputs();
     entryNameInputRef?.current?.focus();
+
+    // react-navigation types are stupid in places, this is one of them
+    navigation.navigate('Food Log' as never);
   }
 
   function onChangeEntryDetails(key: string, value: string) {

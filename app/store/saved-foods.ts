@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import StorageModule from '@app/modules/AsyncStorage';
 import { JournalEntry } from '@app/types';
 
-type SavedFood = Omit<JournalEntry, 'timestamp'>;
+export type SavedFood = Omit<JournalEntry, 'timestamp'>;
 
 type SavedFoodsState = {
   foods: SavedFood[];
@@ -25,7 +25,8 @@ export const useSavedFoodsStore = create<SavedFoodsState>()(
     }),
     {
       name: 'saved-foods',
-      storage: createJSONStorage(() => StorageModule),
+      // the expected interface for the storage matches the module, but the library expects a weirdly specific type
+      storage: createJSONStorage(() => StorageModule as unknown as StateStorage),
     },
   ),
 );
