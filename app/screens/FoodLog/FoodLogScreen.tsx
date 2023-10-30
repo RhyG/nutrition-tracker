@@ -152,8 +152,8 @@ const stylesFn = ({ colours, spacing, layout }: Theme) =>
     screenContainer: {
       flex: 1,
       backgroundColor: colours.background,
-      ...spacing.screen,
-      paddingTop: 0,
+      paddingHorizontal: spacing.screen.padding,
+      paddingVertical: 0,
     },
     statsContainer: {},
     statsRow: {
