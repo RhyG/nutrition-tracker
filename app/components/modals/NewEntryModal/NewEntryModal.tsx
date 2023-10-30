@@ -157,7 +157,7 @@ export const Component = () => {
   );
 };
 
-export const snapPoints = ['63%'];
+export const snapPoints = ['58%'];
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({

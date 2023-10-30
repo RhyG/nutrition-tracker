@@ -1,8 +1,4 @@
-import { InputWithLabel } from '@components/InputWithLabel';
-import { Space } from '@components/Space';
-import { Text } from '@components/Text';
 import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, MALE_TDEE_VARIABLE } from '@config/constants';
-import { useThemedStyles } from '@hooks/useThemedStyles';
 import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import React, { useCallback, useRef, useState } from 'react';
@@ -13,6 +9,12 @@ import { RadioButton } from '@app/components/RadioButton';
 import { calculateBMR } from '@app/lib/calculators';
 import { isInputNumber } from '@app/lib/validation';
 import { RootStackScreen } from '@app/navigation';
+
+import { InputWithLabel } from '@components/InputWithLabel';
+import { Space } from '@components/Space';
+import { Text } from '@components/Text';
+
+import { useThemedStyles } from '@hooks/useThemedStyles';
 
 import { Converter } from './components';
 
@@ -105,7 +107,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       </Text>
       <View style={styles.TDEEFields}>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} />
+          <InputWithLabel label="Age" placeholder="26" onInputChange={(text: string) => handleCalculatorChange('age', text)} keyboardType="number-pad" />
         </View>
         <View style={styles.fieldContainer}>
           <InputWithLabel
