@@ -1,8 +1,9 @@
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
-import { Dimensions, ListRenderItem, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, ListRenderItem, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
+import { Space } from '@app/components/Space';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
 import { useDayStore } from '@app/store/day';
@@ -10,7 +11,7 @@ import { useJournalStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
 import { Text } from '../../Text';
-import { EntryDetailsInputs } from './EntryDetailsInputs';
+import { Input } from './Input';
 import { SavedFoods } from './SavedFoods';
 import { Tab, Tabs, sections } from './Tabs';
 
@@ -34,7 +35,7 @@ function inputsValid({ name, calories, protein, carbohydrates, fat }: { name: st
 export const Component = () => {
   const {
     styles,
-    theme: { spacing, colours },
+    theme: { colours },
   } = useThemedStyles(stylesFn);
 
   const currentDay = useDayStore(state => state.currentDay);
@@ -42,6 +43,12 @@ export const Component = () => {
   const saveItem = useJournalStore(state => state.saveItem);
 
   const logEntryDetails = useRef(defaultValues);
+
+  const entryNameInputRef = useRef<TextInput>(null);
+  const caloriesInputRef = useRef<TextInput>(null);
+  const proteinInputRef = useRef<TextInput>(null);
+  const carbInputRef = useRef<TextInput>(null);
+  const fatInputRef = useRef<TextInput>(null);
 
   const listRef = useRef<FlatList<Tab>>(null);
 
@@ -68,6 +75,8 @@ export const Component = () => {
     saveItem(detailsToSave, currentDay);
 
     logEntryDetails.current = defaultValues;
+    clearInputs();
+    entryNameInputRef?.current?.focus();
   }
 
   function onChangeEntryDetails(key: string, value: string) {
@@ -77,14 +86,36 @@ export const Component = () => {
     };
   }
 
+  function clearInputs() {
+    entryNameInputRef?.current?.clear();
+    caloriesInputRef?.current?.clear();
+    proteinInputRef?.current?.clear();
+    carbInputRef?.current?.clear();
+    fatInputRef?.current?.clear();
+
+    entryNameInputRef?.current?.focus();
+  }
+
   const renderItem: ListRenderItem<Tab> = ({ item }) => {
     switch (item) {
       case 'QUICK_ADD':
         return (
           <View style={styles.selectionContainer}>
-            <EntryDetailsInputs onChangeText={onChangeEntryDetails} onSavePress={saveEntry} />
+            <View style={styles.container}>
+              <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
+              <Space units={2} />
+              <Input field="Calories" onChangeText={onChangeEntryDetails} ref={caloriesInputRef} />
+              <Space units={2} />
+              <Input field="Protein" onChangeText={onChangeEntryDetails} ref={proteinInputRef} />
+              <Space units={2} />
+              <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={carbInputRef} />
+              <Space units={2} />
+              <Input field="Fat" onChangeText={onChangeEntryDetails} ref={fatInputRef} />
+              <Space units={2} />
+            </View>
+
             <View style={styles.buttonsContainer}>
-              <TouchableOpacity style={styles.addButton} onPress={() => {}}>
+              <TouchableOpacity style={styles.addButton} onPress={saveEntry}>
                 <Text colour={colours.palette.neutral200}>Done</Text>
               </TouchableOpacity>
             </View>
@@ -141,5 +172,18 @@ const stylesFn = ({ spacing, colours }: Theme) =>
       alignItems: 'center',
       marginTop: 20,
       width: '100%',
+    },
+    container: {
+      // marginHorizontal: spacing.base,
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    buttonContainer: {
+      backgroundColor: colours.palette.green,
+      height: 40,
+      width: 40,
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
