@@ -6,9 +6,9 @@ import { useGoalsStore } from '../goals';
 
 jest.mock('@react-native-async-storage/async-storage', () => {
   return {
-    getItem: async (...args: any[]) => args,
-    setItem: async (...args: any[]) => args,
-    removeItem: async (...args: any[]) => args,
+    getItem: async (...args: unknown[]) => args,
+    setItem: async (...args: unknown[]) => args,
+    removeItem: async (...args: unknown[]) => args,
   };
 });
 
@@ -25,7 +25,7 @@ describe('useGoals', () => {
 
     const { result } = renderHook(() => useGoalsStore());
 
-    const updatedGoals = { calories: 5000, protein: 200 };
+    const updatedGoals = { calories: 5000, protein: 200, carbohydrates: 300, fat: 100 };
 
     await act(async () => {
       result.current.updateGoals(updatedGoals);
