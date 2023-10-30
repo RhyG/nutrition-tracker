@@ -1,22 +1,31 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
+import StorageModule from '@app/modules/AsyncStorage';
 import { JournalEntry } from '@app/types';
 
 type SavedFood = Omit<JournalEntry, 'timestamp'>;
 
 type SavedFoodsState = {
-  foods: Record<string, SavedFood>;
+  foods: SavedFood[];
   saveFood: (food: SavedFood) => void;
   removeFood: (id: string) => void;
 };
 
-export const useSavedFoodsStore = create<SavedFoodsState>(set => ({
-  foods: {},
-  saveFood: (food: SavedFood) => set(state => ({ foods: { ...state.foods, [food.id]: food } })),
-  removeFood: (id: string) =>
-    set(state => {
-      const foods = Object.assign(state.foods, {});
-      delete foods[id];
-      return { foods };
+export const useSavedFoodsStore = create<SavedFoodsState>()(
+  persist(
+    set => ({
+      foods: [],
+      saveFood: (food: SavedFood) => set(state => ({ foods: [...state.foods, food] })),
+      removeFood: (id: string) =>
+        set(state => {
+          const foods = [...state.foods].filter(food => food.id !== id);
+          return { foods };
+        }),
     }),
-}));
+    {
+      name: 'saved-foods',
+      storage: createJSONStorage(() => StorageModule),
+    },
+  ),
+);
