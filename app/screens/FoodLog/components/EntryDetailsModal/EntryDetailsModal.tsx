@@ -1,5 +1,4 @@
 import Icon from '@expo/vector-icons/Feather';
-import { nanoid } from 'nanoid';
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -7,6 +6,7 @@ import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { useJournalStore } from '@app/store/journal';
 import { useModalStore } from '@app/store/modal';
+import { useSavedFoodsStore } from '@app/store/saved-foods';
 import { Theme } from '@app/theme';
 import { Day, JournalEntry } from '@app/types';
 
@@ -43,6 +43,8 @@ export function Component(props: Props) {
 
   const { goalCalories, goalProtein, goalCarbohydrates, goalFat } = useMacroGoals();
 
+  const saveFood = useSavedFoodsStore(state => state.saveFood);
+
   const removeItem = useJournalStore(state => state.removeItem);
   const copyItem = useJournalStore(state => state.copyItem);
 
@@ -51,8 +53,22 @@ export function Component(props: Props) {
     closeModal();
   }
 
-  function duplicateEntry() {
+  function onCopyPress() {
     copyItem(entry, day);
+    closeModal();
+  }
+
+  function onSavePress() {
+    const entryToSave = {
+      id: entry.id,
+      name: entry.name,
+      calories: entry.calories,
+      protein: entry.protein,
+      carbohydrates: entry.carbohydrates,
+      fat: entry.fat,
+    };
+
+    saveFood(entryToSave);
     closeModal();
   }
 
@@ -82,9 +98,9 @@ export function Component(props: Props) {
       </View>
 
       <View style={styles.actionButtonsContainer}>
-        <Button iconName="save" onPress={() => {}} buttonStyle={styles.addButton} />
+        <Button iconName="save" onPress={onSavePress} buttonStyle={styles.addButton} />
         <Button iconName="trash" onPress={onDeletePress} buttonStyle={styles.removeButton} />
-        <Button iconName="copy" onPress={duplicateEntry} buttonStyle={styles.copyButton} />
+        <Button iconName="copy" onPress={onCopyPress} buttonStyle={styles.copyButton} />
       </View>
     </View>
   );

@@ -5,7 +5,7 @@ import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
 
-import { Text } from '../Text';
+import { Text } from '../../Text';
 
 export const sections = ['QUICK_ADD', 'SAVED'] as const;
 export type Tab = (typeof sections)[number];

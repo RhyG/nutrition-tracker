@@ -5,7 +5,7 @@ import { StyleSheet, TextInputProps, View } from 'react-native';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { Theme } from '@app/theme';
 
-import { Text } from '../Text';
+import { Text } from '../../Text';
 
 type Props = { field: string; onChangeText: (field: string, text: string) => void; keyboardType?: TextInputProps['keyboardType']; hideUnit?: boolean };
 

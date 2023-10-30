@@ -1,4 +1,3 @@
-import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, ListRenderItem, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
@@ -11,7 +10,10 @@ import { getCurrentMacroTotals } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
 import { useGoalsStore } from '@app/store/goals';
 import { useJournalStore } from '@app/store/journal';
+import { ModalNames, useModalStore } from '@app/store/modal';
 import { JournalEntry } from '@app/types';
+
+import { useThemedStyles } from '@hooks/useThemedStyles';
 
 import { DaySwitcher } from './components/DaySwitcher';
 import { FoodRow } from './components/FoodRow';
@@ -70,7 +72,20 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   }, []);
 
   // TODO optimise component props
-  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(({ item }) => <FoodRow entry={item} day={currentDay} />, [currentDay]);
+  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(
+    ({ item }) => {
+      const onRowPress = function () {
+        useModalStore.getState().openModal({ name: ModalNames.EDIT_ENTRY, params: { entry: item, day: currentDay } });
+      };
+
+      function onDeleteButtonPress(id: string) {
+        useJournalStore.getState().removeItem(id, currentDay);
+      }
+
+      return <FoodRow entry={item} onPress={onRowPress} onDeleteButtonPress={onDeleteButtonPress} />;
+    },
+    [currentDay],
+  );
 
   const {
     calories: currentCalories,

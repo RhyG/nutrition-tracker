@@ -11,6 +11,7 @@ import { Theme } from '@app/theme';
 
 import { Text } from '../../Text';
 import { EntryDetailsInputs } from './EntryDetailsInputs';
+import { SavedFoods } from './SavedFoods';
 import { Tab, Tabs, sections } from './Tabs';
 
 const { width } = Dimensions.get('window');
@@ -92,8 +93,8 @@ export const Component = () => {
       case 'SAVED':
         return (
           <View style={styles.selectionContainer}>
-            <View style={{ marginHorizontal: spacing.base, flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
-              <Text>SAVED</Text>
+            <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
+              <SavedFoods />
             </View>
           </View>
         );

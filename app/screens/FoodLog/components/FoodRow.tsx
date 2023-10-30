@@ -7,35 +7,22 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { useJournalStore } from '@app/store/journal';
-import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
-import { Day, JournalEntry } from '@app/types';
+import { JournalEntry } from '@app/types';
 
 type Props = {
   entry: JournalEntry;
-  day: Day;
+  onPress: () => void;
+  onDeleteButtonPress: (id: string) => void;
 };
 
-function _FoodRow({ entry, day }: Props) {
+function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
   const {
     styles,
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
   const { name, calories, protein, carbohydrates, fat, id, timestamp } = entry;
-
-  const openModal = useModalStore(state => state.openModal);
-
-  const removeItem = useJournalStore(state => state.removeItem);
-
-  const onDeleteButtonPress = () => {
-    removeItem(id, day);
-  };
-
-  const onPress = () => {
-    openModal({ name: ModalNames.EDIT_ENTRY, params: { entry, day } });
-  };
 
   /* Renders the delete button when swiping right */
   const renderRightActions = (progress: Animated.AnimatedInterpolation<0>) => {
@@ -52,7 +39,7 @@ function _FoodRow({ entry, day }: Props) {
             transform: [{ translateX }],
           },
         ]}>
-        <RectButton onPress={onDeleteButtonPress} style={styles.button}>
+        <RectButton onPress={() => onDeleteButtonPress(id)} style={styles.button}>
           <Icon name="trash" color="#fff" size={26} />
         </RectButton>
       </Animated.View>
