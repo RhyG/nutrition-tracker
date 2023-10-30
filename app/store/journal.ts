@@ -1,8 +1,9 @@
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
+import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import { DAYS } from '@app/config/constants';
-import AsyncStorage from '@app/modules/AsyncStorage';
+import StorageModule from '@app/modules/AsyncStorage';
 import { Day, JournalEntry } from '@app/types';
 
 export type JournalData = Record<Day, JournalEntry[]>;
@@ -79,134 +80,129 @@ export const DefaultJournalData: JournalData = {
  * The store for the journal entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournalStore = create<JournalState>(set => ({
-  journalData: DefaultJournalData,
-  updateJournal: async (data: JournalData) => {
-    await AsyncStorage.setItem('journalData', data);
-    set(({ journalData }) => ({
-      journalData: { ...journalData, ...data },
-    }));
-  },
-  clearJournal: async () => {
-    await AsyncStorage.setItem('journalData', DefaultJournalData);
-    set(() => ({ journalData: DefaultJournalData }));
-  },
-  clearDay: (day: Day) => {
-    set(({ journalData }) => ({
-      journalData: { ...journalData, [day]: [] },
-    }));
-  },
-  copyPreviousDay: (currentDay: Day) => {
-    set(({ journalData }) => {
-      // If the current day is Monday then the entries from Sunday should be copied.
-      const indexOfDay = currentDay === 'Monday' ? DAYS.indexOf('Sunday') : DAYS.indexOf(currentDay) - 1;
+export const useJournalStore = create<JournalState>()(
+  persist(
+    set => ({
+      journalData: DefaultJournalData,
+      updateJournal: async (data: JournalData) => {
+        set(({ journalData }) => ({
+          journalData: { ...journalData, ...data },
+        }));
+      },
+      clearJournal: async () => {
+        set(() => ({ journalData: DefaultJournalData }));
+      },
+      clearDay: (day: Day) => {
+        set(({ journalData }) => ({
+          journalData: { ...journalData, [day]: [] },
+        }));
+      },
+      copyPreviousDay: (currentDay: Day) => {
+        set(({ journalData }) => {
+          // If the current day is Monday then the entries from Sunday should be copied.
+          const indexOfDay = currentDay === 'Monday' ? DAYS.indexOf('Sunday') : DAYS.indexOf(currentDay) - 1;
 
-      // Get the entries and copy them
-      const dayToCopy = DAYS[indexOfDay];
+          // Get the entries and copy them
+          const dayToCopy = DAYS[indexOfDay];
 
-      if (dayToCopy) {
-        const newItems = [...journalData[dayToCopy]];
+          if (dayToCopy) {
+            const newItems = [...journalData[dayToCopy]];
 
-        return {
-          journalData: {
+            return {
+              journalData: {
+                ...journalData,
+                [currentDay]: newItems,
+              },
+            };
+          } else {
+            return {
+              journalData,
+            };
+          }
+        });
+      },
+      saveItem: async (newItem: JournalEntry, day: Day) => {
+        set(({ journalData }) => {
+          const todayFood = [...journalData[day], newItem];
+
+          const updatedWeek = {
             ...journalData,
-            [currentDay]: newItems,
-          },
-        };
-      } else {
-        return {
-          journalData,
-        };
-      }
-    });
-  },
-  saveItem: async (newItem: JournalEntry, day: Day) => {
-    set(({ journalData }) => {
-      const todayFood = [...journalData[day], newItem];
+            [day]: todayFood,
+          };
 
-      const updatedWeek = {
-        ...journalData,
-        [day]: todayFood,
-      };
+          return {
+            journalData: { ...journalData, ...updatedWeek },
+          };
+        });
+      },
+      removeItem: (id: string, day: Day) => {
+        set(({ journalData }) => {
+          // Filter current entries for all but the one matching the received ID
+          const todayFood = journalData[day].filter(item => item.id !== id);
 
-      // Update the journal in storage
-      AsyncStorage.setItem('journalData', updatedWeek);
+          const newJournalData = {
+            ...journalData,
+            [day]: todayFood,
+          };
 
-      return {
-        journalData: { ...journalData, ...updatedWeek },
-      };
-    });
-  },
-  removeItem: (id: string, day: Day) => {
-    set(({ journalData }) => {
-      // Filter current entries for all but the one matching the received ID
-      const todayFood = journalData[day].filter(item => item.id !== id);
+          return {
+            journalData: newJournalData,
+          };
+        });
+      },
+      updateItem: (updatedItem: JournalEntry, day: Day) => {
+        set(({ journalData }) => {
+          // Get the index of the item to be updated.
+          const itemIndex = journalData[day].findIndex(item => item.id === updatedItem.id);
 
-      const newJournalData = {
-        ...journalData,
-        [day]: todayFood,
-      };
+          // Filter out the item.
+          const updatedEntries = journalData[day].filter(item => item.id !== updatedItem.id);
 
-      // Update the journal in storage
-      AsyncStorage.setItem('journalData', newJournalData);
+          //  Insert the updated item at the index of the item being updated.
+          updatedEntries.splice(itemIndex, 0, updatedItem);
 
-      return {
-        journalData: newJournalData,
-      };
-    });
-  },
-  updateItem: (updatedItem: JournalEntry, day: Day) => {
-    set(({ journalData }) => {
-      // Get the index of the item to be updated.
-      const itemIndex = journalData[day].findIndex(item => item.id === updatedItem.id);
+          const newJournalData = {
+            ...journalData,
+            [day]: updatedEntries,
+          };
 
-      // Filter out the item.
-      const updatedEntries = journalData[day].filter(item => item.id !== updatedItem.id);
+          return {
+            journalData: newJournalData,
+          };
+        });
+      },
+      copyItem: (entry: JournalEntry, day: Day) => {
+        set(({ journalData }) => {
+          const entriesForDay = [...journalData[day]];
 
-      //  Insert the updated item at the index of the item being updated.
-      updatedEntries.splice(itemIndex, 0, updatedItem);
+          // Get the index of the entry to be copied.
+          const indexToInsertAt = entriesForDay.findIndex(item => item.id === entry.id) + 1;
 
-      const newJournalData = {
-        ...journalData,
-        [day]: updatedEntries,
-      };
+          const newEntry = { ...entry, id: nanoid() };
 
-      // Update the journal in storage
-      AsyncStorage.setItem('journalData', newJournalData);
+          //  Insert the updated item at the index of the item being updated.
+          entriesForDay.splice(indexToInsertAt, 0, newEntry);
 
-      return {
-        journalData: newJournalData,
-      };
-    });
-  },
-  copyItem: (entry: JournalEntry, day: Day) => {
-    set(({ journalData }) => {
-      const entriesForDay = [...journalData[day]];
+          const newJournalData = {
+            ...journalData,
+            [day]: entriesForDay,
+          };
 
-      // Get the index of the entry to be copied.
-      const indexToInsertAt = entriesForDay.findIndex(item => item.id === entry.id) + 1;
-
-      const newEntry = { ...entry, id: nanoid() };
-
-      //  Insert the updated item at the index of the item being updated.
-      entriesForDay.splice(indexToInsertAt, 0, newEntry);
-
-      const newJournalData = {
-        ...journalData,
-        [day]: entriesForDay,
-      };
-
-      // Update the journal in storage
-      AsyncStorage.setItem('journalData', newJournalData);
-
-      return {
-        journalData: newJournalData,
-      };
-    });
-  },
-  fillDay: (entries: JournalEntry[], day: Day) => {
-    set(({ journalData }) => ({
-      journalData: { ...journalData, [day]: entries },
-    }));
-  },
-}));
+          return {
+            journalData: newJournalData,
+          };
+        });
+      },
+      fillDay: (entries: JournalEntry[], day: Day) => {
+        set(({ journalData }) => ({
+          journalData: { ...journalData, [day]: entries },
+        }));
+      },
+    }),
+    {
+      name: 'food-log',
+      // the expected interface for the storage matches the module, but the library expects a weirdly specific type
+      storage: createJSONStorage(() => StorageModule as unknown as StateStorage),
+    },
+  ),
+);
