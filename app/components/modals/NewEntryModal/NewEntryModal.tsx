@@ -130,9 +130,7 @@ export const Component = () => {
       case 'SAVED':
         return (
           <View style={styles.selectionContainer}>
-            <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
-              <SavedFoods />
-            </View>
+            <SavedFoods />
           </View>
         );
       default:
