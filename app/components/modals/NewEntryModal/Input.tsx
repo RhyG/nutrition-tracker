@@ -7,28 +7,32 @@ import { Theme } from '@app/theme';
 
 import { Text } from '../../Text';
 
-type Props = { field: string; onChangeText: (field: string, text: string) => void; keyboardType?: TextInputProps['keyboardType']; hideUnit?: boolean };
+type Props = {
+  label: string;
+  field: string;
+  onChangeText: (field: string, text: string) => void;
+  keyboardType?: TextInputProps['keyboardType'];
+  hideUnit?: boolean;
+};
 
-export const Input = forwardRef(({ field, onChangeText, keyboardType = 'numeric', hideUnit }: Props, ref) => {
+export const Input = forwardRef(({ label, onChangeText, keyboardType = 'numeric', hideUnit, field }: Props, ref) => {
   const {
     styles,
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
-  const lowercaseFieldName = field.toLowerCase();
-
   return (
     <>
       <Text preset="formHelper" style={styles.text}>
-        {field}
+        {label}
       </Text>
       <View style={styles.inputContainer}>
         <BottomSheetTextInput
           style={styles.input}
-          onChangeText={text => onChangeText(lowercaseFieldName, text)}
+          onChangeText={text => onChangeText(field, text)}
           // @ts-expect-error this type is gross, not sure how to fix
           ref={ref}
-          testID={`${lowercaseFieldName}-input`}
+          testID={`${field}-input`}
           // defaultValue="0"
           keyboardType={keyboardType}
         />

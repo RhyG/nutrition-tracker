@@ -1,4 +1,4 @@
-import { Text } from '@components/Text';
+import i18n from 'i18n-js';
 import React, { memo, useReducer } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -6,6 +6,8 @@ import { Space } from '@app/components/Space';
 import { useEvent } from '@app/hooks/useEvent';
 import { caloriesToKj, kjToCalories } from '@app/lib/energy';
 import { isInputNumber } from '@app/lib/validation';
+
+import { Text } from '@components/Text';
 
 import { InputWithLabel } from '../../../components/InputWithLabel';
 
@@ -54,18 +56,18 @@ export const Converter = memo(() => {
   return (
     <>
       <Text preset="heading" style={styles.heading}>
-        Convert Kilojoules / Calories
+        {i18n.t('screens.calculators.convertTitle')}
       </Text>
       <View style={styles.fieldsWrapper}>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label="Calories" onInputChange={handleCalorieChange} value={String(calories)} />
+          <InputWithLabel label={i18n.t('macros.calories')} onInputChange={handleCalorieChange} value={String(calories)} />
         </View>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label="Kilojoules" onInputChange={handleKilojouleChange} value={String(kj)} />
+          <InputWithLabel label={i18n.t('screens.calculators.kilojoules')} onInputChange={handleKilojouleChange} value={String(kj)} />
         </View>
       </View>
       <Space units={4} />
-      <Text>Formula: 1 Cal = 4.184 kJ, rounded to the nearest whole number.</Text>
+      <Text>{i18n.t('screens.calculators.formula')}</Text>
     </>
   );
 });

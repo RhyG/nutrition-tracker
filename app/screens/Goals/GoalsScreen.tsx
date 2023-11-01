@@ -1,4 +1,5 @@
 import type { StackScreenProps } from '@react-navigation/stack';
+import i18n from 'i18n-js';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -56,7 +57,7 @@ export function GoalsScreen({ navigation }: Props) {
       <View style={styles.inputsContainer}>
         <View style={styles.inputContainer}>
           <InputWithLabel
-            label="Calories"
+            label={i18n.t('macros.calories')}
             onInputChange={text => onChangeGoals('calories', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
@@ -66,7 +67,7 @@ export function GoalsScreen({ navigation }: Props) {
         </View>
         <View style={styles.inputContainer}>
           <InputWithLabel
-            label="Protein"
+            label={i18n.t('macros.protein')}
             onInputChange={text => onChangeGoals('protein', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
@@ -78,7 +79,7 @@ export function GoalsScreen({ navigation }: Props) {
       <View style={[styles.inputsContainer, { marginTop: spacing.small }]}>
         <View style={styles.inputContainer}>
           <InputWithLabel
-            label="Carbohydrates"
+            label={i18n.t('macros.carbohydrates')}
             onInputChange={text => onChangeGoals('carbohydrates', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
@@ -88,7 +89,7 @@ export function GoalsScreen({ navigation }: Props) {
         </View>
         <View style={styles.inputContainer}>
           <InputWithLabel
-            label="Fat"
+            label={i18n.t('macros.fat')}
             onInputChange={text => onChangeGoals('fat', text)}
             keyboardType="number-pad"
             onBlur={handleSaveUpdatedGoals}
@@ -98,7 +99,7 @@ export function GoalsScreen({ navigation }: Props) {
         </View>
       </View>
       <Space units={4} />
-      <Text>Goals will automatically update and are used to track your progress in the journal and weekly overview.</Text>
+      <Text>{i18n.t('screens.goals.about')}</Text>
     </View>
   );
 }

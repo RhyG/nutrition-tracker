@@ -6,6 +6,7 @@ import 'react-native-get-random-values';
 import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import './app/i18n/i18n';
 import AppNavigator from './app/navigation';
 
 export default function App() {

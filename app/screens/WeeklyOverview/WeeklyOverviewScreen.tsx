@@ -1,7 +1,6 @@
-import { Space } from '@components/Space';
-import { Text } from '@components/Text';
 import { DAYS } from '@config/constants';
 import { Theme } from '@theme';
+import i18n from 'i18n-js';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
@@ -10,6 +9,9 @@ import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentMacroTotal } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
 import { useJournalStore } from '@app/store/journal';
+
+import { Space } from '@components/Space';
+import { Text } from '@components/Text';
 
 import { Bar } from './components';
 import { useWeeklyAverages } from './hooks/useWeeklyAverages';
@@ -31,11 +33,11 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View>
         <View style={styles.statsNumbers}>
           <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
-            Calories
+            {i18n.t('macros.calories')}
           </Text>
           <View style={styles.titleAndNumberContainer}>
             <Text colour={colours.palette.neutral400} size="md">
-              Average
+              {i18n.t('screens.weeklyOverview.average')}
             </Text>
             <Text size="xl" weight="semiBold">
               {averageCalories}
@@ -43,7 +45,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
           </View>
           <View style={styles.titleAndNumberContainer}>
             <Text colour={colours.palette.neutral400} size="md">
-              Goal
+              {i18n.t('screens.weeklyOverview.goal')}
             </Text>
             <Text size="xl" weight="semiBold">
               {goalCalories}
@@ -63,11 +65,11 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
       <View style={styles.statsNumbers}>
         <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
-          Protein
+          {i18n.t('macros.protein')}
         </Text>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Average
+            {i18n.t('screens.weeklyOverview.average')}
           </Text>
           <Text size="xl" weight="semiBold">
             {averageProtein}
@@ -75,7 +77,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         </View>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Goal
+            {i18n.t('screens.weeklyOverview.goal')}
           </Text>
           <Text size="xl" weight="semiBold">
             {goalProtein}
@@ -94,11 +96,11 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
       <View style={styles.statsNumbers}>
         <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
-          Carbs
+          {i18n.t('macros.carbs')}
         </Text>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Average
+            {i18n.t('screens.weeklyOverview.average')}
           </Text>
           <Text size="xl" weight="semiBold">
             {averageCarbohydrates}
@@ -106,7 +108,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         </View>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Goal
+            {i18n.t('screens.weeklyOverview.goal')}
           </Text>
           <Text size="xl" weight="semiBold">
             {goalCarbohydrates}
@@ -125,11 +127,11 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
       <View style={styles.statsNumbers}>
         <Text size="xxl" weight="semiBold" style={styles.macroHeading}>
-          Fat
+          {i18n.t('macros.fat')}
         </Text>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Average
+            {i18n.t('screens.weeklyOverview.average')}
           </Text>
           <Text size="xl" weight="semiBold">
             {averageFat}
@@ -137,7 +139,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         </View>
         <View style={styles.titleAndNumberContainer}>
           <Text colour={colours.palette.neutral400} size="md">
-            Goal
+            {i18n.t('screens.weeklyOverview.goal')}
           </Text>
           <Text size="xl" weight="semiBold">
             {goalFat}

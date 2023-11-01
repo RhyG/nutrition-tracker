@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import i18n from 'i18n-js';
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
 import { Dimensions, ListRenderItem, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
@@ -86,6 +87,7 @@ export const Component = () => {
   }
 
   function onChangeEntryDetails(key: string, value: string) {
+    console.log({ key, value });
     logEntryDetails.current = {
       ...logEntryDetails.current,
       [key]: value,
@@ -108,21 +110,21 @@ export const Component = () => {
         return (
           <View style={styles.selectionContainer}>
             <View style={styles.container}>
-              <Input field="Name" onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
+              <Input field="name" label={i18n.t('name')} onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
               <Space units={2} />
-              <Input field="Calories" onChangeText={onChangeEntryDetails} ref={caloriesInputRef} />
+              <Input field="calories" label={i18n.t('macros.calories')} onChangeText={onChangeEntryDetails} ref={caloriesInputRef} />
               <Space units={2} />
-              <Input field="Protein" onChangeText={onChangeEntryDetails} ref={proteinInputRef} />
+              <Input field="protein" label={i18n.t('macros.protein')} onChangeText={onChangeEntryDetails} ref={proteinInputRef} />
               <Space units={2} />
-              <Input field="Carbohydrates" onChangeText={onChangeEntryDetails} ref={carbInputRef} />
+              <Input field="carbohydrates" label={i18n.t('macros.carbohydrates')} onChangeText={onChangeEntryDetails} ref={carbInputRef} />
               <Space units={2} />
-              <Input field="Fat" onChangeText={onChangeEntryDetails} ref={fatInputRef} />
+              <Input field="fat" label={i18n.t('macros.fat')} onChangeText={onChangeEntryDetails} ref={fatInputRef} />
               <Space units={2} />
             </View>
 
             <View style={styles.buttonsContainer}>
               <TouchableOpacity style={styles.addButton} onPress={saveEntry}>
-                <Text colour={colours.palette.neutral200}>Done</Text>
+                <Text colour={colours.palette.neutral200}>{i18n.t('done')}</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -1,4 +1,5 @@
 import Icon from '@expo/vector-icons/Feather';
+import i18n from 'i18n-js';
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -81,15 +82,15 @@ export function Component(props: Props) {
       <Space units={2} />
 
       <View style={styles.statsNumbers}>
-        <Macro title="Calories" amount={entry.calories} />
-        <Macro title="Protein" amount={entry.protein} />
-        <Macro title="Carbs" amount={entry.carbohydrates} />
-        <Macro title="Fat" amount={entry.fat} />
+        <Macro title={i18n.t('macros.calories')} amount={entry.calories} />
+        <Macro title={i18n.t('macros.protein')} amount={entry.protein} />
+        <Macro title={i18n.t('macros.carbs')} amount={entry.carbohydrates} />
+        <Macro title={i18n.t('macros.fat')} amount={entry.fat} />
       </View>
 
       <View style={styles.divider} />
 
-      <Text preset="subheading">Progress to Goals</Text>
+      <Text preset="subheading">{i18n.t('screens.foodLog.progressToGoals')}</Text>
       <View style={styles.progressIndicatorsContainer}>
         <ProgressIndicator progress={calculatePercentage(entry.calories, goalCalories)} colour={colours.palette.green} />
         <ProgressIndicator progress={calculatePercentage(entry.protein, goalProtein)} colour={colours.palette.orange} />

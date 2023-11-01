@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import i18n from 'i18n-js';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -52,7 +53,7 @@ export function Tabs({ onTabSelected }: { onTabSelected: (tab: Tab) => void }) {
           <TouchableOpacity onPress={() => selectTab('QUICK_ADD')} style={styles.tabButton}>
             <Feather name="plus" size={22} color={colours.palette.neutral700} />
             <Text preset="formLabel" style={styles.sheetHeading}>
-              Quick Add
+              {i18n.t('quickAdd')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -60,7 +61,7 @@ export function Tabs({ onTabSelected }: { onTabSelected: (tab: Tab) => void }) {
           <TouchableOpacity onPress={() => selectTab('SAVED')} style={styles.tabButton}>
             <Feather name="save" size={22} color={colours.palette.neutral700} />
             <Text preset="formLabel" style={styles.sheetHeading}>
-              Saved
+              {i18n.t('saved')}
             </Text>
           </TouchableOpacity>
         </View>

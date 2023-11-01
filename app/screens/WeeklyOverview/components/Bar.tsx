@@ -28,7 +28,6 @@ function _Bar({ amount, day, goal }: Props): JSX.Element {
   return (
     <Menu renderer={Popover} rendererProps={{ preferredPlacement: 'top' }}>
       <MenuTrigger
-        //@ts-ignore looks like an issue with the library
         style={styles.barContainer}
         customStyles={{
           TriggerTouchableComponent: TouchableWithoutFeedback,
