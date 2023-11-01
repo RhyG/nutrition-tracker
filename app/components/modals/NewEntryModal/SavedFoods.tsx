@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { nanoid } from 'nanoid';
 import React, { useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
@@ -9,8 +10,9 @@ import { SavedFood, useSavedFoodsStore } from '@app/store/saved-foods';
 import { JournalEntry } from '@app/types';
 
 export function SavedFoods() {
-  const currentDay = useDayStore(state => state.currentDay);
+  const navigation = useNavigation();
 
+  const currentDay = useDayStore(state => state.currentDay);
   const savedFoods = useSavedFoodsStore(state => state.foods);
 
   const renderItem: ListRenderItem<Omit<JournalEntry, 'timestamp'>> = useCallback(
@@ -23,6 +25,7 @@ export function SavedFoods() {
         };
 
         useJournalStore.getState().saveItem(detailsToSave, currentDay);
+        navigation.navigate('Food Log' as never);
       }
 
       function onDeleteButtonPress(id: string) {
@@ -31,7 +34,7 @@ export function SavedFoods() {
 
       return <FoodRow entry={item} onPress={saveEntry} onDeleteButtonPress={onDeleteButtonPress} />;
     },
-    [currentDay],
+    [currentDay, navigation],
   );
 
   return <FlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} />;
