@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { nanoid } from 'nanoid';
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native';
 
+import { Text } from '@app/components/Text';
 import { FoodRow } from '@app/screens/FoodLog/components/FoodRow';
 import { useDayStore } from '@app/store/day';
 import { useJournalStore } from '@app/store/journal';
@@ -37,7 +38,26 @@ export function SavedFoods() {
     [currentDay, navigation],
   );
 
-  return <FlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} />;
+  return <FlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} ListEmptyComponent={ListEmptyComponent} />;
 }
 
-const keyExtractor = (item: SavedFood) => item.id;
+function keyExtractor(item: SavedFood) {
+  return item.id;
+}
+
+function ListEmptyComponent() {
+  return (
+    <View style={listEmptyComponentStyles.container}>
+      <Text style={listEmptyComponentStyles.text}>No saved foods</Text>
+    </View>
+  );
+}
+
+const listEmptyComponentStyles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+  },
+  text: {
+    textAlign: 'center',
+  },
+});
