@@ -87,7 +87,6 @@ export const Component = () => {
   }
 
   function onChangeEntryDetails(key: string, value: string) {
-    console.log({ key, value });
     logEntryDetails.current = {
       ...logEntryDetails.current,
       [key]: value,

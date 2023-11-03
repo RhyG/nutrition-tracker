@@ -1,8 +1,10 @@
-import { Text } from '@components/Text';
-import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React, { memo } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
+
+import { Text } from '@components/Text';
+
+import { useThemedStyles } from '@hooks/useThemedStyles';
 
 type Props = {
   /**

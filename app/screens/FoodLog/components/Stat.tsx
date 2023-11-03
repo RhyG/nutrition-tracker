@@ -1,10 +1,11 @@
-import { Text } from '@components/Text';
 import { Theme } from '@theme';
 import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
+
+import { Text } from '@components/Text';
 
 type Props = {
   /**
@@ -76,7 +77,7 @@ const stylesFn = (theme: Theme) =>
       alignItems: 'center',
     },
     outerProgressBar: {
-      backgroundColor: theme.colours.palette.neutral300,
+      backgroundColor: theme.colours.palette.neutral200,
       borderRadius: 8,
       height: 10,
     },
