@@ -4,7 +4,7 @@ import 'styled-components';
 // and extend them!
 declare module 'styled-components' {
   export interface DefaultTheme {
-    colours: Record<string, any>;
+    colours: Record<string, unknown>;
     spacing: (...units: number[]) => string;
     pixelsToSpacing: (pixels: number) => number;
     font: {
@@ -12,7 +12,7 @@ declare module 'styled-components' {
       weight: { [key in 'regular' | 'bold' | 'extraBold']: number };
     };
     utils: {
-      numbersToPixels: (...units: any[]) => string;
+      numbersToPixels: (...units: number[]) => string;
     };
   }
 }

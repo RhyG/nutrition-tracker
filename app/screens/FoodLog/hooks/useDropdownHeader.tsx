@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 
 import { Day } from '@app/types';
 

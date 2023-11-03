@@ -12,7 +12,7 @@ import AppNavigator from './app/navigation';
 export default function App() {
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={style}>
         <NavigationContainer>
           <MenuProvider>
             <AppNavigator />
@@ -22,3 +22,5 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+
+const style = { flex: 1 };
