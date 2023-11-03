@@ -113,13 +113,16 @@ function Macro({ title, amount }: { title: string; amount: number }) {
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
+  // Prevents overflow issues on massive amounts
+  const adjustedAmount = amount > 9999 ? `9999+` : amount;
+
   return (
     <View style={styles.titleAndNumberContainer}>
       <Text colour={colours.palette.neutral400} size="sm">
         {title}
       </Text>
       <Text size="lg" weight="semiBold">
-        {amount}
+        {adjustedAmount}
       </Text>
     </View>
   );
@@ -166,7 +169,7 @@ const stylesFn = ({ spacing, colours, layout }: Theme) =>
     },
     statsNumbers: {
       ...layout.spaceBetweenRow,
-      paddingHorizontal: spacing.massive,
+      paddingHorizontal: spacing.large,
     },
     bars: {
       ...layout.spaceBetweenRow,

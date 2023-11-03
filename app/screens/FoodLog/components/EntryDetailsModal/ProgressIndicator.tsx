@@ -7,9 +7,12 @@ export const ProgressIndicator = ({ progress = 0, colour }: { progress: number; 
   const radius = (80 - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
+  // Prevents overflow issues on massive amounts
+  const adjustedProgress = progress > 100 ? 100 : progress;
+
   // These control the drawing effect of the circle
   const strokeDasharray = `${circumference}, ${circumference}`;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset = circumference - (adjustedProgress / 100) * circumference;
 
   return (
     <View style={styles.container}>
@@ -32,7 +35,7 @@ export const ProgressIndicator = ({ progress = 0, colour }: { progress: number; 
         </G>
       </Svg>
       <View style={styles.labelContainer}>
-        <Text style={styles.label}>{`${progress}%`}</Text>
+        <Text style={styles.label}>{`${adjustedProgress}%`}</Text>
       </View>
     </View>
   );

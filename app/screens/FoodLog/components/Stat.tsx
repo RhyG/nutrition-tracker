@@ -34,6 +34,9 @@ export const Stat = memo(({ name, currentAmount, max, progressColour }: Props): 
     theme: { colours },
   } = useThemedStyles(stylesFn);
 
+  // Prevents overflow issues on massive amounts
+  const adjustedCurrentAmount = currentAmount > 99999 ? `99999+` : currentAmount;
+
   const statWidth = useSharedValue(0);
 
   const progressBarStyle = useAnimatedStyle(() => {
@@ -57,7 +60,7 @@ export const Stat = memo(({ name, currentAmount, max, progressColour }: Props): 
       <View style={styles.reminaingMacroContainer}>
         <Text>{name}</Text>
         <Text colour={colours.palette.neutral400} size="xs">
-          {currentAmount} / {max}
+          {adjustedCurrentAmount} / {max}
         </Text>
       </View>
       <View style={styles.outerProgressBar}>
