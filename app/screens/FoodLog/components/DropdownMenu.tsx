@@ -1,9 +1,10 @@
 import Icon from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
+import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { fillDay, fillWeek } from '@app/lib/populate-journal';
 import { useJournalStore } from '@app/store/journal';
@@ -18,6 +19,7 @@ export const DropdownMenu = ({ currentDay }: Props) => {
     styles,
     theme: { colours },
   } = useThemedStyles(stylesFn);
+
   const navigation = useNavigation();
 
   const clearJournal = useJournalStore(state => state.clearJournal);
@@ -41,7 +43,7 @@ export const DropdownMenu = ({ currentDay }: Props) => {
   };
 
   return (
-    <TouchableOpacity style={styles.touchableHeader}>
+    <TouchableOpacity style={styles.touchableHeader} hitSlop={10}>
       <Menu>
         {/* eslint-disable-next-line react/no-children-prop -- this is a valid prop from the lib */}
         <MenuTrigger children={<Icon name="dots-three-vertical" size={22} color={colours.palette.neutral800} />} />
@@ -89,9 +91,5 @@ const optionsStyles = StyleSheet.create({
   optionWrapper: {
     padding: 10,
     margin: 2,
-  },
-  // TODO Figure out how to actually style this text
-  optionText: {
-    // color: 'red',
   },
 });

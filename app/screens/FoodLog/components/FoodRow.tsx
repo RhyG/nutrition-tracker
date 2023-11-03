@@ -100,6 +100,7 @@ const stylesFn = (theme: Theme) =>
       backgroundColor: theme.colours.palette.angry500,
       ...theme.layout.fullyCentred,
       width: 80,
+      marginLeft: 20,
     },
     leftColumn: {
       flex: 1,
