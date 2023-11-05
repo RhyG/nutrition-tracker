@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import i18n from 'i18n-js';
 import { nanoid } from 'nanoid';
 import React, { useRef } from 'react';
-import { Dimensions, ListRenderItem, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { Dimensions, ListRenderItem, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 import { Space } from '@app/components/Space';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
@@ -107,7 +107,7 @@ export const Component = () => {
     switch (item) {
       case 'QUICK_ADD':
         return (
-          <View style={styles.selectionContainer}>
+          <ScrollView style={styles.selectionContainer}>
             <View style={styles.container}>
               <Input field="name" label={i18n.t('name')} onChangeText={onChangeEntryDetails} ref={entryNameInputRef} keyboardType="default" hideUnit />
               <Space units={2} />
@@ -126,7 +126,7 @@ export const Component = () => {
                 <Text colour={colours.palette.neutral200}>{i18n.t('done')}</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </ScrollView>
         );
       case 'SAVED':
         return (
@@ -156,7 +156,7 @@ export const Component = () => {
   );
 };
 
-export const snapPoints = ['56%'];
+export const snapPoints = Platform.OS === 'ios' ? ['57%'] : ['65%'];
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({

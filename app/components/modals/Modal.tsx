@@ -62,6 +62,7 @@ export const Modal = () => {
       backdropComponent={renderBackdrop}
       enablePanDownToClose={true}
       onChange={onBottomSheetChange}
+      android_keyboardInputMode="adjustResize"
       index={-1}>
       <View style={styles.sheetContainer}>{element}</View>
     </BottomSheet>
