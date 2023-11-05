@@ -9,10 +9,10 @@ import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { SavedFood } from '@app/store/saved-foods';
 import { Theme } from '@app/theme';
-import { JournalEntry } from '@app/types';
+import { FoodLogEntry } from '@app/types';
 
 type Props = {
-  entry: JournalEntry | SavedFood;
+  entry: FoodLogEntry | SavedFood;
   onPress: () => void;
   onDeleteButtonPress: (id: string) => void;
 };

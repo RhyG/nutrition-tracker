@@ -6,9 +6,9 @@ import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native';
 import { Text } from '@app/components/Text';
 import { FoodRow } from '@app/screens/FoodLog/components/FoodRow';
 import { useDayStore } from '@app/store/day';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 import { SavedFood, useSavedFoodsStore } from '@app/store/saved-foods';
-import { JournalEntry } from '@app/types';
+import { FoodLogEntry } from '@app/types';
 
 export function SavedFoods() {
   const navigation = useNavigation();
@@ -16,7 +16,7 @@ export function SavedFoods() {
   const currentDay = useDayStore(state => state.currentDay);
   const savedFoods = useSavedFoodsStore(state => state.foods);
 
-  const renderItem: ListRenderItem<Omit<JournalEntry, 'timestamp'>> = useCallback(
+  const renderItem: ListRenderItem<Omit<FoodLogEntry, 'timestamp'>> = useCallback(
     ({ item }) => {
       function saveEntry() {
         const detailsToSave = {
@@ -25,7 +25,7 @@ export function SavedFoods() {
           timestamp: Date.now(),
         };
 
-        useJournalStore.getState().saveItem(detailsToSave, currentDay);
+        useFoodLogStore.getState().saveItem(detailsToSave, currentDay);
         navigation.navigate('Food Log' as never);
       }
 

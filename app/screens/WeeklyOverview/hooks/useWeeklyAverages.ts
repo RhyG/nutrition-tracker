@@ -1,4 +1,4 @@
-import { JournalData, useJournalStore } from '@app/store/journal';
+import { FoodLogData, useFoodLogStore } from '@app/store/journal';
 import { Day, Macro } from '@app/types';
 
 type Averages = Record<keyof Macro, number>;
@@ -12,7 +12,7 @@ const DEFAULT_AVERAGES: Averages = {
   fat: 0,
 };
 
-const getAverages = (data: JournalData) => {
+const getAverages = (data: FoodLogData) => {
   const dailyTotals = Object.keys(data).map((key: string) => {
     const dailyTotal = data[key as Day].reduce(
       (acc: Averages, curr: Averages) => ({
@@ -36,9 +36,9 @@ const getAverages = (data: JournalData) => {
 };
 
 export const useWeeklyAverages = () => {
-  const journalData = useJournalStore(state => state.journalData);
+  const foodLogData = useFoodLogStore(state => state.foodLogData);
 
-  const averages = getAverages(journalData);
+  const averages = getAverages(foodLogData);
 
   return {
     averageCalories: averages.calories,

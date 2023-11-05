@@ -4,25 +4,25 @@ import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import { DAYS } from '@app/config/constants';
 import StorageModule from '@app/modules/AsyncStorage';
-import { Day, JournalEntry } from '@app/types';
+import { Day, FoodLogEntry } from '@app/types';
 
-export type JournalData = Record<Day, JournalEntry[]>;
+export type FoodLogData = Record<Day, FoodLogEntry[]>;
 
-interface JournalState {
+interface FoodLogState {
   /**
-   * Journal Data for each day.
+   * FoodLog Data for each day.
    * Defaults to empty.
    */
-  journalData: JournalData;
+  foodLogData: FoodLogData;
   /**
-   * Updates the journal with received data.
-   * @param {JournalData} data data to update journal with
+   * Updates the food log with received data.
+   * @param {FoodLogData} data data to update food log with
    */
-  updateJournal: (data: JournalData) => void;
+  updateFoodLog: (data: FoodLogData) => void;
   /**
-   * Clears the journal of all data and restores to defaults.
+   * Clears the food log of all data and restores to defaults.
    */
-  clearJournal: () => void;
+  clearFoodLog: () => void;
   /**
    * Removes all entries for the current day.
    * @param {Day} day day to clear
@@ -35,10 +35,10 @@ interface JournalState {
   copyPreviousDay: (currentDay: Day) => void;
   /**
    * Save an item to the current day.
-   * @param {JournalEntry} newItem the item to save.
+   * @param {FoodLogEntry} newItem the item to save.
    * @param {Day} day the day to save the new item to.
    */
-  saveItem: (newItem: JournalEntry, day: Day) => void;
+  saveItem: (newItem: FoodLogEntry, day: Day) => void;
   /**
    * Remove an item from the current day.
    * @param {string} id ID of the item to remove.
@@ -47,26 +47,26 @@ interface JournalState {
   removeItem: (id: string, day: Day) => void;
   /**
    * Update an item from the received day.
-   * @param {JournalEntry} updatedItem the updated item.
+   * @param {FoodLogEntry} updatedItem the updated item.
    * @param {Day} day the day to which the updated entry belongs.
    */
-  updateItem: (updatedItem: JournalEntry, day: Day) => void;
+  updateItem: (updatedItem: FoodLogEntry, day: Day) => void;
   /**
    * Copy an item from the received day.
-   * @param {JournalEntry} entry the entry to copy.
+   * @param {FoodLogEntry} entry the entry to copy.
    * @param {Day} day the day to which the updated entry belongs.
    */
-  copyItem: (entry: JournalEntry, day: Day) => void;
+  copyItem: (entry: FoodLogEntry, day: Day) => void;
   /**
    * Fills a day with the received entries.
    * Used for testing.
-   * @param {JournalEntry[]} entries the entries to insert into the day.
+   * @param {FoodLogEntry[]} entries the entries to insert into the day.
    * @param {Day} day the day to insert the entries into.
    */
-  fillDay: (entries: JournalEntry[], day: Day) => void;
+  fillDay: (entries: FoodLogEntry[], day: Day) => void;
 }
 
-export const DefaultJournalData: JournalData = {
+export const DefaultFoodLogData: FoodLogData = {
   Monday: [],
   Tuesday: [],
   Wednesday: [],
@@ -77,28 +77,28 @@ export const DefaultJournalData: JournalData = {
 };
 
 /**
- * The store for the journal entries and methods of updating.
+ * The store for the food log entries and methods of updating.
  * @remarks could potentially move functions into an `actions` file to clean up store.
  */
-export const useJournalStore = create<JournalState>()(
+export const useFoodLogStore = create<FoodLogState>()(
   persist(
     set => ({
-      journalData: DefaultJournalData,
-      updateJournal: async (data: JournalData) => {
-        set(({ journalData }) => ({
-          journalData: { ...journalData, ...data },
+      foodLogData: DefaultFoodLogData,
+      updateFoodLog: async (data: FoodLogData) => {
+        set(({ foodLogData }) => ({
+          foodLogData: { ...foodLogData, ...data },
         }));
       },
-      clearJournal: async () => {
-        set(() => ({ journalData: DefaultJournalData }));
+      clearFoodLog: async () => {
+        set(() => ({ foodLogData: DefaultFoodLogData }));
       },
       clearDay: (day: Day) => {
-        set(({ journalData }) => ({
-          journalData: { ...journalData, [day]: [] },
+        set(({ foodLogData }) => ({
+          foodLogData: { ...foodLogData, [day]: [] },
         }));
       },
       copyPreviousDay: (currentDay: Day) => {
-        set(({ journalData }) => {
+        set(({ foodLogData }) => {
           // If the current day is Monday then the entries from Sunday should be copied.
           const indexOfDay = currentDay === 'Monday' ? DAYS.indexOf('Sunday') : DAYS.indexOf(currentDay) - 1;
 
@@ -106,74 +106,74 @@ export const useJournalStore = create<JournalState>()(
           const dayToCopy = DAYS[indexOfDay];
 
           if (dayToCopy) {
-            const newItems = [...journalData[dayToCopy]];
+            const newItems = [...foodLogData[dayToCopy]];
 
             return {
-              journalData: {
-                ...journalData,
+              foodLogData: {
+                ...foodLogData,
                 [currentDay]: newItems,
               },
             };
           } else {
             return {
-              journalData,
+              foodLogData,
             };
           }
         });
       },
-      saveItem: async (newItem: JournalEntry, day: Day) => {
-        set(({ journalData }) => {
-          const todayFood = [...journalData[day], newItem];
+      saveItem: async (newItem: FoodLogEntry, day: Day) => {
+        set(({ foodLogData }) => {
+          const todayFood = [...foodLogData[day], newItem];
 
           const updatedWeek = {
-            ...journalData,
+            ...foodLogData,
             [day]: todayFood,
           };
 
           return {
-            journalData: { ...journalData, ...updatedWeek },
+            foodLogData: { ...foodLogData, ...updatedWeek },
           };
         });
       },
       removeItem: (id: string, day: Day) => {
-        set(({ journalData }) => {
+        set(({ foodLogData }) => {
           // Filter current entries for all but the one matching the received ID
-          const todayFood = journalData[day].filter(item => item.id !== id);
+          const todayFood = foodLogData[day].filter(item => item.id !== id);
 
-          const newJournalData = {
-            ...journalData,
+          const newFoodLogData = {
+            ...foodLogData,
             [day]: todayFood,
           };
 
           return {
-            journalData: newJournalData,
+            foodLogData: newFoodLogData,
           };
         });
       },
-      updateItem: (updatedItem: JournalEntry, day: Day) => {
-        set(({ journalData }) => {
+      updateItem: (updatedItem: FoodLogEntry, day: Day) => {
+        set(({ foodLogData }) => {
           // Get the index of the item to be updated.
-          const itemIndex = journalData[day].findIndex(item => item.id === updatedItem.id);
+          const itemIndex = foodLogData[day].findIndex(item => item.id === updatedItem.id);
 
           // Filter out the item.
-          const updatedEntries = journalData[day].filter(item => item.id !== updatedItem.id);
+          const updatedEntries = foodLogData[day].filter(item => item.id !== updatedItem.id);
 
           //  Insert the updated item at the index of the item being updated.
           updatedEntries.splice(itemIndex, 0, updatedItem);
 
-          const newJournalData = {
-            ...journalData,
+          const newFoodLogData = {
+            ...foodLogData,
             [day]: updatedEntries,
           };
 
           return {
-            journalData: newJournalData,
+            foodLogData: newFoodLogData,
           };
         });
       },
-      copyItem: (entry: JournalEntry, day: Day) => {
-        set(({ journalData }) => {
-          const entriesForDay = [...journalData[day]];
+      copyItem: (entry: FoodLogEntry, day: Day) => {
+        set(({ foodLogData }) => {
+          const entriesForDay = [...foodLogData[day]];
 
           // Get the index of the entry to be copied.
           const indexToInsertAt = entriesForDay.findIndex(item => item.id === entry.id) + 1;
@@ -183,19 +183,19 @@ export const useJournalStore = create<JournalState>()(
           //  Insert the updated item at the index of the item being updated.
           entriesForDay.splice(indexToInsertAt, 0, newEntry);
 
-          const newJournalData = {
-            ...journalData,
+          const newFoodLogData = {
+            ...foodLogData,
             [day]: entriesForDay,
           };
 
           return {
-            journalData: newJournalData,
+            foodLogData: newFoodLogData,
           };
         });
       },
-      fillDay: (entries: JournalEntry[], day: Day) => {
-        set(({ journalData }) => ({
-          journalData: { ...journalData, [day]: entries },
+      fillDay: (entries: FoodLogEntry[], day: Day) => {
+        set(({ foodLogData }) => ({
+          foodLogData: { ...foodLogData, [day]: entries },
         }));
       },
     }),

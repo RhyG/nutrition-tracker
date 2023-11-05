@@ -5,11 +5,11 @@ import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react
 
 import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 import { useModalStore } from '@app/store/modal';
 import { useSavedFoodsStore } from '@app/store/saved-foods';
 import { Theme } from '@app/theme';
-import { Day, JournalEntry } from '@app/types';
+import { Day, FoodLogEntry } from '@app/types';
 
 import { Space } from '../../../../components/Space';
 import { Text } from '../../../../components/Text';
@@ -19,7 +19,7 @@ import { ProgressIndicator } from './ProgressIndicator';
 const { width } = Dimensions.get('window');
 
 type Props = {
-  entry: JournalEntry;
+  entry: FoodLogEntry;
   day: Day;
 };
 
@@ -46,8 +46,8 @@ export function Component(props: Props) {
 
   const saveFood = useSavedFoodsStore(state => state.saveFood);
 
-  const removeItem = useJournalStore(state => state.removeItem);
-  const copyItem = useJournalStore(state => state.copyItem);
+  const removeItem = useFoodLogStore(state => state.removeItem);
+  const copyItem = useFoodLogStore(state => state.copyItem);
 
   function onDeletePress() {
     removeItem(entry.id, day);

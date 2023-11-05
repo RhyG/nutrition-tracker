@@ -8,7 +8,7 @@ import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { getCurrentMacroTotal } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 
 import { Space } from '@components/Space';
 import { Text } from '@components/Text';
@@ -26,7 +26,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
 
   const { goalCalories, goalProtein, goalCarbohydrates, goalFat } = useMacroGoals();
 
-  const journalData = useJournalStore(state => state.journalData);
+  const foodLogData = useFoodLogStore(state => state.foodLogData);
 
   return (
     <ScrollView style={styles.screenContainer}>
@@ -55,7 +55,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
         <View style={styles.barsContainer}>
           <View style={styles.bars}>
             {DAYS.map(day => {
-              return <Bar amount={getCurrentMacroTotal('calories', journalData[day])} goal={goalCalories} day={day} key={day} type="calories" />;
+              return <Bar amount={getCurrentMacroTotal('calories', foodLogData[day])} goal={goalCalories} day={day} key={day} type="calories" />;
             })}
           </View>
         </View>
@@ -87,7 +87,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={styles.barsContainer}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentMacroTotal('protein', journalData[day])} goal={goalProtein} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('protein', foodLogData[day])} goal={goalProtein} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>
@@ -118,7 +118,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={styles.barsContainer}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentMacroTotal('protein', journalData[day])} goal={goalCarbohydrates} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('protein', foodLogData[day])} goal={goalCarbohydrates} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>
@@ -149,7 +149,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={[styles.barsContainer, styles.bottomSpacing]}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentMacroTotal('protein', journalData[day])} goal={goalFat} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('protein', foodLogData[day])} goal={goalFat} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>

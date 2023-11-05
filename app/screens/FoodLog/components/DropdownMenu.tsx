@@ -7,7 +7,7 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-m
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { fillDay, fillWeek } from '@app/lib/populate-journal';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 import { Day } from '@app/types';
 
 type Props = {
@@ -22,9 +22,9 @@ export const DropdownMenu = ({ currentDay }: Props) => {
 
   const navigation = useNavigation();
 
-  const clearJournal = useJournalStore(state => state.clearJournal);
-  const clearDay = useJournalStore(state => state.clearDay);
-  const copyPreviousDay = useJournalStore(state => state.copyPreviousDay);
+  const clearJournal = useFoodLogStore(state => state.clearFoodLog);
+  const clearDay = useFoodLogStore(state => state.clearDay);
+  const copyPreviousDay = useFoodLogStore(state => state.copyPreviousDay);
 
   // TODO figure out how to type navigation and remove cast to never.
   const navigateToGoalsScreen = () => {

@@ -6,7 +6,7 @@ import { useSafeAreaSnapPoints } from '@app/hooks/useSafeAreaSnapPoints';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { ModalNames, useModalStore } from '@app/store/modal';
 import { Theme } from '@app/theme';
-import { Day, JournalEntry } from '@app/types';
+import { Day, FoodLogEntry } from '@app/types';
 
 import * as EditEntryModal from '../../screens/FoodLog/components/EntryDetailsModal/EntryDetailsModal';
 import * as NewEntryModal from './NewEntryModal/NewEntryModal';
@@ -52,7 +52,7 @@ export const Modal = () => {
   } else if (activeModal?.name === ModalNames.EDIT_ENTRY) {
     snapPoints = EditEntryModal.snapPoints;
     // TODO: Fix typing for modal params - this is ugly
-    element = <EditEntryModal.Component {...(activeModal.params as { entry: JournalEntry; day: Day })} />;
+    element = <EditEntryModal.Component {...(activeModal.params as { entry: FoodLogEntry; day: Day })} />;
   }
 
   return (

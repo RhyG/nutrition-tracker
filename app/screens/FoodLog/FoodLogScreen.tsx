@@ -9,9 +9,9 @@ import { useSetDayOnForeground } from '@app/hooks/useSetDayOnForeground';
 import { getCurrentMacroTotals } from '@app/lib/macros';
 import { RootStackScreen } from '@app/navigation';
 import { useGoalsStore } from '@app/store/goals';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 import { ModalNames, useModalStore } from '@app/store/modal';
-import { JournalEntry } from '@app/types';
+import { FoodLogEntry } from '@app/types';
 
 import { useThemedStyles } from '@hooks/useThemedStyles';
 
@@ -37,13 +37,13 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   const carbohydratesGoal = useGoalsStore(state => state.carbohydrates);
   const fatGoal = useGoalsStore(state => state.fat);
 
-  const journalData = useJournalStore(state => state.journalData);
+  const foodLogData = useFoodLogStore(state => state.foodLogData);
 
   const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
 
   const listRef = useRef<FlatList>(null);
 
-  const currentDayEntries: JournalEntry[] = useMemo(() => journalData[currentDay] ?? EMPTY_ARRAY, [currentDay, journalData]);
+  const currentDayEntries: FoodLogEntry[] = useMemo(() => foodLogData[currentDay] ?? EMPTY_ARRAY, [currentDay, foodLogData]);
 
   useDropdownHeader(currentDay);
   useSetDayOnForeground();
@@ -69,14 +69,14 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
   }, []);
 
   // TODO optimise component props
-  const renderJournalEntry: ListRenderItem<JournalEntry> = useCallback(
+  const renderJournalEntry: ListRenderItem<FoodLogEntry> = useCallback(
     ({ item }) => {
       const onRowPress = function () {
         useModalStore.getState().openModal({ name: ModalNames.EDIT_ENTRY, params: { entry: item, day: currentDay } });
       };
 
       function onDeleteButtonPress(id: string) {
-        useJournalStore.getState().removeItem(id, currentDay);
+        useFoodLogStore.getState().removeItem(id, currentDay);
       }
 
       return <FoodRow entry={item} onPress={onRowPress} onDeleteButtonPress={onDeleteButtonPress} />;
@@ -89,7 +89,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
     protein: currentProtein,
     fat: currentFat,
     carbohydrates: currentCarbohydrates,
-  } = getCurrentMacroTotals(journalData[currentDay]);
+  } = getCurrentMacroTotals(foodLogData[currentDay]);
 
   return (
     <View style={styles.screenContainer}>

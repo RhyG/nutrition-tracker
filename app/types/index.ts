@@ -1,5 +1,5 @@
 // TODO: Remove all project specific types from here.
-export type JournalEntry = {
+export type FoodLogEntry = {
   id: string;
   name: string;
   calories: number;
@@ -9,6 +9,6 @@ export type JournalEntry = {
   timestamp: number;
 };
 
-export type Macro = Pick<JournalEntry, 'calories' | 'protein' | 'carbohydrates' | 'fat'>;
+export type Macro = Pick<FoodLogEntry, 'calories' | 'protein' | 'carbohydrates' | 'fat'>;
 
 export type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';

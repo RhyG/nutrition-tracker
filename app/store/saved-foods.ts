@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import StorageModule from '@app/modules/AsyncStorage';
-import { JournalEntry } from '@app/types';
+import { FoodLogEntry } from '@app/types';
 
-export type SavedFood = Omit<JournalEntry, 'timestamp'>;
+export type SavedFood = Omit<FoodLogEntry, 'timestamp'>;
 
 type SavedFoodsState = {
   foods: SavedFood[];

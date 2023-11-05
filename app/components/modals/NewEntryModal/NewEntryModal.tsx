@@ -9,7 +9,7 @@ import { Space } from '@app/components/Space';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 import { isInputNumber } from '@app/lib/validation';
 import { useDayStore } from '@app/store/day';
-import { useJournalStore } from '@app/store/journal';
+import { useFoodLogStore } from '@app/store/journal';
 import { Theme } from '@app/theme';
 
 import { Text } from '../../Text';
@@ -44,7 +44,7 @@ export const Component = () => {
 
   const currentDay = useDayStore(state => state.currentDay);
 
-  const saveItem = useJournalStore(state => state.saveItem);
+  const saveItem = useFoodLogStore(state => state.saveItem);
 
   const logEntryDetails = useRef(defaultValues);
 

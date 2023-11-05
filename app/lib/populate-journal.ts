@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid';
 
 import { useDayStore } from '@app/store/day';
-import { useJournalStore } from '@app/store/journal';
-import { Day, JournalEntry } from '@app/types';
+import { useFoodLogStore } from '@app/store/journal';
+import { Day, FoodLogEntry } from '@app/types';
 
 const FOODS = [
   'Burger',
@@ -55,8 +55,8 @@ function getRandomEpochTime() {
 }
 
 // Returns a large list of entries - for test use only
-export function generateEntries(amount = 20): JournalEntry[] {
-  const entries: JournalEntry[] = [];
+export function generateEntries(amount = 20): FoodLogEntry[] {
+  const entries: FoodLogEntry[] = [];
 
   if (!__DEV__) {
     return entries;
@@ -77,7 +77,7 @@ export function generateEntries(amount = 20): JournalEntry[] {
 
 export function fillDay(day?: Day) {
   const entries = generateEntries();
-  useJournalStore.getState().fillDay(entries, day ?? useDayStore.getState().currentDay);
+  useFoodLogStore.getState().fillDay(entries, day ?? useDayStore.getState().currentDay);
 }
 
 export function fillWeek() {
