@@ -22,10 +22,14 @@ export const useDropdownHeader = () => {
         shadowOffset: { height: 0, width: 0 },
       },
       headerRight: () => (
-        <TouchableOpacity onPress={() => openModal({ name: ModalNames.FOOD_LOG_MENU })}>
+        <TouchableOpacity onPress={() => openModal({ name: ModalNames.FOOD_LOG_MENU })} style={styles}>
           <Feather name="menu" size={24} color="black" />
         </TouchableOpacity>
       ),
     });
   }, [openModal, navigation]);
+};
+
+const styles = {
+  paddingRight: 12.5,
 };
