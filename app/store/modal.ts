@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export const ModalNames = {
   NEW_ENTRY: 'NEW_ENTRY',
   EDIT_ENTRY: 'EDIT_ENTRY',
+  FOOD_LOG_MENU: 'FOOD_LOG_MENU',
 } as const;
 
 export type ModalName = keyof typeof ModalNames;

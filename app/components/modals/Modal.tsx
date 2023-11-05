@@ -9,6 +9,7 @@ import { Theme } from '@app/theme';
 import { Day, FoodLogEntry } from '@app/types';
 
 import * as EditEntryModal from '../../screens/FoodLog/components/EntryDetailsModal/EntryDetailsModal';
+import * as FoodLogMenuModal from '../../screens/FoodLog/components/MenuModal/MenuModal';
 import * as NewEntryModal from './NewEntryModal/NewEntryModal';
 
 const { width } = Dimensions.get('window');
@@ -53,6 +54,9 @@ export const Modal = () => {
     snapPoints = EditEntryModal.snapPoints;
     // TODO: Fix typing for modal params - this is ugly
     element = <EditEntryModal.Component {...(activeModal.params as { entry: FoodLogEntry; day: Day })} />;
+  } else if (activeModal?.name === ModalNames.FOOD_LOG_MENU) {
+    snapPoints = FoodLogMenuModal.snapPoints;
+    element = <FoodLogMenuModal.Component />;
   }
 
   return (
