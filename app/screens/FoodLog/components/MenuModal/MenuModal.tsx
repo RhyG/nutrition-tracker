@@ -76,7 +76,7 @@ export function Component() {
   );
 }
 
-export const snapPoints = __DEV__ ? ['35%'] : ['23%'];
+export const snapPoints = __DEV__ ? ['35%'] : ['28%'];
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({
