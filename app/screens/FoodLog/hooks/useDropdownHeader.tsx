@@ -4,6 +4,7 @@ import React, { useLayoutEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { ModalNames, useModalStore } from '@app/store/modal';
+import { theme } from '@app/theme';
 
 /* Sets the dropdown menu in the right side of the header */
 export const useDropdownHeader = () => {
@@ -31,5 +32,5 @@ export const useDropdownHeader = () => {
 };
 
 const styles = {
-  paddingRight: 12.5,
+  paddingRight: theme.spacing.base,
 };
