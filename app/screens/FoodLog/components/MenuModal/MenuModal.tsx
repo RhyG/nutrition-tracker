@@ -1,7 +1,7 @@
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, Dimensions, Platform, StyleSheet, View } from 'react-native';
 
 import { Text } from '@app/components/Text';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
@@ -76,7 +76,17 @@ export function Component() {
   );
 }
 
-export const snapPoints = __DEV__ ? ['35%'] : ['28%'];
+const { height } = Dimensions.get('window');
+
+export const snapPoints = (() => {
+  if (__DEV__) return ['45%'];
+
+  if (Platform.OS === 'ios' || height >= 800) {
+    return ['28%'];
+  } else {
+    return ['30%'];
+  }
+})();
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({

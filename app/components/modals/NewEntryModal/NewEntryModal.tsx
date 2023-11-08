@@ -17,7 +17,7 @@ import { Input } from './Input';
 import { SavedFoods } from './SavedFoods';
 import { Tab, Tabs, sections } from './Tabs';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const defaultValues = { name: '', calories: 0, protein: 0, carbohydrates: 0, fat: 0 };
 
@@ -156,7 +156,17 @@ export const Component = () => {
   );
 };
 
-export const snapPoints = Platform.OS === 'ios' ? ['57%'] : ['65%'];
+export const snapPoints = (() => {
+  if (Platform.OS === 'ios') {
+    return ['60%'];
+  } else {
+    if (height < 800) {
+      return ['75%'];
+    } else {
+      return ['65%'];
+    }
+  }
+})();
 
 const stylesFn = ({ spacing, colours }: Theme) =>
   StyleSheet.create({

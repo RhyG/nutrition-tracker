@@ -1,7 +1,7 @@
 import Icon from '@expo/vector-icons/Feather';
 import i18n from 'i18n-js';
 import React from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Dimensions, Platform, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { useMacroGoals } from '@app/hooks/useMacroGoals';
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
@@ -16,7 +16,7 @@ import { Text } from '../../../../components/Text';
 import { calculatePercentage } from './EntryDetailsModal.utils';
 import { ProgressIndicator } from './ProgressIndicator';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 type Props = {
   entry: FoodLogEntry;
@@ -128,7 +128,17 @@ function Macro({ title, amount }: { title: string; amount: number }) {
   );
 }
 
-export const snapPoints = ['42%'];
+export const snapPoints = (() => {
+  if (Platform.OS === 'ios') {
+    return ['42%'];
+  } else {
+    if (height < 800) {
+      return ['48%'];
+    } else {
+      return ['45%'];
+    }
+  }
+})();
 
 const stylesFn = ({ spacing, colours, layout }: Theme) =>
   StyleSheet.create({
