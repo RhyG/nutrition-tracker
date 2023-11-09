@@ -54,7 +54,9 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
       <TouchableOpacity onPress={onPress} style={styles.container}>
         <View style={styles.leftColumn}>
           <View style={styles.nameContainer}>
-            <Text size="sm">{name ?? ''}</Text>
+            <Text numberOfLines={3} size="sm">
+              {name ?? ''}
+            </Text>
           </View>
           {hasTimestamp && (
             <Text size="xs" colour={colours.palette.neutral400}>
@@ -87,7 +89,7 @@ const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     container: {
       ...theme.layout.spaceBetweenRow,
-      paddingVertical: theme.spacing.extraSmall,
+      paddingVertical: theme.spacing.small,
       alignItems: 'center',
     },
     nameContainer: {
