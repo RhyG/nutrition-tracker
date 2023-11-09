@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import i18n from 'i18n-js';
 import React, { useCallback, useRef, useState } from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import { RadioButton } from '@app/components/RadioButton';
@@ -102,7 +102,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   }
 
   return (
-    <View style={styles.screenContainer}>
+    <KeyboardAvoidingView style={styles.screenContainer} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Text preset="heading" style={styles.cacluateTDEEText}>
         {i18n.t('screens.calculators.calculateTitle')}
       </Text>
@@ -187,22 +187,18 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       <Space units={5} />
 
       <Converter />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
-    container: {
-      backgroundColor: '#fff',
-      flex: 1,
-    },
     pickerLabel: {
       color: theme.colours.palette.neutral800,
       fontSize: 16,
     },
     screenContainer: {
-      paddingHorizontal: 20,
+      paddingHorizontal: theme.spacing.base,
       flex: 1,
       backgroundColor: theme.colours.background,
     },
