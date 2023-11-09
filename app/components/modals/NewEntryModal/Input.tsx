@@ -54,11 +54,11 @@ const stylesFn = ({ colours, typography }: Theme) =>
     inputContainer: {
       backgroundColor: colours.palette.neutral200,
       borderRadius: 6,
-      padding: 8,
+      padding: 6,
       flexDirection: 'row',
     },
     input: {
-      fontSize: typography.sizes.sm,
+      fontSize: typography.sizes.xs,
       color: colours.text,
       flex: 1,
       marginRight: 2,
