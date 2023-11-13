@@ -60,10 +60,10 @@ export const Converter = memo(() => {
       </Text>
       <View style={styles.fieldsWrapper}>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label={i18n.t('macros.calories')} onInputChange={handleCalorieChange} value={String(calories)} />
+          <InputWithLabel label={i18n.t('macros.calories')} onInputChange={handleCalorieChange} value={String(calories)} keyboardType="number-pad" />
         </View>
         <View style={styles.fieldContainer}>
-          <InputWithLabel label={i18n.t('screens.calculators.kilojoules')} onInputChange={handleKilojouleChange} value={String(kj)} />
+          <InputWithLabel label={i18n.t('screens.calculators.kilojoules')} onInputChange={handleKilojouleChange} value={String(kj)} keyboardType="number-pad" />
         </View>
       </View>
       <Space units={4} />

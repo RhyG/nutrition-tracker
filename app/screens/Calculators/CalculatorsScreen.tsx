@@ -3,7 +3,18 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import i18n from 'i18n-js';
 import React, { useCallback, useRef, useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import { RadioButton } from '@app/components/RadioButton';
@@ -102,45 +113,48 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.screenContainer} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Text preset="heading" style={styles.cacluateTDEEText}>
-        {i18n.t('screens.calculators.calculateTitle')}
-      </Text>
-      <View style={styles.TDEEFields}>
-        <View style={styles.fieldContainer}>
-          <InputWithLabel
-            label={i18n.t('screens.calculators.age')}
-            placeholder="26"
-            onInputChange={(text: string) => handleCalculatorChange('age', text)}
-            keyboardType="number-pad"
-          />
-        </View>
-        <View style={styles.fieldContainer}>
-          <InputWithLabel
-            label={`${i18n.t('screens.calculators.weight')} (kg)`}
-            placeholder="74"
-            onInputChange={(text: string) => handleCalculatorChange('weight', text)}
-            keyboardType="number-pad"
-          />
-        </View>
-        <View style={styles.fieldContainer}>
-          <Space units={3} />
-          <InputWithLabel
-            label={`${i18n.t('screens.calculators.height')} (cm)`}
-            placeholder="178"
-            onInputChange={(text: string) => handleCalculatorChange('height', text)}
-            keyboardType="number-pad"
-          />
-        </View>
-        <View style={styles.fieldContainer}>
-          <Space units={3} />
-          <Text preset="formHelper">{i18n.t('screens.calculators.gender')}</Text>
-          <View style={styles.radiosContainer}>
-            {/* TODO: Make dropdown instead of radios */}
-            <RadioButton label={i18n.t('screens.calculators.male')} selected={gender === Genders.MALE} onPress={() => setGender(Genders.MALE)} />
-            <Space horizontal units={3} />
-            <RadioButton label={i18n.t('screens.calculators.female')} selected={gender === Genders.FEMALE} onPress={() => setGender(Genders.FEMALE)} />
-            {/* <DropDownPicker
+    <KeyboardAvoidingView style={styles.screenContainer}>
+      <ScrollView style={styles.flex}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.flex}>
+            <Text preset="heading" style={styles.cacluateTDEEText}>
+              {i18n.t('screens.calculators.calculateTitle')}
+            </Text>
+            <View style={styles.TDEEFields}>
+              <View style={styles.fieldContainer}>
+                <InputWithLabel
+                  label={i18n.t('screens.calculators.age')}
+                  placeholder="26"
+                  onInputChange={(text: string) => handleCalculatorChange('age', text)}
+                  keyboardType="number-pad"
+                />
+              </View>
+              <View style={styles.fieldContainer}>
+                <InputWithLabel
+                  label={`${i18n.t('screens.calculators.weight')} (kg)`}
+                  placeholder="74"
+                  onInputChange={(text: string) => handleCalculatorChange('weight', text)}
+                  keyboardType="number-pad"
+                />
+              </View>
+              <View style={styles.fieldContainer}>
+                <Space units={3} />
+                <InputWithLabel
+                  label={`${i18n.t('screens.calculators.height')} (cm)`}
+                  placeholder="178"
+                  onInputChange={(text: string) => handleCalculatorChange('height', text)}
+                  keyboardType="number-pad"
+                />
+              </View>
+              <View style={styles.fieldContainer}>
+                <Space units={3} />
+                <Text preset="formHelper">{i18n.t('screens.calculators.gender')}</Text>
+                <View style={styles.radiosContainer}>
+                  {/* TODO: Make dropdown instead of radios */}
+                  <RadioButton label={i18n.t('screens.calculators.male')} selected={gender === Genders.MALE} onPress={() => setGender(Genders.MALE)} />
+                  <Space horizontal units={3} />
+                  <RadioButton label={i18n.t('screens.calculators.female')} selected={gender === Genders.FEMALE} onPress={() => setGender(Genders.FEMALE)} />
+                  {/* <DropDownPicker
               //@ts-expect-error typing on this library is a bit odd
               items={Object.values(Genders)}
               open={genderDropdownOpen}
@@ -156,37 +170,40 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
               }}
               labelStyle={styles.pickerLabel}
             /> */}
-          </View>
-        </View>
-      </View>
-      <Space units={3} />
-      <Text preset="formHelper" style={styles.activityLevelText}>
-        {i18n.t('screens.calculators.activityLevel')}
-      </Text>
-      <DropDownPicker
-        //@ts-expect-error typing on this library is a bit odd
-        items={ACTIVITY_LEVELS}
-        open={activityLevelDropdownOpen}
-        setOpen={setActivityLevelDropdownOpen}
-        setValue={setActivityLevel}
-        //@ts-expect-error typing on this library is a bit odd
-        value={activityLevel}
-        zIndex={1}
-        onSelectItem={item => {
-          //@ts-expect-error typing on this library is a bit odd
-          handleCalculatorChange('activityMultiplier', item.multiplier);
-        }}
-        labelStyle={styles.pickerLabel}
-      />
-      <TouchableOpacity
-        disabled={TDEEFormIncomplete}
-        onPress={calculateTDEE}
-        style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
-        <Text colour="#fff">{i18n.t('screens.calculators.calculate')}</Text>
-      </TouchableOpacity>
-      <Space units={5} />
+                </View>
+              </View>
+            </View>
+            <Space units={3} />
+            <Text preset="formHelper" style={styles.activityLevelText}>
+              {i18n.t('screens.calculators.activityLevel')}
+            </Text>
+            <DropDownPicker
+              //@ts-expect-error typing on this library is a bit odd
+              items={ACTIVITY_LEVELS}
+              open={activityLevelDropdownOpen}
+              setOpen={setActivityLevelDropdownOpen}
+              setValue={setActivityLevel}
+              //@ts-expect-error typing on this library is a bit odd
+              value={activityLevel}
+              zIndex={1}
+              onSelectItem={item => {
+                //@ts-expect-error typing on this library is a bit odd
+                handleCalculatorChange('activityMultiplier', item.multiplier);
+              }}
+              labelStyle={styles.pickerLabel}
+            />
+            <TouchableOpacity
+              disabled={TDEEFormIncomplete}
+              onPress={calculateTDEE}
+              style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
+              <Text colour="#fff">{i18n.t('screens.calculators.calculate')}</Text>
+            </TouchableOpacity>
+            <Space units={5} />
 
-      <Converter />
+            <Converter />
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -230,4 +247,5 @@ const stylesFn = (theme: Theme) =>
     buttonText: {
       color: '#fff',
     },
+    flex: { flex: 1 },
   });
