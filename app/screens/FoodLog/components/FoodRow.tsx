@@ -66,16 +66,16 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
         </View>
         <View style={styles.rightColumn}>
           <View style={styles.valueContainer}>
-            <Text size="sm">{calories ?? ''}</Text>
+            <Text size="sm">{calories.toFixed() ?? ''}</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text size="sm">{protein ?? ''}P</Text>
+            <Text size="sm">{protein.toFixed() ?? ''}P</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text size="sm">{carbohydrates ?? ''}C</Text>
+            <Text size="sm">{carbohydrates.toFixed() ?? ''}C</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text size="sm">{fat ?? ''}F</Text>
+            <Text size="sm">{fat.toFixed() ?? ''}F</Text>
           </View>
         </View>
       </TouchableOpacity>

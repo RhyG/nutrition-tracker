@@ -35,7 +35,7 @@ export const Stat = memo(({ name, currentAmount, max, progressColour }: Props): 
   } = useThemedStyles(stylesFn);
 
   // Prevents overflow issues on massive amounts
-  const adjustedCurrentAmount = currentAmount > 99999 ? `99999+` : currentAmount;
+  const adjustedCurrentAmount = currentAmount > 99999 ? `99999+` : currentAmount.toFixed();
 
   const statWidth = useSharedValue(0);
 
