@@ -33,14 +33,11 @@ export const Input = forwardRef(({ label, onChangeText, keyboardType = 'numeric'
           // @ts-expect-error this type is gross, not sure how to fix
           ref={ref}
           testID={`${field}-input`}
-          // defaultValue="0"
           keyboardType={keyboardType}
         />
-        {!hideUnit ? (
-          <Text colour={colours.palette.neutral500} style={styles.unit}>
-            g
-          </Text>
-        ) : null}
+        <Text colour={colours.palette.neutral500} style={styles.unit}>
+          {hideUnit ? ' ' : 'g'}
+        </Text>
       </View>
     </>
   );

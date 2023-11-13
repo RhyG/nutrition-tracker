@@ -39,9 +39,10 @@ export const Modal = () => {
         sheetRef.current?.expand();
       } else {
         sheetRef.current?.close();
+        closeModal();
       }
     },
-    [isModalActive],
+    [isModalActive, closeModal],
   );
 
   let snapPoints = defaultSnapPoints;

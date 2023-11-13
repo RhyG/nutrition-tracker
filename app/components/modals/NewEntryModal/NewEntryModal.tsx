@@ -158,10 +158,10 @@ export const Component = () => {
 
 export const snapPoints = (() => {
   if (Platform.OS === 'ios') {
-    return ['60%'];
+    return ['58%'];
   } else {
     if (height < 800) {
-      return ['75%'];
+      return ['73%'];
     } else {
       return ['65%'];
     }
