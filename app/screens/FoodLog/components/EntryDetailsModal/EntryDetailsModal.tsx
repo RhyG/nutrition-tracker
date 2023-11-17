@@ -1,5 +1,6 @@
 import Icon from '@expo/vector-icons/Feather';
 import i18n from 'i18n-js';
+import { nanoid } from 'nanoid';
 import React from 'react';
 import { Dimensions, Platform, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -61,7 +62,7 @@ export function Component(props: Props) {
 
   function onSavePress() {
     const entryToSave = {
-      id: entry.id,
+      id: nanoid(),
       name: entry.name,
       calories: entry.calories,
       protein: entry.protein,
