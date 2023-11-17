@@ -1,7 +1,8 @@
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { nanoid } from 'nanoid';
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native';
+import { ListRenderItem, StyleSheet, View } from 'react-native';
 
 import { Text } from '@app/components/Text';
 import { FoodRow } from '@app/screens/FoodLog/components/FoodRow';
@@ -38,7 +39,7 @@ export function SavedFoods() {
     [currentDay, navigation],
   );
 
-  return <FlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} ListEmptyComponent={ListEmptyComponent} />;
+  return <BottomSheetFlatList data={savedFoods} renderItem={renderItem} keyExtractor={keyExtractor} ListEmptyComponent={ListEmptyComponent} />;
 }
 
 function keyExtractor(item: SavedFood) {
