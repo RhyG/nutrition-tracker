@@ -118,7 +118,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={styles.barsContainer}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentMacroTotal('protein', foodLogData[day])} goal={goalCarbohydrates} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('carbohydrates', foodLogData[day])} goal={goalCarbohydrates} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>
@@ -149,7 +149,7 @@ export const WeeklyOverviewScreen: RootStackScreen<'Overview'> = () => {
       <View style={[styles.barsContainer, styles.bottomSpacing]}>
         <View style={styles.bars}>
           {DAYS.map(day => (
-            <Bar amount={getCurrentMacroTotal('protein', foodLogData[day])} goal={goalFat} day={day} key={day} type="protein" />
+            <Bar amount={getCurrentMacroTotal('fat', foodLogData[day])} goal={goalFat} day={day} key={day} type="protein" />
           ))}
         </View>
       </View>
