@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import { DAYS } from '@app/config/constants';
-import StorageModule from '@app/modules/AsyncStorage';
+import StorageModule from '@app/modules/storage';
 import { Day, FoodLogEntry } from '@app/types';
 
 export type FoodLogData = Record<Day, FoodLogEntry[]>;

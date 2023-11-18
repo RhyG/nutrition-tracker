@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
 import { DEFAULT_CALORIES, DEFAULT_CARBOHYDRATES, DEFAULT_FAT, DEFAULT_PROTEIN } from '@app/config/constants';
-import StorageModule from '@app/modules/AsyncStorage';
+import StorageModule from '@app/modules/storage';
 
 export type Goals = {
   calories: number;

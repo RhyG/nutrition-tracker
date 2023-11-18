@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware';
 
-import StorageModule from '@app/modules/AsyncStorage';
+import StorageModule from '@app/modules/storage';
 import { FoodLogEntry } from '@app/types';
 
 export type SavedFood = Omit<FoodLogEntry, 'timestamp'>;
