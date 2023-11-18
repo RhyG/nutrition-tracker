@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "nutrition-tracker",
-    "slug": "nutrition-tracker",
+    "name": "Super Simple Macros",
+    "slug": "super-simple-macros",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,14 +17,18 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rhysg.nutritiontracker"
+      "bundleIdentifier": "com.rhysg.supersimplemacros"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rhysg.nutritiontracker"
+      "icon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.rhysg.supersimplemacros"
     },
     "web": {
       "favicon": "./assets/favicon.png"
