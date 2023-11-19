@@ -45,7 +45,7 @@ export const FoodLogScreen: RootStackScreen<'Food Log'> = () => {
 
   const currentDayEntries: FoodLogEntry[] = useMemo(() => foodLogData[currentDay] ?? EMPTY_ARRAY, [currentDay, foodLogData]);
 
-  useDropdownHeader(currentDay);
+  useDropdownHeader();
   useSetDayOnForeground();
 
   /**
