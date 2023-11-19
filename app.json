@@ -2,7 +2,7 @@
   "expo": {
     "name": "Super Simple Macros",
     "slug": "super-simple-macros",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rhysg.supersimplemacros"
@@ -35,7 +37,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "080983a1-8eef-4655-b481-82ea8635f9df"
+        "projectId": "6808ce7e-520d-4a6b-b190-109438768e5e"
       }
     }
   }
