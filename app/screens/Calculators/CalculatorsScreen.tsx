@@ -3,18 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import i18n from 'i18n-js';
 import React, { useCallback, useRef, useState } from 'react';
-import {
-  Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import { RadioButton } from '@app/components/RadioButton';

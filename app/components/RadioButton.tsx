@@ -1,8 +1,9 @@
 import Icon from '@expo/vector-icons/Feather';
-import { useThemedStyles } from '@hooks/useThemedStyles';
 import { Theme } from '@theme';
 import React from 'react';
 import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+
+import { useThemedStyles } from '@hooks/useThemedStyles';
 
 import { Text } from './Text';
 
@@ -31,7 +32,7 @@ export const RadioButton = ({ selected, label, onPress, containerStyle }: RadioB
   return (
     <TouchableWithoutFeedback testID="radio-button-touchable" onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
-        <View style={styles.radioOuter}>{selected && <Icon testID="radio-button-check-icon" name="check" color={colours.palette.green} size={20} />}</View>
+        <View style={styles.radioOuter}>{selected && <Icon testID="radio-button-check-icon" name="check" color={colours.palette.green} size={16} />}</View>
         <Text testID="radio-button-label" preset="formHelper" style={styles.text}>
           {label}
         </Text>
@@ -48,8 +49,8 @@ const stylesFn = (theme: Theme) =>
     radioOuter: {
       ...theme.layout.fullyCentred,
       borderRadius: 4,
-      height: 25,
-      width: 25,
+      height: 20,
+      width: 20,
       borderWidth: 2,
       borderColor: theme.colours.palette.green,
     },
