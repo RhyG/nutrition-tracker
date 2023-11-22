@@ -1,4 +1,5 @@
 import { ACTIVITY_LEVELS, FEMALE_TDEE_VARIABLE, MALE_TDEE_VARIABLE } from '@config/constants';
+import { Picker } from '@react-native-picker/picker';
 import { useFocusEffect } from '@react-navigation/native';
 import { Theme } from '@theme';
 import i18n from 'i18n-js';
@@ -24,7 +25,7 @@ type TDEEFormData = {
   weight: string;
   height: string;
   gender: keyof typeof Genders;
-  activityMultiplier: number;
+  activityMultiplier: (typeof ACTIVITY_LEVELS)[number]['multiplier'];
 };
 
 const Genders = {
@@ -37,7 +38,7 @@ const DEFAULT_FORM_DATA: TDEEFormData = {
   weight: '',
   height: '',
   gender: Genders.MALE,
-  activityMultiplier: 1.2,
+  activityMultiplier: ACTIVITY_LEVELS[2].multiplier,
 };
 
 /**
@@ -50,12 +51,11 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     styles,
   } = useThemedStyles(stylesFn);
 
-  const [gender, setGender] = useState<keyof typeof Genders>(Genders.MALE);
-
   const inputs = useRef<TDEEFormData>(DEFAULT_FORM_DATA);
 
-  const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[0]);
-  const [activityLevelDropdownOpen, setActivityLevelDropdownOpen] = useState(false);
+  const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[2]);
+  const [gender, setGender] = useState<keyof typeof Genders>(Genders.MALE);
+  const [formComplete, setFormComplete] = useState(false);
 
   /* Clear all inputs when screen is unfocused */
   useFocusEffect(
@@ -68,22 +68,26 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
     }, []),
   );
 
-  const handleCalculatorChange = (property: string, value: string) => {
+  const handleCalculatorChange = (property: string, value: string | number) => {
     // Check number fields have valid values.
     if (['age', 'height', 'weight'].includes(property)) {
-      if (!isInputNumber(value)) {
+      if (typeof value === 'string' && !isInputNumber(value)) {
         return;
       }
     }
 
-    inputs.current = {
+    const newValues = {
       ...inputs.current,
       [property]: value,
     };
+
+    setFormComplete(Object.values(newValues).some(prop => !prop));
+
+    inputs.current = newValues;
   };
 
   /* Boolean indicating if any inputs are incomplete */
-  const TDEEFormIncomplete = Object.values(inputs.current).some(property => !property);
+  const TDEEFormIncomplete = !formComplete;
 
   function calculateTDEE() {
     if (TDEEFormIncomplete) {
@@ -143,22 +147,6 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
                   <RadioButton label={i18n.t('screens.calculators.male')} selected={gender === Genders.MALE} onPress={() => setGender(Genders.MALE)} />
                   <Space horizontal units={3} />
                   <RadioButton label={i18n.t('screens.calculators.female')} selected={gender === Genders.FEMALE} onPress={() => setGender(Genders.FEMALE)} />
-                  {/* <DropDownPicker
-              //@ts-expect-error typing on this library is a bit odd
-              items={Object.values(Genders)}
-              open={genderDropdownOpen}
-              setOpen={setGenderDropdownOpen}
-              // maxHeight={44}
-              labelStyle={{ height: 4 }}
-              setValue={setSelectedGender}
-              value={selectedGender}
-              zIndex={1000}
-              onSelectItem={item => {
-                //@ts-expect-error typing on this library is a bit odd
-                handleCalculatorChange('gender', item);
-              }}
-              labelStyle={styles.pickerLabel}
-            /> */}
                 </View>
               </View>
             </View>
@@ -166,21 +154,17 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
             <Text preset="formHelper" style={styles.activityLevelText}>
               {i18n.t('screens.calculators.activityLevel')}
             </Text>
-            <DropDownPicker
-              //@ts-expect-error typing on this library is a bit odd
-              items={ACTIVITY_LEVELS}
-              open={activityLevelDropdownOpen}
-              setOpen={setActivityLevelDropdownOpen}
-              setValue={setActivityLevel}
-              //@ts-expect-error typing on this library is a bit odd
-              value={activityLevel}
-              zIndex={1}
-              onSelectItem={item => {
-                //@ts-expect-error typing on this library is a bit odd
-                handleCalculatorChange('activityMultiplier', item.multiplier);
-              }}
-              labelStyle={styles.pickerLabel}
-            />
+            <Picker
+              selectedValue={activityLevel}
+              onValueChange={value => {
+                setActivityLevel(value);
+                // @ts-expect-error value is the type of selectedValue but it's actually the value prop of the current item
+                handleCalculatorChange('activityMultiplier', value);
+              }}>
+              {ACTIVITY_LEVELS.map(level => (
+                <Picker.Item label={level.label} value={level.multiplier} key={level.multiplier} />
+              ))}
+            </Picker>
             <TouchableOpacity
               disabled={TDEEFormIncomplete}
               onPress={calculateTDEE}
@@ -222,14 +206,12 @@ const stylesFn = (theme: Theme) =>
       width: '48%',
     },
     radiosContainer: {
-      // ...theme.layout.spaceBetweenRow,
       flexDirection: 'row',
       alignItems: 'center',
       flex: 1,
     },
     calculateButton: {
       padding: 10,
-      marginTop: 15,
       alignItems: 'center',
       borderRadius: 6,
     },
