@@ -55,7 +55,6 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[2]);
   const [gender, setGender] = useState<keyof typeof Genders>(Genders.MALE);
   const [formComplete, setFormComplete] = useState(false);
-  console.log({ formComplete });
 
   /* Clear all inputs when screen is unfocused */
   useFocusEffect(
