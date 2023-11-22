@@ -5,7 +5,6 @@ import { Theme } from '@theme';
 import i18n from 'i18n-js';
 import React, { useCallback, useRef, useState } from 'react';
 import { Alert, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 import { RadioButton } from '@app/components/RadioButton';
 import { calculateBMR } from '@app/lib/calculators';
@@ -56,6 +55,7 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
   const [activityLevel, setActivityLevel] = useState<(typeof ACTIVITY_LEVELS)[number]>(ACTIVITY_LEVELS[2]);
   const [gender, setGender] = useState<keyof typeof Genders>(Genders.MALE);
   const [formComplete, setFormComplete] = useState(false);
+  console.log({ formComplete });
 
   /* Clear all inputs when screen is unfocused */
   useFocusEffect(
@@ -81,13 +81,12 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
       [property]: value,
     };
 
-    setFormComplete(Object.values(newValues).some(prop => !prop));
+    // Check if all fields are filled in.
+    const complete = Object.values(newValues).every(prop => prop !== '' && prop !== null && prop !== undefined);
+    setFormComplete(complete);
 
     inputs.current = newValues;
   };
-
-  /* Boolean indicating if any inputs are incomplete */
-  const TDEEFormIncomplete = !formComplete;
 
   function calculateTDEE() {
     if (TDEEFormIncomplete) {
@@ -104,6 +103,9 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
 
     Alert.alert(`Your TDEE is ${finalTDEE} calories.`);
   }
+
+  /* Boolean indicating if any inputs are incomplete */
+  const TDEEFormIncomplete = !formComplete;
 
   return (
     <KeyboardAvoidingView style={styles.screenContainer}>
@@ -166,9 +168,9 @@ export const CalculatorsScreen: RootStackScreen<'Calculators'> = () => {
               ))}
             </Picker>
             <TouchableOpacity
-              disabled={TDEEFormIncomplete}
+              disabled={!formComplete}
               onPress={calculateTDEE}
-              style={[styles.calculateButton, { backgroundColor: TDEEFormIncomplete ? colours.palette.neutral300 : colours.palette.green }]}>
+              style={[styles.calculateButton, { backgroundColor: !formComplete ? colours.palette.neutral300 : colours.palette.green }]}>
               <Text colour="#fff">{i18n.t('screens.calculators.calculate')}</Text>
             </TouchableOpacity>
             <Space units={5} />
