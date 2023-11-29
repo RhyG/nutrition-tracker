@@ -51,7 +51,7 @@ function _FoodRow({ entry, onPress, onDeleteButtonPress }: Props) {
 
   return (
     <Swipeable friction={2} leftThreshold={40} rightThreshold={40} overshootLeft={false} overshootRight={false} renderRightActions={renderRightActions}>
-      <TouchableOpacity onPress={onPress} style={styles.container}>
+      <TouchableOpacity onPress={onPress} style={styles.container} testID="food-log-row">
         <View style={styles.leftColumn}>
           <View style={styles.nameContainer}>
             <Text numberOfLines={3} size="sm">

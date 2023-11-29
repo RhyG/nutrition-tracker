@@ -1,0 +1,51 @@
+appId: com.rhysg.supersimplemacros
+---
+- clearState
+- launchApp
+- tapOn:
+    id: 'new-entry-button'
+- tapOn:
+    id: 'name-input'
+- inputText: 'Fried chicken burger'
+- tapOn:
+    id: 'calories-input'
+- inputText: '650'
+- tapOn:
+    id: 'protein-input'
+- inputText: '38'
+- tapOn:
+    id: 'carbohydrates-input'
+- inputText: '62'
+- tapOn:
+    id: 'fat-input'
+- inputText: '25'
+- tapOn: 'Done' # first tap is to dismiss keyboard
+- tapOn: 'Done'
+- swipe:
+    start: 50%, 8%
+    end: 50%, 95%
+
+# Entry details modal
+- tapOn:
+    id: 'food-log-row'
+- assertVisible:
+    text: '650'
+    below: Calories
+- assertVisible:
+    text: '38'
+    below: Protein
+- assertVisible:
+    text: '62'
+    below: Carbs
+- assertVisible:
+    text: '25'
+    below: Fat
+- assertVisible: '26%'
+- assertVisible: '25.33%'
+- assertVisible: '32.63%'
+- assertVisible: '39.68%'
+- tapOn:
+    point: 50% 50%
+
+- assertVisible:
+    id: 'food-log-row'
