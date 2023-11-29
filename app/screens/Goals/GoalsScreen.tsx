@@ -60,6 +60,7 @@ export function GoalsScreen({ navigation }: Props) {
             <View style={styles.inputContainer}>
               <InputWithLabel
                 label={i18n.t('macros.calories')}
+                accessibilityLabel={i18n.t('macros.calories')}
                 onInputChange={text => onChangeGoals('calories', text)}
                 keyboardType="number-pad"
                 onBlur={handleSaveUpdatedGoals}
@@ -70,6 +71,7 @@ export function GoalsScreen({ navigation }: Props) {
             <View style={styles.inputContainer}>
               <InputWithLabel
                 label={i18n.t('macros.protein')}
+                accessibilityLabel={i18n.t('macros.protein')}
                 onInputChange={text => onChangeGoals('protein', text)}
                 keyboardType="number-pad"
                 onBlur={handleSaveUpdatedGoals}
@@ -82,20 +84,22 @@ export function GoalsScreen({ navigation }: Props) {
             <View style={styles.inputContainer}>
               <InputWithLabel
                 label={i18n.t('macros.carbohydrates')}
+                accessibilityLabel={i18n.t('macros.carbohydrates')}
                 onInputChange={text => onChangeGoals('carbohydrates', text)}
                 keyboardType="number-pad"
                 onBlur={handleSaveUpdatedGoals}
-                testID="goals-screen-calories-input"
+                testID="goals-screen-carbohydrates-input"
                 defaultValue={String(goalCarbohydrates)}
               />
             </View>
             <View style={styles.inputContainer}>
               <InputWithLabel
                 label={i18n.t('macros.fat')}
+                accessibilityLabel={i18n.t('macros.fat')}
                 onInputChange={text => onChangeGoals('fat', text)}
                 keyboardType="number-pad"
                 onBlur={handleSaveUpdatedGoals}
-                testID="goals-screen-protein-input"
+                testID="goals-screen-fat-input"
                 defaultValue={String(goalFat)}
               />
             </View>
