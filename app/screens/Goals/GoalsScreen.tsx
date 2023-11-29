@@ -1,7 +1,7 @@
 import type { StackScreenProps } from '@react-navigation/stack';
 import i18n from 'i18n-js';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 import { InputWithLabel } from '@app/components/InputWithLabel';
 import { Space } from '@app/components/Space';
@@ -54,52 +54,56 @@ export function GoalsScreen({ navigation }: Props) {
 
   return (
     <View style={styles.screenContainer}>
-      <View style={styles.inputsContainer}>
-        <View style={styles.inputContainer}>
-          <InputWithLabel
-            label={i18n.t('macros.calories')}
-            onInputChange={text => onChangeGoals('calories', text)}
-            keyboardType="number-pad"
-            onBlur={handleSaveUpdatedGoals}
-            testID="goals-screen-calories-input"
-            defaultValue={String(goalCalories)}
-          />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.flex}>
+          <View style={styles.inputsContainer}>
+            <View style={styles.inputContainer}>
+              <InputWithLabel
+                label={i18n.t('macros.calories')}
+                onInputChange={text => onChangeGoals('calories', text)}
+                keyboardType="number-pad"
+                onBlur={handleSaveUpdatedGoals}
+                testID="goals-screen-calories-input"
+                defaultValue={String(goalCalories)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <InputWithLabel
+                label={i18n.t('macros.protein')}
+                onInputChange={text => onChangeGoals('protein', text)}
+                keyboardType="number-pad"
+                onBlur={handleSaveUpdatedGoals}
+                testID="goals-screen-protein-input"
+                defaultValue={String(goalProtein)}
+              />
+            </View>
+          </View>
+          <View style={[styles.inputsContainer, { marginTop: spacing.small }]}>
+            <View style={styles.inputContainer}>
+              <InputWithLabel
+                label={i18n.t('macros.carbohydrates')}
+                onInputChange={text => onChangeGoals('carbohydrates', text)}
+                keyboardType="number-pad"
+                onBlur={handleSaveUpdatedGoals}
+                testID="goals-screen-calories-input"
+                defaultValue={String(goalCarbohydrates)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <InputWithLabel
+                label={i18n.t('macros.fat')}
+                onInputChange={text => onChangeGoals('fat', text)}
+                keyboardType="number-pad"
+                onBlur={handleSaveUpdatedGoals}
+                testID="goals-screen-protein-input"
+                defaultValue={String(goalFat)}
+              />
+            </View>
+          </View>
+          <Space units={4} />
+          <Text>{i18n.t('screens.goals.about')}</Text>
         </View>
-        <View style={styles.inputContainer}>
-          <InputWithLabel
-            label={i18n.t('macros.protein')}
-            onInputChange={text => onChangeGoals('protein', text)}
-            keyboardType="number-pad"
-            onBlur={handleSaveUpdatedGoals}
-            testID="goals-screen-protein-input"
-            defaultValue={String(goalProtein)}
-          />
-        </View>
-      </View>
-      <View style={[styles.inputsContainer, { marginTop: spacing.small }]}>
-        <View style={styles.inputContainer}>
-          <InputWithLabel
-            label={i18n.t('macros.carbohydrates')}
-            onInputChange={text => onChangeGoals('carbohydrates', text)}
-            keyboardType="number-pad"
-            onBlur={handleSaveUpdatedGoals}
-            testID="goals-screen-calories-input"
-            defaultValue={String(goalCarbohydrates)}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <InputWithLabel
-            label={i18n.t('macros.fat')}
-            onInputChange={text => onChangeGoals('fat', text)}
-            keyboardType="number-pad"
-            onBlur={handleSaveUpdatedGoals}
-            testID="goals-screen-protein-input"
-            defaultValue={String(goalFat)}
-          />
-        </View>
-      </View>
-      <Space units={4} />
-      <Text>{i18n.t('screens.goals.about')}</Text>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -127,4 +131,5 @@ const stylesFn = (theme: Theme) =>
       width: '48%',
       justifyContent: 'center',
     },
+    flex: { flex: 1 },
   });
