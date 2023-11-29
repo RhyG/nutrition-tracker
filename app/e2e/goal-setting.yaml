@@ -1,0 +1,32 @@
+appId: com.rhysg.supersimplemacros
+---
+- clearState
+- launchApp
+- tapOn: 'Goals'
+- tapOn:
+    id: 'goals-screen-calories-input'
+- eraseText
+- inputText: '3200'
+- tapOn:
+    id: 'goals-screen-protein-input'
+- eraseText
+- inputText: '185'
+- tapOn:
+    id: 'goals-screen-carbohydrates-input'
+- eraseText
+- inputText: '220'
+- tapOn:
+    id: 'goals-screen-fat-input'
+- eraseText
+- inputText: '80'
+- tapOn:
+    id: 'goals-info-text'
+- tapOn: 'Food Log'
+- assertVisible:
+    text: '0 / 3200'
+- assertVisible:
+    text: '0 / 185'
+- assertVisible:
+    text: '0 / 220'
+- assertVisible:
+    text: '0 / 80'
