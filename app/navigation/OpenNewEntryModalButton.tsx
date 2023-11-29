@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { useThemedStyles } from '@app/hooks/useThemedStyles';
 
-export function OpenLogButton({ onPress }: { onPress: () => void }) {
+export function OpenNewEntryModalButton({ onPress }: { onPress: () => void }) {
   const {
     styles,
     theme: { colours },
@@ -12,6 +12,7 @@ export function OpenLogButton({ onPress }: { onPress: () => void }) {
 
   return (
     <TouchableOpacity
+      testID="new-entry-button"
       onPress={() => {
         onPress();
       }}

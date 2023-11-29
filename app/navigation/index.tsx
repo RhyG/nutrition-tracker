@@ -12,7 +12,7 @@ import { GoalsScreen } from '@app/screens/Goals/GoalsScreen';
 import { WeeklyOverviewScreen } from '@app/screens/WeeklyOverview/WeeklyOverviewScreen';
 import { ModalNames, useModalStore } from '@app/store/modal';
 
-import { OpenLogButton } from './OpenLogButton';
+import { OpenNewEntryModalButton } from './OpenNewEntryModalButton';
 import { TabBarLabel } from './TabBarLabel';
 
 export type RootStackParamList = {
@@ -57,6 +57,7 @@ export default function AppNavigator() {
           options={{
             tabBarIcon: () => <Feather name="book-open" size={24} color={colours.palette.neutral700} />,
             tabBarLabel: props => <TabBarLabel label="Food Log" {...props} />,
+            tabBarAccessibilityLabel: 'Food Log',
           }}
         />
         <Tab.Screen
@@ -65,14 +66,17 @@ export default function AppNavigator() {
           options={{
             tabBarIcon: () => <Feather name="compass" size={24} color={colours.palette.neutral700} />,
             tabBarLabel: props => <TabBarLabel label="Goals" {...props} />,
+            tabBarAccessibilityLabel: 'Goals',
           }}
         />
         <Tab.Screen
           name="NewEntryModal"
           component={EmptyScreen}
           options={{
-            tabBarButton: props => <OpenLogButton {...props} onPress={() => openModal({ name: ModalNames.NEW_ENTRY })} />,
+            tabBarButton: props => <OpenNewEntryModalButton {...props} onPress={() => openModal({ name: ModalNames.NEW_ENTRY })} />,
             tabBarLabel: () => null,
+            tabBarAccessibilityLabel: 'New Entry',
+            tabBarTestID: 'new-entry-button',
           }}
         />
         <Tab.Screen
